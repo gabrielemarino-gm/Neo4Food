@@ -1,0 +1,5 @@
+1) Capire il progetto di Jose
+2) Scraping online, usirei Python
+3) Rivedere l'idea, aggiungere query
+4) Rivedere le collection
+5) Scrivere il codice
