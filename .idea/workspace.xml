@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1af8d5b-5478-4a4a-881c-7252e4ca8b43" name="Changes" comment="" />
+    <list default="true" id="b1af8d5b-5478-4a4a-881c-7252e4ca8b43" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scraping.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/scraping.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,11 +57,15 @@
       <workItem from="1674205927317" duration="208000" />
       <workItem from="1674207472173" duration="150000" />
       <workItem from="1674207786129" duration="861000" />
+      <workItem from="1674209968901" duration="1438000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.ipynb" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
