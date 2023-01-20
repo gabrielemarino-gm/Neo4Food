@@ -9,3 +9,4 @@ OSSERVAZIONI IMPORTANTI:
  - La pagina shop.jsp (e qualunque altra pagina jsp) sembra interagire esclusivamente con le classi DTO
  ---- DAO dovrebbero essere le classi usate nel back-end e nel trasferimento con i DBMS
  ---- DTO dobrebbero essere le classi usate esclusivamente per far interagire front-end e back-end
+ -------- Da capire come vengono popolate le classi DTO
