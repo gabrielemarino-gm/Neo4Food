@@ -10,7 +10,17 @@ OSSERVAZIONI IMPORTANTI:
  - Tale classe fa una richiesta usando DTO, poi inoltra il risultato alla pagina WEB-INF/template/shop.jsp
  - La pagina riceve un DTO e stampa il risultato
  - Tutte le pabine in WEB-INF/template sono appunto template che visualizzano i dati raccolti dai servlet nel package it.unipi.controller
-
  ---- DAO sono le classi usate nel back-end e nel trasferimento con i DBMS
  ---- DTO sono le classi usate esclusivamente per far interagire front-end e back-end
  -------- Da capire come vengono popolate le classi DTO
+
+DETTAGLI:
+
+1-	index.jsp chiama il servlet /shop (ShopServlet)
+2-	ShopServlet quando viene chiamata chiama ProductService
+3-	ProductService ritorna a /shop l'istanza (singleton?) di ProductServiceImpl
+4-	ProductServiceImpl quando inizializzata la prima volta richiama DAOLocator
+5-	DAOLocator ritorna quindi l'istanza singleton ProductMySQLDAO
+6-	ProductServiceImpl richiama listProductPage che fa richiesta al DBMS
+7-	ShopServlet ha ora una pageDTO che inoltra a shop.jsp
+8-	shop.jsp riceve l'oggetto pageDTO e lo usa per popolare la pagina
