@@ -5,8 +5,9 @@
 5) Scrivere il codice (Prima di scrivere si deve progettare qualcosina)
 
 OSSERVAZIONI IMPORTANTI:
- - Il file index.jsp ha un refresh interno che chiama la pagina shop.jsp
- - La pagina shop.jsp (e qualunque altra pagina jsp) sembra interagire esclusivamente con le classi DTO
+ - Il file index.jsp ha un refresh interno che chiama il servlet /shop
+ - Il servlet /shop non e' altri che la classe controller.ShopServlet
+ - Tale pagina dovrebbe usare le classi DTO per fare le richieste, per poi inoltrarle alla pagina WEB-INF/template/shop.jsp
  ---- DAO dovrebbero essere le classi usate nel back-end e nel trasferimento con i DBMS
  ---- DTO dobrebbero essere le classi usate esclusivamente per far interagire front-end e back-end
  -------- Da capire come vengono popolate le classi DTO
