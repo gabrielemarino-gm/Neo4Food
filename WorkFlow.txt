@@ -3,3 +3,9 @@
 3) Rivedere l'idea, aggiungere query
 4) Rivedere le collection
 5) Scrivere il codice (Prima di scrivere si deve progettare qualcosina)
+
+MATTEO:
+ - Il file index.jsp ha un refresh interno che chiama la pagina shop.jsp
+ - La pagina shop.jsp (e qualunque altra pagina jsp) sembra interagire esclusivamente con le classi DTO
+ ---- DAO dovrebbero essere le classi usate nel back-end e nel trasferimento con i DBMS
+ ---- DTO dobrebbero essere le classi usate esclusivamente per far interagire front-end e back-end
