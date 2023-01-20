@@ -1,5 +1,5 @@
 1) Capire il progetto di Jose
-2) Scraping online, usirei Python
+2) Scraping online, usirei Python (API se si trovano gratis?)
 3) Rivedere l'idea, aggiungere query
 4) Rivedere le collection
-5) Scrivere il codice
+5) Scrivere il codice (Prima di scrivere si deve progettare qualcosina)
