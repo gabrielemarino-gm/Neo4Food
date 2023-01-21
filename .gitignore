@@ -4,3 +4,4 @@ Neo4Food.iml
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 target/Neo4Food.war
+target/Neo4Food/META-INF/MANIFEST.MF
