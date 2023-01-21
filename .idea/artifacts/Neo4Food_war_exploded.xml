@@ -13,7 +13,14 @@
         <element id="directory" name="classes">
           <element id="module-output" name="Neo4Food" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
+        </element>
       </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/Neo4Food/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="Neo4Food/web/Web" />
     </root>
   </artifact>
 </component>
