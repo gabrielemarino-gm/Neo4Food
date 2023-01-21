@@ -14,10 +14,6 @@
           <element id="module-output" name="Neo4Food" />
         </element>
       </element>
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/Neo4Food/META-INF/MANIFEST.MF" />
-      </element>
-      <element id="javaee-facet-resources" facet="Neo4Food/web/Web" />
     </root>
   </artifact>
 </component>
