@@ -7,15 +7,16 @@
     <body>
         <div>
             <div>
-
+<%--                Header della pagina--%>
+                <%@ include file="template/header.jsp" %>
             </div>
             <%
                 String requestMessage = (String) request.getAttribute("message");
             %>
             <section>
                 <% if (requestMessage != null) { %>
-                <div class="alert alert-danger" role="alert"><%= requestMessage %></div>
-                <% } %>
+                <div role="alert"><%= requestMessage %></div>
+                <% } %>>
                 <div id="external">
     <%--                Form di login--%>
                     <div>
@@ -27,6 +28,7 @@
 <%--                                Questo campo nascosto serve per controllare dall'altra parte se sto facendo login o signup--%>
                             <button type="submit">Login</button>
                         </form>
+<%--                        Aggiungere form a scomparsa per il Submit che si alterna con Login--%>
                     </div>
                 </div>
             </section>

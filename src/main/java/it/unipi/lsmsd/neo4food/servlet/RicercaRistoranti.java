@@ -5,26 +5,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-@WebServlet("/loginUtente")
-public class LoginUtente extends HttpServlet
+@WebServlet("/ricerca")
+public class RicercaRistoranti extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String targetJSP = "WEB-INF/jsp/ricerca.jsp";
-        String actionType = (String) request.getParameter("action");
-        if (actionType != null) {
-            //        Todo controlli vari
-            String username = (String) request.getParameter("username");
-            String password = (String) request.getParameter("password");
-            if (password != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("userToken", password);
-                session.setAttribute("username", username);
-            }
+//        Di base dopo aver cercato vado a lista.jsp
+        String targetJSP = "WEB-INF/jsp/lista.jsp";
+        String actionType = (String) request.getAttribute("action");
+//        Se actionType e' null significa che non ho fatto una ricerca e questa pagina e' stata chiamata da index.jsp
+        if (actionType == null || "search".equals(actionType)) {
+            targetJSP = "WEB-INF/jsp/ricerca.jsp";
         } else {
-//            Pagina di login chiama dal link, reindirizzo a login.jsp
-            targetJSP = "WEB-INF/jsp/login.jsp";
+//        In questo caso ho lo zipcode
+        String zipcode = (String) request.getAttribute("zipcode");
+//        Faccio la ricerca dei ristoranti per zipcode
         }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }
