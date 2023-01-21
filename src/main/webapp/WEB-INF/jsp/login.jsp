@@ -16,12 +16,12 @@
             <section>
                 <% if (requestMessage != null) { %>
                 <div role="alert"><%= requestMessage %></div>
-                <% } %>>
+                <% } %>
                 <div id="external">
     <%--                Form di login--%>
                     <div>
                         <h3>Login</h3>
-                        <form method="post" action="<c:url value="/loginUtente"/>">
+                        <form method="post" action="<c:url value="/login"/>">
                             <input type="email" name="username" placeholder="E-Mail"/>
                             <input type="password" name="password" placeholder="Password">
                             <input type="hidden" name="action" value="login">

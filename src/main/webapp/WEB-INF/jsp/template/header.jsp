@@ -21,7 +21,7 @@
             <a><%= username %></a>
         <% } else { %>
 <%--            Altrimenti metto link alla pagina di login--%>
-            <a href="<c:url value="/loginUtente"/>">Login</a>
+            <a href="<c:url value="/login"/>">Login</a>
             <% } %>
         </div>
     </body>

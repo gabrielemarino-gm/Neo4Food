@@ -5,15 +5,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-@WebServlet("/loginUtente")
+@WebServlet("/login")
 public class LoginUtente extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "WEB-INF/jsp/ricerca.jsp";
         String actionType = (String) request.getParameter("action");
-        if (actionType != null && "login".equals(actionType)) {
-            //        Todo controlli vari
+        if (actionType == null){
+            targetJSP = "WEB-INF/jsp/login.jsp";
+        }
+        else if (actionType != null && "login".equals(actionType)) {
             String username = (String) request.getParameter("username");
             String password = (String) request.getParameter("password");
             if (password != null) {
@@ -21,9 +23,8 @@ public class LoginUtente extends HttpServlet
                 session.setAttribute("userToken", password);
                 session.setAttribute("username", username);
             }
-        } else {
-            targetJSP = "WEB-INF/jsp/login.jsp";
         }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

@@ -24,3 +24,8 @@ DETTAGLI:
 6-	ProductServiceImpl richiama listProductPage che fa richiesta al DBMS
 7-	ShopServlet ha ora una pageDTO che inoltra a shop.jsp
 8-	shop.jsp riceve l'oggetto pageDTO e lo usa per popolare la pagina
+
+RIGUARDO AI SERVLET:
+> Parameter - Sono campi read only impostati da chi invia il pacchetto richiesta
+> Attribute - Sono campi sia read che write, usati per mandare info nel frontend tra una pagina e laltra
+> Session - Campo persistente delle richieste, contiene cose riguardande alla sessione tra host e server

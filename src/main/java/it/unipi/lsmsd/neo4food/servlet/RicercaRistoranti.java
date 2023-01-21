@@ -11,11 +11,12 @@ public class RicercaRistoranti extends HttpServlet
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "WEB-INF/jsp/lista.jsp";
-        String actionType = (String) request.getAttribute("action");
-        if (actionType == null || "search".equals(actionType)) {
+        String actionType = (String) request.getParameter("action");
+        if (actionType == null){
             targetJSP = "WEB-INF/jsp/ricerca.jsp";
-        } else {
-        String zipcode = (String) request.getAttribute("zipcode");
+        } else if (actionType != null && "search".equals(actionType)) {
+            String zipcode = (String) request.getParameter("zipcode");
+            request.setAttribute("zipcode", zipcode);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
