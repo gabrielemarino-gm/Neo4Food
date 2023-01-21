@@ -12,7 +12,7 @@ public class LoginUtente extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/ricerca.jsp";
         String actionType = (String) request.getParameter("action");
-        if (actionType != null) {
+        if (actionType != null && "login".equals(actionType)) {
             //        Todo controlli vari
             String username = (String) request.getParameter("username");
             String password = (String) request.getParameter("password");
@@ -22,7 +22,6 @@ public class LoginUtente extends HttpServlet
                 session.setAttribute("username", username);
             }
         } else {
-//            Pagina di login chiama dal link, reindirizzo a login.jsp
             targetJSP = "WEB-INF/jsp/login.jsp";
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
