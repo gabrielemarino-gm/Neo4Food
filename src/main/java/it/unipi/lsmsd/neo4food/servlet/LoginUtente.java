@@ -14,9 +14,8 @@ public class LoginUtente extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String targetJSP = "WEB-INF/jsp/ricerca.jsp";
         String actionType = (String) request.getParameter("action");
-
+        String targetJSP = "WEB-INF/jsp/ricerca.jsp";
         if (actionType == null){
             targetJSP = "WEB-INF/jsp/login.jsp";
         }
