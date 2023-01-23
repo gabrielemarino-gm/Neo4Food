@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.UserDTO" %>
+<%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +13,34 @@
         <div>
             <%@ include file="template/header.jsp"%>
         </div>
-        <a>Your personal page</a>
+        <div>
+            <%
+                UserDTO userInfo = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
+            %>
+            <div>
+                <div>
+                    <a>ID</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getId() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Username</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getUsername() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Email</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getEmail() %></a>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
