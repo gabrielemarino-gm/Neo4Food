@@ -8,11 +8,9 @@
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
-        <div>
-            <div class="bg-principale font-bold text-right px-4 text-1xs h-10">
+        
 <%--                Header con login o nomeutente--%>
             <%@include file="template/header.jsp"%>
-            </div>
             <%
                 String requestMessage = (String) request.getAttribute("message");
             %>
@@ -29,6 +27,7 @@
                     </form>
                 </div>
             </section>
-        </div>
+        
+        <%@include file="template/footer.jsp"%>
     </body>
 </html>

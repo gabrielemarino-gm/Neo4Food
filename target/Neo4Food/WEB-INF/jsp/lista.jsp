@@ -8,7 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <%@ include file="/WEB-INF/jsp/template/head_includes.jsp"%>
+        <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
         <div>

@@ -8,33 +8,30 @@
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
-        <div>
-            <div>
+        
 <%--                Header della pagina--%>
-                <%@ include file="template/header.jsp"%>
-            </div>
+        <%@ include file="template/header.jsp"%>
             <%
                 String requestMessage = (String) request.getAttribute("message");
             %>
-            <section>
-                <% if (requestMessage != null) { %>
-                <div role="alert"><%= requestMessage %></div>
-                <% } %>
-                <div id="external">
-    <%--                Form di login--%>
-                    <div>
-                        <h3>Login</h3>
-                        <form method="post" action="<c:url value="/login"/>">
-                            <input type="email" name="username" placeholder="E-Mail"/>
-                            <input type="password" name="password" placeholder="Password">
-                            <input type="hidden" name="action" value="login">
+        <section>
+            <% if (requestMessage != null) { %>
+            <div role="alert"><%= requestMessage %></div>
+            <% } %>
+            <div class="mx-auto my-32 text-center" id="external" id="external">
+<%--                Form di login--%>
+                <div class="py-7 mx-auto h-auto w-96 rounded-lg bg-principale">
+                    <h3 class="text-4xl py-5">Login</h3>
+                    <form method="post" action="<c:url value="/login"/>">
+                        <input class="h-9 w-52 rounded-lg px-3" type="email" name="username" placeholder="E-Mail"/>
+                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="password" name="password" placeholder="Password">
+                        <input type="hidden" name="action" value="login">
 <%--                                Questo campo nascosto serve per controllare dall'altra parte se sto facendo login o signup--%>
-                            <button type="submit">Login</button>
-                        </form>
+                        <button class="my-3 w-52 rounded-lg border-2"type="submit">Login</button>
+                    </form>
 <%--                        Aggiungere form a scomparsa per il Submit che si alterna con Login--%>
-                    </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </body>
 </html>
