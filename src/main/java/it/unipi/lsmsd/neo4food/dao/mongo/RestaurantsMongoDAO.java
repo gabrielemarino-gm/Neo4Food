@@ -13,7 +13,6 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class RestaurantsMongoDAO extends BaseMongo{
 
     public ListDTO<RestaurantDTO> getRestaurants(int page, String zipcode){

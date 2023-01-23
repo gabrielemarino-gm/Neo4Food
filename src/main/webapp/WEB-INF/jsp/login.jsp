@@ -8,7 +8,6 @@
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
-        
 <%--                Header della pagina--%>
         <%@ include file="template/header.jsp"%>
             <%
