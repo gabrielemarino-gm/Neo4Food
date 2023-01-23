@@ -14,11 +14,14 @@
             <%
                 String requestMessage = (String) request.getAttribute("message");
             %>
-            <section class="mx-auto my-48 text-center">
+            <div class="-top-6 overflow-hidden h-96 z-50">
+                <img class="w-full" src="https://www.igizmo.it/wp-content/uploads/2021/11/just-eat-food-delivery.jpg" alt="imgFood">
+            </div>
+            <section class="mx-auto -my-6 text-center">
                 <% if (requestMessage != null) { %>
                 <div role="alert"><%= requestMessage %></div>
                 <% } %>
-                <div class="mx-auto h-20 w-96 rounded-lg bg-principale">
+                <div class="relative mx-auto h-20 w-96 rounded-lg bg-principale">
                     <h2>Search restaurants</h2>
                     <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
                         <input class="rounded-lg px-3" type="text" name="zipcode" placeholder="ZIP Code">
