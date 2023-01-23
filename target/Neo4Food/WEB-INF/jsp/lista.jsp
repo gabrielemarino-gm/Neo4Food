@@ -41,6 +41,12 @@
                                 <h2><%= item.getName() %></h2>
                                 <a><%= item.getRating() %></a>
                             </div>
+                            <div>
+                                <form method="post" action="<c:url value="/restaurant"/>">
+                                    <input type="hidden" name="rid" value="<%= item.getId() %>">
+                                    <button type="submit"> See more</button>
+                                </form>
+                            </div>
                         </div>
                     <%
                         }
@@ -48,5 +54,6 @@
                     %>
                 </div>
             </div>
+        <%@include file="template/footer.jsp"%>
     </body>
 </html>
