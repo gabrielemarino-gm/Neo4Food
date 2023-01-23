@@ -3,12 +3,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
         <div>
             <div>
 <%--                Header della pagina--%>
-                <%@ include file="template/header.jsp" %>
+                <%@ include file="template/header.jsp"%>
             </div>
             <%
                 String requestMessage = (String) request.getAttribute("message");

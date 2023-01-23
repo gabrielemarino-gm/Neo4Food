@@ -5,6 +5,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import com.mongodb.client.MongoCollection;
+import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
+import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
+
 @WebServlet("/ricerca")
 public class RicercaRistoranti extends HttpServlet
 {
@@ -16,6 +21,9 @@ public class RicercaRistoranti extends HttpServlet
             targetJSP = "WEB-INF/jsp/ricerca.jsp";
         } else if (actionType != null && "search".equals(actionType)) {
             String zipcode = (String) request.getParameter("zipcode");
+            RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
+            ListDTO<RestaurantDTO> list = restaurants.getRestaurants(0, zipcode);
+            request.setAttribute("listDTO", list);
             request.setAttribute("zipcode", zipcode);
         }
 
