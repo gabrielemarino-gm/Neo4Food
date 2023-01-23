@@ -15,7 +15,7 @@
                 String requestMessage = (String) request.getAttribute("message");
             %>
             <div class="-top-6 overflow-hidden h-96 z-50">
-                <img class="w-full" src="https://www.igizmo.it/wp-content/uploads/2021/11/just-eat-food-delivery.jpg" alt="imgFood">
+                <img class="w-full" src="img/sfondo.png" alt="imgFood">
             </div>
             <section class="mx-auto -my-6 text-center">
                 <% if (requestMessage != null) { %>
@@ -26,7 +26,7 @@
                     <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
                         <input class="rounded-lg px-3" type="text" name="zipcode" placeholder="ZIP Code">
                         <input type="hidden" name="action" value="search">
-                        <button class="w-20 rounded-lg border-2" type="submit">Search</button>
+                        <button class="w-20 rounded-lg border-2 hover:bg-button" type="submit">Search</button>
                     </form>
                 </div>
             </section>

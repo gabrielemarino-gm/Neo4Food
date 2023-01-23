@@ -6,7 +6,8 @@ module.exports = {
   theme: {
       colors: {
           'principale': '#FFF4EA',
-          'test_col' : '#7C2714'
+          'test_col' : '#7C2714',
+          'button' : '#FFE8D3'
       },
     extend: {},
   },
