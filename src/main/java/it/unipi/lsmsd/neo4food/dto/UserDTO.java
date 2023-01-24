@@ -9,9 +9,8 @@ public class UserDTO {
     private String phoneNumber;
     private String address;
     private String zipcode;
-    private String birthday;
 
-    public UserDTO(String id, String username, String firstName, String lastName, String email, String phoneNumber, String address, String zipcode, String birthday){
+    public UserDTO(String id, String username, String firstName, String lastName, String email, String phoneNumber, String address, String zipcode){
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -20,7 +19,6 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.zipcode = zipcode;
-        this.birthday = birthday;
     }
 
     public void setId(String id) {this.id = id;}
@@ -31,7 +29,6 @@ public class UserDTO {
     public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber; }
     public void setAddress(String address) {this.address = address; }
     public void setZipcode(String zipcode) {this.zipcode = zipcode; }
-    public void setBirthday(String birthday) {this.birthday = birthday; }
 
     public String getId() {
         return id;
@@ -57,9 +54,6 @@ public class UserDTO {
     public String getZipcode() {
         return zipcode;
     }
-    public String getBirthday() {
-        return birthday;
-    }
 
     @Override
     public String toString() {
@@ -72,7 +66,6 @@ public class UserDTO {
                 ", phoneNumber=" + phoneNumber +
                 ", address=" + address +
                 ", zipcode=" + zipcode +
-                ", birthday=" + birthday +
                 '}';
     }
 }

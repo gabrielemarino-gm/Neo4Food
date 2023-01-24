@@ -81,14 +81,6 @@
                     <a> <%= userInfo.getZipcode() %></a>
                 </div>
             </div>
-            <div>
-                <div>
-                    <a>Birthday</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getBirthday() %></a>
-                </div>
-            </div>
         </div>
     </body>
 </html>

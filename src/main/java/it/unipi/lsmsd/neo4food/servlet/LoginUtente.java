@@ -55,6 +55,9 @@ public class LoginUtente extends HttpServlet
 //                Can create new user
                     users.registerUser(user);
                     UserDTO registered = users.getUser(user.getEmail(), user.getPassword());
+                    HttpSession session = request.getSession();
+                    session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
+                    session.setAttribute("username", registered.getUsername());
             } else {
 //                Credenziali gia in utilizzo
                 targetJSP = "WEB-INF/jsp/login.jsp";

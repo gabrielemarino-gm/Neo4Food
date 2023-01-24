@@ -15,12 +15,15 @@ public class User extends RegisteredUser{
         username = u;
         firstName = fn;
         lastName = ln;
-
     }
 
     public void setUsername(String username) {this.username = username;}
+    public void setFirstName(String firstName) {this.firstName = firstName;}
+    public void setLastName(String lastName) {this.lastName = lastName;}
     public void setOrders(List<Order> orders) {this.orders = orders;}
 
     public String getUsername() {return username;}
+    public String getFirstName() {return firstName;}
+    public String getLastName() {return lastName;}
     public List<Order> getOrders() {return orders;}
 }
