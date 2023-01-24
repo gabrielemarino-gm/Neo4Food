@@ -13,6 +13,7 @@
                 font-family: gill sans, sans-serif;
             }
         </style>
+        <title>Home Page</title>
     </head>
     <body>
         

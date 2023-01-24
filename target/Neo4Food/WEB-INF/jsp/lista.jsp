@@ -10,13 +10,12 @@
         <title>Research</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Restaurants List</title>
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
-        <div>
             <%--                Header con login o nomeutente--%>
             <%@include file="template/header.jsp"%>
-        </div>
             <%
                 String requestMessage = (String) request.getAttribute("message");
                 String zipcode = (String) request.getAttribute("zipcode");
@@ -24,12 +23,17 @@
 
                 ListDTO<RestaurantDTO> listDTO = (ListDTO<RestaurantDTO>) request.getAttribute("listDTO");
                 int count = listDTO.getItemCount();
+<<<<<<< HEAD
                 List<RestaurantDTO> list = listDTO.getList();
                 for(RestaurantDTO i:list){
                     System.out.println(i);
                 }
+=======
+>>>>>>> 11ccdf116e0c549988b776b47fd1dda6e5b1b45d
             %>
+
             <% if (requestMessage != null) { %>
+<<<<<<< HEAD
             <div role="alert"><%= requestMessage %></div>
                 <% } %>
             <div>
@@ -52,9 +56,41 @@
                                 </form>
                             </div>
                         </div>
+=======
+                <div role="alert"><%= requestMessage %></div>
+            <% } %>
+
+            <div class="px-3">
+                <h2>Results for <%= zipcode %></h2>
+            </div>
+
+            <div class="my-5 flex px-2">
+                <div class="w-1/3 border rounded-lg">
+                    List of filter to be add
+                </div>
+
+                <div class="px-4 w-2/3">
+                    <%  if(list!=null && !list.isEmpty())
+                        {
+                            for (RestaurantDTO item: list)
+                            {
+                    %>
+                                <div class="bg-principale rounded-lg my-2">
+                                    <div class="px-6">
+                                        <h2><%= item.getName() %></h2>
+                                        <a><%= item.getRating() %></a>
+                                    </div>
+                                    <div class="float-right px-3 -my-7">
+                                        <form method="post" action="<c:url value="/restaurant"/>">
+                                            <input type="hidden" name="rid" value="<%= item.getId() %>">
+                                            <button class="px-5 rounded-lg hover:bg-button" type="submit">See more</button>
+                                        </form>
+                                    </div>
+                                </div>
+>>>>>>> 11ccdf116e0c549988b776b47fd1dda6e5b1b45d
                     <%
+                            }
                         }
-                    }
                     %>
                     <div>
                         <div>

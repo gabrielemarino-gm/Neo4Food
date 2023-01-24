@@ -7,11 +7,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Personal Page</title>
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
         <%@ include file="template/header.jsp"%>
-        <div>
+        <div class="relative mx-auto h-96 w-96 rounded-lg bg-principale my-28">
             <%
                 UserDTO userInfo = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
             %>
