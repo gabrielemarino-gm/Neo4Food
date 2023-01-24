@@ -6,6 +6,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
+        <style>
+            h1, h2, h3, h4, h5, p, a, button
+            {
+                color: #7C2714;
+                font-family: gill sans, sans-serif;
+            }
+        </style>
     </head>
     <body>
         
@@ -22,7 +29,8 @@
                 <div role="alert"><%= requestMessage %></div>
                 <% } %>
                 <div class="relative mx-auto h-20 w-96 rounded-lg bg-principale">
-                    <h2>Search restaurants</h2>
+                    <div class="h-3"></div>
+                    <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
                     <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
                         <input class="rounded-lg px-3" type="text" name="zipcode" placeholder="ZIP Code">
                         <input type="hidden" name="action" value="search">
