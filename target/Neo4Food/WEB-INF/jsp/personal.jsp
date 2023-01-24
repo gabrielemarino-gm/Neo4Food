@@ -10,76 +10,49 @@
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     </head>
     <body>
-        <div>
-            <%@ include file="template/header.jsp"%>
-        </div>
+        <%@ include file="template/header.jsp"%>
         <div>
             <%
                 UserDTO userInfo = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
             %>
-            <div>
-                <div>
-                    <a>ID</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getId() %></a>
-                </div>
+            <div style="display: none;">
+                <a>ID</a>
+                <a> <%= userInfo.getId() %></a>
             </div>
+
             <div>
-                <div>
-                    <a>Username</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getUsername() %></a>
-                </div>
+                <a>Username</a>
+                <form type="submit"> <%= userInfo.getUsername() %></form>
             </div>
+
             <div>
-                <div>
-                    <a>First Name</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getFirstName() %></a>
-                </div>
+                <a>First Name</a>
+                <form type="submit"> <%= userInfo.getFirstName() %></form>
             </div>
+
             <div>
-                <div>
-                    <a>Last Name</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getLastName() %></a>
-                </div>
+                <a>Last Name</a>
+                <form type="submit"> <%= userInfo.getLastName() %></form>
             </div>
+
             <div>
-                <div>
-                    <a>Email</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getEmail() %></a>
-                </div>
+                <a>Email</a>
+                <form type="submit"> <%= userInfo.getEmail() %></form>
             </div>
+
             <div>
-                <div>
-                    <a>Phone Number</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getPhoneNumber() %></a>
-                </div>
+                <a>Phone Number</a>
+                <form type="submit"> <%= userInfo.getPhoneNumber() %></form>
             </div>
+
             <div>
-                <div>
-                    <a>Address</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getAddress() %></a>
-                </div>
+                <a>Address</a>
+                <form type="submit"> <%= userInfo.getAddress() %></form>
             </div>
+
             <div>
-                <div>
-                    <a>Zipcode</a>
-                </div>
-                <div>
-                    <a> <%= userInfo.getZipcode() %></a>
-                </div>
+                <a>Zipcode</a>
+                <form type="submit"> <%= userInfo.getZipcode() %></form>
             </div>
         </div>
     </body>
