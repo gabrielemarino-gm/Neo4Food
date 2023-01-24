@@ -35,10 +35,58 @@
             </div>
             <div>
                 <div>
+                    <a>First Name</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getFirstName() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Last Name</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getLastName() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
                     <a>Email</a>
                 </div>
                 <div>
                     <a> <%= userInfo.getEmail() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Phone Number</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getPhoneNumber() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Address</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getAddress() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Zipcode</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getZipcode() %></a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a>Birthday</a>
+                </div>
+                <div>
+                    <a> <%= userInfo.getBirthday() %></a>
                 </div>
             </div>
         </div>
