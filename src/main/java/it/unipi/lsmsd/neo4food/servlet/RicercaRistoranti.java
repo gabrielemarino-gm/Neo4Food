@@ -21,11 +21,13 @@ public class RicercaRistoranti extends HttpServlet
         if (actionType == null){
             targetJSP = "WEB-INF/jsp/ricerca.jsp";
         } else if ("search".equals(actionType)) {
+            int page = Integer.parseInt(request.getParameter("page"));
             String zipcode = (String) request.getParameter("zipcode");
             RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
-            ListDTO<RestaurantDTO> list = restaurants.getRestaurants(0, zipcode);
+            ListDTO<RestaurantDTO> list = restaurants.getRestaurants(page, zipcode);
             request.setAttribute("listDTO", list);
             request.setAttribute("zipcode", zipcode);
+            request.setAttribute("page", page);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);

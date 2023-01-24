@@ -33,6 +33,7 @@
                     <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
                     <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
                         <input class="rounded-lg px-3" type="text" name="zipcode" placeholder="ZIP Code">
+                        <input type="hidden" name="page" value= 0>
                         <input type="hidden" name="action" value="search">
                         <button class="w-20 rounded-lg border-2 hover:bg-button" type="submit">Search</button>
                     </form>
