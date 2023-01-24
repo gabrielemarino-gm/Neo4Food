@@ -20,6 +20,7 @@
                 }
             }
         </script>
+        <title>Login Page</title>
     </head>
     <body>
 <%--                Header della pagina--%>

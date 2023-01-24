@@ -530,7 +530,7 @@ video {
 }
 
 .bottom-0 {
-  bottom: 0;
+  bottom: 0px;
 }
 
 .z-50 {
@@ -585,22 +585,8 @@ video {
   margin-bottom: 1.25rem;
 }
 
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.-my-7 {
-  margin-top: -1.75rem;
-  margin-bottom: -1.75rem;
-}
-
 .block {
   display: block;
-}
-
-.flex {
-  display: flex;
 }
 
 .hidden {
@@ -659,14 +645,6 @@ video {
   width: 100%;
 }
 
-.w-1\/3 {
-  width: 33.333333%;
-}
-
-.w-2\/3 {
-  width: 66.666667%;
-}
-
 .overflow-hidden {
   overflow: hidden;
 }
@@ -677,10 +655,6 @@ video {
 
 .border-2 {
   border-width: 2px;
-}
-
-.border {
-  border-width: 1px;
 }
 
 .bg-principale {
@@ -713,16 +687,6 @@ video {
   padding-right: 1.25rem;
 }
 
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .text-center {
   text-align: center;
 }
@@ -744,10 +708,6 @@ video {
 
 .font-bold {
   font-weight: 700;
-}
-
-.filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .hover\:bg-button:hover {
