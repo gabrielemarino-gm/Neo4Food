@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 import com.mongodb.client.MongoCollection;
 import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
-import sun.awt.windows.WPrinterJob;
 
 @WebServlet("/restaurant")
 public class LoadRestaurant extends HttpServlet{
