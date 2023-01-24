@@ -27,28 +27,35 @@
             %>
 
             <% if (requestMessage != null) { %>
-            <div role="alert"><%= requestMessage %></div>
-                <% } %>
-            <div>
-                <div>
-                    <div>
-                        <h2>Results for <%= zipcode %></h2>
-                    </div>
-                    <%  if(list != null && !list.isEmpty()){
-                            for (RestaurantDTO item: list) {
+                <div role="alert"><%= requestMessage %></div>
+            <% } %>
+            <div class="px-3">
+                <h2>Results for <%= zipcode %></h2>
+            </div>
+
+            <div class="my-5 flex px-2">
+                <div class="w-1/3 border rounded-lg">
+                    List of filter to be add
+                </div>
+
+                <div class="px-4 w-2/3 position-relative">
+                    <%  if(list != null && !list.isEmpty())
+                        {
+                            for (RestaurantDTO item: list)
+                            {
                     %>
-                        <div>
-                            <div>
-                                <h2><%= item.getName() %></h2>
-                                <a><%= item.getRating() %></a>
-                            </div>
-                            <div>
-                                <form method="post" action="<c:url value="/restaurant"/>">
-                                    <input type="hidden" name="restaurant" value="<%= item %>">
-                                    <button class="w-20 rounded-lg border-1 hover:bg-button" type="submit"> See more</button>
-                                </form>
-                            </div>
-                        </div>
+                                <div class="bg-principale rounded-lg">
+                                    <div class="px-6">
+                                        <h2><%= item.getName() %></h2>
+                                        <a><%= item.getRating() %></a>
+                                    </div>
+                                    <div class="float-right px-3 -my-7">
+                                        <form method="post" action="<c:url value="/restaurant"/>">
+                                            <input type="hidden" name="restaurant" value="<%= item %>">
+                                            <button class="px-5 rounded-lg hover:bg-button" class="w-20 rounded-lg border-1 hover:bg-button" type="submit"> See more</button>
+                                        </form>
+                                    </div>
+                                </div>
                     <%
                             }
                         }
