@@ -28,8 +28,8 @@
                 <% if (requestMessage != null) { %>
                 <div role="alert"><%= requestMessage %></div>
                 <% } %>
-                <div class="relative mx-auto h-20 w-96 rounded-lg bg-principale">
-                    <div class="h-3"></div>
+                <div class="relative mx-auto h-28 w-96 rounded-lg bg-principale">
+                    <div class="h-3 w-96"></div>
                     <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
                     <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
                         <input class="rounded-lg px-3" type="text" name="zipcode" placeholder="ZIP Code">

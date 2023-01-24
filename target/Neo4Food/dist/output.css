@@ -580,6 +580,10 @@ video {
   margin-bottom: 1.25rem;
 }
 
+.block {
+  display: block;
+}
+
 .hidden {
   display: none;
 }
@@ -618,6 +622,18 @@ video {
 
 .h-3 {
   height: 0.75rem;
+}
+
+.h-2 {
+  height: 0.5rem;
+}
+
+.h-24 {
+  height: 6rem;
+}
+
+.h-28 {
+  height: 7rem;
 }
 
 .w-96 {
