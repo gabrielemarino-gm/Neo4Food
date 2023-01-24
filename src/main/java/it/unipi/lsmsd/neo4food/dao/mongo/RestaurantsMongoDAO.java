@@ -23,15 +23,13 @@ public class RestaurantsMongoDAO extends BaseMongo{
 //------------------------
         int offset = page * Constants.PAGE_SIZE;
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
-
-        try(MongoCursor cursor = collection.find(eq("zipcode", zipcode)).limit(Constants.PAGE_SIZE).skip(offset).iterator();
+        try(MongoCursor cursor = collection.find(eq("zip_code", zipcode)).limit(Constants.PAGE_SIZE).skip(offset).iterator();
         ){
             while (cursor.hasNext()){
                 Document res = (Document)cursor.next();
                 String id = res.get("_id").toString();
                 String name = res.get("name").toString();
-                int rating = Integer.parseInt(res.get("rating").toString());
-
+                Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
                 RestaurantDTO e = new RestaurantDTO(id,name,rating);
                 supportList.add(e);
                 count++;
