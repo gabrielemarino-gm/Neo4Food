@@ -17,6 +17,10 @@ public class Dish {
         ownerid = o;
     }
 
+    public String getName() {return name;}
+    public Float getCost() {return cost;}
+    public String getCurrency() {return currency;}
+    public String getDescription() {return description;}
 
     @Override
     public String toString() {

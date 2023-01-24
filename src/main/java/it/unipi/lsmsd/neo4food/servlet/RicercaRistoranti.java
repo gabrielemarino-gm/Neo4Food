@@ -5,7 +5,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.mongodb.client.MongoCollection;
 import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;

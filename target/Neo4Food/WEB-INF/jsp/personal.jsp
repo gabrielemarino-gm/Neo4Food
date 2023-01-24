@@ -12,7 +12,7 @@
     </head>
     <body>
         <%@ include file="template/header.jsp"%>
-        <div class="relative mx-auto h-96 w-96 rounded-lg bg-principale my-28">
+        <div class="relative mx-auto w-96 rounded-lg bg-principale my-28">
             <%
                 UserDTO userInfo = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
             %>

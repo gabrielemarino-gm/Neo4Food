@@ -11,6 +11,7 @@ import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.model.Dish;
 import jdk.nashorn.internal.runtime.ListAdapter;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,6 @@ public class RestaurantsMongoDAO extends BaseMongo{
     public ListDTO<RestaurantDTO> getRestaurants(int page, String zipcode){
         ListDTO<RestaurantDTO> returnList = new ListDTO<RestaurantDTO>();
         List<RestaurantDTO> supportList = new ArrayList<RestaurantDTO>();
-        List<Dish> list = new ArrayList<Dish>();
 
         int count = 0;
 //------------------------
@@ -43,5 +43,43 @@ public class RestaurantsMongoDAO extends BaseMongo{
         returnList.setList(supportList);
         returnList.setItemCount(count);
         return returnList;
+    }
+
+    public RestaurantDTO getRestaurantDetails(String rid){
+        RestaurantDTO ret = null;
+        ListDTO<Dish> list = new ListDTO<Dish>();
+
+        List<Dish> supp = new ArrayList<Dish>();
+        int count;
+        System.out.println(rid);
+        MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
+        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).iterator();
+        ){
+            while (cursor.hasNext()){
+                Document res = (Document) cursor.next();
+                String id = res.get("_id").toString();
+                System.out.println(id);
+                String name = res.get("name").toString();
+                Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
+                ArrayList<Document> items = (ArrayList<Document>) res.get("dish");
+                System.out.println(items.toString());
+                count = 0;
+                for(Document i:items){
+                    supp.add(new Dish(
+                            i.get("_id").toString(),
+                            i.get("name").toString(),
+                            Float.parseFloat(i.get("price").toString().replaceAll("[^0-9.]","")),
+                            i.get("price").toString().replaceAll("[0-9.]",""),
+                            i.get("description") != null ? i.get("description").toString() : "No description available",
+                            id
+                    ));
+                    count++;
+                }
+                list.setItemCount(count);
+                list.setList(supp);
+                ret = new RestaurantDTO(id,name,rating,list);
+            }
+        }
+        return ret;
     }
 }

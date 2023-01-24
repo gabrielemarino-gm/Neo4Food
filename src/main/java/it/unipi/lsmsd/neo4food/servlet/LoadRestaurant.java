@@ -5,7 +5,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.mongodb.client.MongoCollection;
 import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
@@ -16,7 +15,11 @@ public class LoadRestaurant extends HttpServlet{
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
 
         String res = (String) request.getParameter("rid");
-        System.out.println(res);
+        RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
+        RestaurantDTO ret = restaurants.getRestaurantDetails(res);
+//        System.out.println(ret.getId());
+//        System.out.println(ret.getDishes().toString());
+        request.setAttribute("details", ret);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
