@@ -37,8 +37,8 @@
                 <div id="loginForm" class="py-7 mx-auto h-auto w-96 rounded-lg bg-principale">
                     <h3 class="text-4xl py-5">Login</h3>
                     <form method="post" action="<c:url value="/login"/>">
-                        <input class="h-9 w-52 rounded-lg px-3" type="email" name="email" placeholder="E-Mail"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="password" name="password" placeholder="Password">
+                        <input required class="h-9 w-52 rounded-lg px-3" type="email" name="email" placeholder="E-Mail"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="password" name="password" placeholder="Password">
                         <input type="hidden" name="action" value="login">
                         <button class="my-3 w-52 rounded-lg border-2" type="submit">Login</button>
                     </form>
@@ -48,14 +48,14 @@
                 <div id="signupForm" style="display: none" class="py-7 mx-auto h-auto w-96 rounded-lg bg-principale">
                     <h3 class="text-4xl py-5">Login</h3>
                     <form method="post" action="<c:url value="/login"/>">
-                        <input class="h-9 w-52 rounded-lg px-3" type="text" name="username" placeholder="Username"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="email" name="email" placeholder="E-Mail"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="firstname" placeholder="First name"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="lastname" placeholder="Last name"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="phonenumber" placeholder="Phone number"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="address" placeholder="Address"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="zipcode" placeholder="Zipcode"/>
-                        <input class="h-9 my-4 w-52 rounded-lg px-3" type="password" name="password" placeholder="Password">
+                        <input required class="h-9 w-52 rounded-lg px-3" type="text" name="username" placeholder="Username"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="email" name="email" placeholder="E-Mail"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="firstname" placeholder="First name"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="lastname" placeholder="Last name"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="phonenumber" placeholder="Phone number"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="address" placeholder="Address"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="text" name="zipcode" placeholder="Zipcode"/>
+                        <input required class="h-9 my-4 w-52 rounded-lg px-3" type="password" name="password" placeholder="Password">
                         <input type="hidden" name="action" value="signup">
                         <%--                                Questo campo nascosto serve per controllare dall'altra parte se sto facendo login o signup--%>
                         <button class="my-3 w-52 rounded-lg border-2" type="submit">Signup</button>

@@ -33,19 +33,8 @@ public class RestaurantsMongoDAO extends BaseMongo{
                 String id = res.get("_id").toString();
                 String name = res.get("name").toString();
                 Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
-                ArrayList<Document> dishes = (ArrayList<Document>) res.get("dish");
-                for(Document i:dishes){
-                    list.add(new Dish(
-                            i.get("_id").toString(),
-                            i.get("name").toString(),
-                            Float.parseFloat(i.get("price").toString().replaceAll("[^0-9.]","")),
-                            i.get("price").toString().replace("[^a-zA-Z]",""),
-                            i.get("description") == null ? "" : i.get("description").toString(),
-                            id
-                    ));
-                }
 
-                RestaurantDTO e = new RestaurantDTO(id,name,rating,list);
+                RestaurantDTO e = new RestaurantDTO(id,name,rating,null);
                 supportList.add(e);
                 count++;
             }

@@ -15,6 +15,9 @@ public class LoadRestaurant extends HttpServlet{
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
 
+        String res = (String) request.getParameter("rid");
+        System.out.println(res);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

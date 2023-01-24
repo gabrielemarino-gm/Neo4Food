@@ -13,17 +13,13 @@
   </head>
   <body>
   <%
-    RestaurantDTO res = (RestaurantDTO)request.getAttribute("restaurant");
-    System.out.println(res);
+    
   %>
-    <div>
-      <%--                Header con login o nomeutente--%>
-      <%@include file="template/header.jsp"%>
-    </div>
+    <%--                Header con login o nomeutente--%>
+    <%@include file="template/header.jsp"%>
     <div>
 
     </div>
     <%@include file="template/footer.jsp"%>
-
   </body>
 </html>

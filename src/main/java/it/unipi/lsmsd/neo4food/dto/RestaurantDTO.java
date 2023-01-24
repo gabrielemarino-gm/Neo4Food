@@ -10,8 +10,6 @@ public class RestaurantDTO {
     private Float rating;
     private List<Dish> dishes;
 
-    public RestaurantDTO(){}
-
     public RestaurantDTO(String id, String name, Float rating, List<Dish> list){
         this.id = id;
         this.name = name;

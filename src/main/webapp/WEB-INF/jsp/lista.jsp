@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="float-right px-3 -my-7">
                                         <form method="post" action="<c:url value="/restaurant"/>">
-                                            <input type="hidden" name="restaurant" value="<%= item %>">
+                                            <input type="hidden" name="rid" value= "<%= item.getId() %>" >
                                             <button class="px-5 rounded-lg hover:bg-button" class="w-20 rounded-lg border-1 hover:bg-button" type="submit"> See more</button>
                                         </form>
                                     </div>

@@ -43,6 +43,8 @@
                         {
                             for (RestaurantDTO item: list)
                             {
+                                String redirect = item.getId();
+                                System.out.println(redirect);
                     %>
                                 <div class="bg-principale rounded-lg">
                                     <div class="px-6">
@@ -51,7 +53,7 @@
                                     </div>
                                     <div class="float-right px-3 -my-7">
                                         <form method="post" action="<c:url value="/restaurant"/>">
-                                            <input type="hidden" name="restaurant" value="<%= item %>">
+                                            <input type="hidden" name="rid" value= "<%= redirect %>" >
                                             <button class="px-5 rounded-lg hover:bg-button" class="w-20 rounded-lg border-1 hover:bg-button" type="submit"> See more</button>
                                         </form>
                                     </div>
