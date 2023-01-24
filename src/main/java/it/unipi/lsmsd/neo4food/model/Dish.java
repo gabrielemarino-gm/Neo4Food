@@ -1,14 +1,32 @@
 package it.unipi.lsmsd.neo4food.model;
 
-import jdk.nashorn.internal.runtime.regexp.joni.ast.StringNode;
-
-import java.util.Date;
-
 public class Dish {
     private String id;
     private String name;
     private Float cost;
+    private String currency;
     private String description;
-    private Restaurant owner;
+    private String ownerid;
 
+    public Dish(String i, String n, Float c, String cu, String d, String o){
+        id = i;
+        name = n;
+        cost = c;
+        currency = cu;
+        description = d;
+        ownerid = o;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "id='" + id +
+                ", name='" + name +
+                ", cost=" + cost +
+                ", currency='" + currency +
+                ", description='" + description +
+                ", ownerid='" + ownerid +
+                '}';
+    }
 }

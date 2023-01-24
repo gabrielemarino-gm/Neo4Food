@@ -7,15 +7,15 @@ import javax.servlet.http.*;
 
 import com.mongodb.client.MongoCollection;
 import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
-import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
+import sun.awt.windows.WPrinterJob;
 
 @WebServlet("/restaurant")
 public class LoadRestaurant extends HttpServlet{
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String rId = (String) request.getAttribute("rid");
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
-//        GET MORE INFO ABOUT RESTAURANT
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }
