@@ -171,8 +171,10 @@
                         <div class="h-3"></div>
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
-                        <div class="absolute bottom-1 right-2"><%= price %> <%= i.getCurrency() %></div>
-                        <button onclick = "addProduct('<%= i.getId() %>','<%=i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>')"> + </button>
+                        <div class="absolute bottom-3 left-4"><%= price %> <%= i.getCurrency() %></div>
+                        <button class="absolute bottom-3 right-4" onclick="addProduct('<%= i.getId() %>','<%=i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>')">
+                            <img class="h-5" src="img/plus.png" alt="plus">
+                        </button>
                     </div>
                 <% } %>
             </div>
