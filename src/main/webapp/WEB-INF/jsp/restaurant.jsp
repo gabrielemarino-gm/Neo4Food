@@ -13,85 +13,104 @@
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
-        function clearDOM(target){
-            while(target.hasChildNodes()){
+
+        function clearDOM(target)
+        {
+            while(target.hasChildNodes())
+            {
                 clearDOM(target.firstChild);
                 target.removeChild(target.firstChild);
             }
         }
 
-        function removeProduct(idn){
-            target = document.getElementById(idn);
+        function removeProduct(idTarget)
+        {
+            target = document.getElementById(idTarget);
             quantity = target.childNodes[1].childNodes[1];
             price = target.childNodes[0].childNodes[1];
             total = document.getElementById("total");
 
             total.innerText = (Math.round((parseFloat(total.innerText) - parseFloat(price.innerText))*100)/100).toFixed(2);
             quantity.innerText = parseInt(quantity.innerText) - 1;
-            if(parseInt(quantity.innerText) == 0) {
+            if(parseInt(quantity.innerText) == 0)
+            {
                 clearDOM(target);
                 target.remove();
             }
         }
 
-        function addProduct(idn, name, cost){
+        // Aggiunge un Piatto al tuo ordine visualizzato a schermo
+        function addProduct(idDish, name, cost)
+        {
+            // Prendi il form che forma gli ordini
             root = document.getElementById("ordini");
+
+            // L'incremental serve per contare gli ordini aggiunti
             inc = document.getElementById("incremental");
-            if(!isPresent(idn)){
 
+            // Controllo se il Piatto e presente fra quelli disponibili nella pagina
+            if(!isPresent(idDish))
+            {
+                // Creo i campi che rappresentano il piatto dentro l'ordine
+                orderBoxDiv = document.createElement("div");
+                detailsDiv = document.createElement("div");
+                // pIdInput = document.createElement("input");
+                titleInput = document.createElement("input");
+                priceInput = document.createElement("input");
+                buttonsDiv = document.createElement("div");
+                removeButton = document.createElement("button");
+                quantityInput = document.createElement("input");
+                addButton = document.createElement("button");
 
-                orderBox = document.createElement("div");
-                    details = document.createElement("div");
-                        pId = document.createElement("input");
-                        title = document.createElement("input");
-                        price = document.createElement("input");
-                    buttons = document.createElement("div");
-                        remove = document.createElement("div");
-                        quantity = document.createElement("input");
-                        add = document.createElement("div");
+                orderBoxDiv.id = idDish;
+                titleInput.id = "name";
+                titleInput.innerText = name;
+                priceInput.id = "price";
+                priceInput.innerText = parseFloat(cost).toFixed(2); // Aggiungo il prezzo nel formato XX.XX
 
-                orderBox.id = idn;
+                // Bottone meno, per decrementare o eliminare il prodotto aggiunto
+                removeButton.id = "remove";
+                removeButton.innerText = "---";
+                removeButton.onclick = function(){ removeProduct(idDish)};
 
-                title.id = "name";
-                title.innerText = name;
-                price.id = "price";
-                price.innerText = parseFloat(cost).toFixed(2);
+                // Quantita' attuale
+                quantityInput.id = "quantity";
+                quantityInput.innerText = 1;
 
-                remove.id = "remove";
-                remove.innerText = "-";
-                remove.onclick = function(){ removeProduct(idn)};
-                quantity.id = "quantity";
-                quantity.innerText = 1;
-                add.id = "add";
-                add.innerText = "+";
-                add.onclick = function (){ addProduct(idn, name)};
+                // Bottene piu, per aggiungere altri prodotti
+                addButton.id = "add";
+                addButton.innerText = "+++";
+                addButton.onclick = function (){ addProduct(idDish, name)};
 
-                root.appendChild(orderBox);
-                    orderBox.appendChild(details);
-                        details.appendChild(title);
-                        details.appendChild(price);
-                    orderBox.appendChild(buttons);
-                        buttons.appendChild(remove);
-                        buttons.appendChild(quantity);
-                        buttons.appendChild(add);
+                root.appendChild(orderBoxDiv);
+                orderBoxDiv.appendChild(detailsDiv);
+                detailsDiv.appendChild(titleInput);
+                detailsDiv.appendChild(priceInput);
+                orderBoxDiv.appendChild(buttonsDiv);
+                buttonsDiv.appendChild(removeButton);
+                buttonsDiv.appendChild(quantityInput);
+                buttonsDiv.appendChild(addButton);
 
                 total = document.getElementById("total");
                 total.innerText = (Math.round((parseFloat(total.innerText) + parseFloat(price.innerText))*100)/100).toFixed(2);
 
                 inc.nodeValue = parseInt(inc.nodeValue) + 1;
-            }else{
-                orderBox = document.getElementById(idn);
+            }
+            else
+            {
+                orderBoxDiv = document.getElementById(idDish);
 
                 total = document.getElementById("total");
-                price = orderBox.childNodes[0].childNodes[1];
-                quantity = orderBox.childNodes[1].childNodes[1];
+                price = orderBoxDiv.childNodes[0].childNodes[1];
+                quantity = orderBoxDiv.childNodes[1].childNodes[1];
 
                 total.innerText = (Math.round((parseFloat(total.innerText) + parseFloat(price.innerText))*100)/100).toFixed(2);
                 quantity.innerText = parseInt(quantity.innerText) + 1;
             }
         }
 
-        function isPresent(id){
+        function isPresent(id)
+        {
             return document.getElementById(id);
         }
 
@@ -176,19 +195,10 @@
                     </div>
                 <% } %>
             </div>
+
+
+
             <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
-
-
-
-
-
-
-
-
-
-
-
-
 
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">
@@ -198,12 +208,18 @@
                         <div>Total: </div>
                         <div id="total">0.0</div>
                         <div>
-    <%--                        Checkout button here--%>
+    <%--                    Checkout button here--%>
                             <button type="submit">CHECKOUT</button>
                         </div>
                     </div>
                 </form>
+
             </div>
+
+
+
+
+
         </div>
 
       </div>
