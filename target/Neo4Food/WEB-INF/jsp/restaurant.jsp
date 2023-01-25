@@ -95,12 +95,6 @@
             return document.getElementById(id);
         }
 
-        <%--function placeOrder(){--%>
-        <%--    $.post('<c:url value="/checkout"/>', {action: 'checkout', productId: "aids"}--%>
-        <%--    ).fail(function(xhr, status, error) {--%>
-        <%--        alert('error');--%>
-        <%--    });--%>
-        <%--}--%>
     </script>
   </head>
 <body>
@@ -183,6 +177,19 @@
                 <% } %>
             </div>
             <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">
                     <input type="hidden" name="action" value="checkout">
