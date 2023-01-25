@@ -11,7 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurant Page</title>
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
-    <script>
+    <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
+    <script type="text/javascript">
         function clearDOM(target){
             while(target.hasChildNodes()){
                 clearDOM(target.firstChild);
@@ -88,6 +89,13 @@
 
         function isPresent(id){
             return document.getElementById(id);
+        }
+
+        function placeOrder(){
+            $.post('<c:url value="/checkout"/>', {action: 'checkout', productId: "aids"}
+            ).fail(function(xhr, status, error) {
+                alert('error');
+            });
         }
     </script>
   </head>
@@ -177,6 +185,7 @@
                     <div id="total">0.0</div>
                     <div>
 <%--                        Checkout button here--%>
+                        <button onclick="placeOrder()">CHECKOUT</button>
                     </div>
                 </div>
             </div>
