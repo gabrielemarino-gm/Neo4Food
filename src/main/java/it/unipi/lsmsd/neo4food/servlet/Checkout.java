@@ -16,6 +16,10 @@ public class Checkout extends HttpServlet {
         String targetJSP = "WEB-INF/jsp/checkout.jsp";
         String actionType = request.getParameter("action").toString();
 
+        if("checkout".equals(actionType)){
+            System.out.println(request.getParameter("incremental"));
+        }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

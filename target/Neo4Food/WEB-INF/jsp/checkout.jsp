@@ -11,7 +11,7 @@
     </head>
     <body>
     <%@include file="template/header.jsp"%>
-    <div><%= request.getParameter("productId").toString() %></div>
+    <div><%= request.getParameter("incremental").toString() %></div>
 
     <%@include file="template/footer.jsp"%>
     </body>

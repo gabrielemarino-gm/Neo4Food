@@ -36,15 +36,18 @@
 
         function addProduct(idn, name, cost){
             root = document.getElementById("ordini");
+            inc = document.getElementById("incremental");
             if(!isPresent(idn)){
+
 
                 orderBox = document.createElement("div");
                     details = document.createElement("div");
-                        title = document.createElement("div");
-                        price = document.createElement("div");
+                        pId = document.createElement("input");
+                        title = document.createElement("input");
+                        price = document.createElement("input");
                     buttons = document.createElement("div");
                         remove = document.createElement("div");
-                        quantity = document.createElement("div");
+                        quantity = document.createElement("input");
                         add = document.createElement("div");
 
                 orderBox.id = idn;
@@ -75,6 +78,7 @@
                 total = document.getElementById("total");
                 total.innerText = (Math.round((parseFloat(total.innerText) + parseFloat(price.innerText))*100)/100).toFixed(2);
 
+                inc.nodeValue = parseInt(inc.nodeValue) + 1;
             }else{
                 orderBox = document.getElementById(idn);
 
@@ -91,12 +95,6 @@
             return document.getElementById(id);
         }
 
-        function placeOrder(){
-            $.post('<c:url value="/checkout"/>', {action: 'checkout', productId: "aids"}
-            ).fail(function(xhr, status, error) {
-                alert('error');
-            });
-        }
     </script>
   </head>
 <body>
@@ -177,17 +175,32 @@
                 <% } %>
             </div>
             <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
-                <div id="ordini">
 
-                </div>
-                <div>
-                    <div>Total: </div>
-                    <div id="total">0.0</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                <form id="ordini" method="post" action="<c:url value="/checkout"/>">
+                    <input id="incremental" type="hidden" name="incremental" value="0">
+                    <input type="hidden" name="action" value="checkout">
+
                     <div>
-<%--                        Checkout button here--%>
-                        <button onclick="placeOrder()">CHECKOUT</button>
+                        <div>Total: </div>
+                        <div id="total">0.0</div>
+                        <div>
+    <%--                        Checkout button here--%>
+                            <button type="submit">CHECKOUT</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
