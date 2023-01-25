@@ -12,8 +12,66 @@
   <title>Restaurant Page</title>
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <script>
+        function removeProduct(idn){
 
-        
+        }
+
+        function addProduct(idn, name, cost){
+            root = document.getElementById("ordini");
+            if(!isPresent(idn)){
+
+                orderBox = document.createElement("div");
+                    details = document.createElement("div");
+                        title = document.createElement("div");
+                        price = document.createElement("div");
+                    buttons = document.createElement("div");
+                        remove = document.createElement("div");
+                        quantity = document.createElement("div");
+                        add = document.createElement("div");
+
+                orderBox.id = idn;
+
+                title.id = "name";
+                title.innerText = name;
+                price.id = "price";
+                price.innerText = cost;
+
+                remove.id = "remove";
+                remove.innerText = "-";
+                remove.onclick = function(){ removeProduct(idn)};
+                quantity.id = "quantity";
+                quantity.innerText = 1;
+                add.id = "add";
+                add.innerText = "+";
+                add.onclick = function (){ addProduct(idn, name)};
+
+                root.appendChild(orderBox);
+                    orderBox.appendChild(details);
+                        details.appendChild(title);
+                        details.appendChild(price);
+                    orderBox.appendChild(buttons);
+                        buttons.appendChild(remove);
+                        buttons.appendChild(quantity);
+                        buttons.appendChild(add);
+
+                total = document.getElementById("total");
+                total.innerText = parseFloat(total.innerText) + parseFloat(price.innerText);
+
+            }else{
+                orderBox = document.getElementById(idn);
+
+                total = document.getElementById("total");
+                price = orderBox.childNodes[0].childNodes[1];
+                quantity = orderBox.childNodes[1].childNodes[1];
+
+                total.innerText = parseFloat(total.innerText) + parseFloat(price.innerText);
+                quantity.innerText = parseInt(quantity.innerText) + 1;
+            }
+        }
+
+        function isPresent(id){
+            return document.getElementById(id);
+        }
     </script>
   </head>
 <body>
@@ -30,7 +88,7 @@
         <div class="relative mx-auto h-28 w-2/3 rounded-lg bg-principale text-center py-3 -my-11 shadow-md">
 <%--        Restaurant detailed infos--%>
             <div class="text-3xl font-bold"><%= details.getName() %></div>
-            <%-- <div><%= details.getPricerange() %></div> --%>
+             <div><%= details.getPricerange() %></div>
             <div><%= details.getRating() %></div>
         </div>
 
@@ -39,18 +97,27 @@
 <%--            List of available dishes--%>
                 <% for(Dish i: list.getList())
                 { 
-                    String price = i.getCost()==0.0 ? "-.-": i.getCost().toString(); %>
+                    String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
                     <div class="bg-principale rounded-xl w-1/3 mt-5 mr-5 text-center px-5 py-3 relative shadow-md">
                         <div class="text-xl font-bold"><%= i.getName()%></div>
                         <div class="h-3"></div>
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
                         <div class="absolute bottom-1 right-2"><%= price %> <%= i.getCurrency() %></div>
+                        <button onclick = "addProduct('<%= i.getId() %>','<%=i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>')"> + </button>
                     </div>
                 <% } %>
             </div>
             <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
-                Orders
+                <div id="ordini">
+
+                </div>
+                <div>
+                    <div id="total">0.0</div>
+                    <div>
+<%--                        Checkout button here--%>
+                    </div>
+                </div>
             </div>
         </div>
 
