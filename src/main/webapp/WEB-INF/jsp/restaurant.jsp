@@ -26,17 +26,19 @@
         <div class="relative mx-auto h-28 w-2/3 rounded-lg bg-principale text-center py-3 -my-11">
 <%--        Restaurant detailed infos--%>
             <div class="text-3xl font-bold"><%= details.getName() %></div>
+            <div><%= details.get%></div>
             <div><%= details.getRating() %></div>
         </div>
 
         <div class="flex flex-wrap px-5 my-16 justify-center">
 <%--        List of available dishes--%>
             <% for(Dish i: list.getList())
-            { %>
+            {
+                String price = i.getCost()==0.0 ? "-.-": i.getCost().toString(); %>
                 <div class="border rounded-xl w-96 h-44 mt-5 mr-5">
                     <div><%= i.getName()%></div>
                     <div><%= i.getDescription()%></div>
-                    <div><%= i.getCost() %> <%= i.getCurrency() %></div>
+                    <div><%= price %> <%= i.getCurrency() %></div>
                 </div>
             <% } %>
         </div>

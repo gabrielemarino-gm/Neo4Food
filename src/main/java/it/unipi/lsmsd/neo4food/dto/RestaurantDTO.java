@@ -7,6 +7,7 @@ import java.util.List;
 public class RestaurantDTO {
     private String id;
     private String name;
+    private String cost;
     private Float rating;
     private ListDTO<Dish> dishes;
 
