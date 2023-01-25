@@ -11,6 +11,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurant Page</title>
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
+    <script>
+
+        
+    </script>
   </head>
 <body>
   <%
@@ -23,22 +27,25 @@
           <img class="blur-md w-full" src="https://ilfattoalimentare.it/wp-content/uploads/2017/06/junk-food-hamburger-patatine-fast-food-pizza-dolci-Fotolia_130389179_Subscription_Monthly_M.jpg" alt="imgFood">
       </div>
 
-        <div class="relative mx-auto h-28 w-2/3 rounded-lg bg-principale text-center py-3 -my-11">
+        <div class="relative mx-auto h-28 w-2/3 rounded-lg bg-principale text-center py-3 -my-11 shadow-md">
 <%--        Restaurant detailed infos--%>
             <div class="text-3xl font-bold"><%= details.getName() %></div>
-            <div><%= details.getPricerange() %></div>
+            <%-- <div><%= details.getPricerange() %></div> --%>
             <div><%= details.getRating() %></div>
         </div>
 
         <div class="flex flex-wrap justify-end">
-            <div class="flex flex-wrap px-16 my-16 w-3/4">
+            <div class="flex flex-wrap my-16 w-3/4 mr-20">
 <%--            List of available dishes--%>
                 <% for(Dish i: list.getList())
-                { %>
-                    <div class="border rounded-xl w-1/3 mt-5 mr-5">
-                        <div><%= i.getName()%></div>
-                        <div><%= i.getDescription()%></div>
-                        <div><%= i.getCost() %> <%= i.getCurrency() %></div>
+                { 
+                    String price = i.getCost()==0.0 ? "-.-": i.getCost().toString(); %>
+                    <div class="bg-principale rounded-xl w-1/3 mt-5 mr-5 text-center px-5 py-3 relative shadow-md">
+                        <div class="text-xl font-bold"><%= i.getName()%></div>
+                        <div class="h-3"></div>
+                        <div class="text-left"><%= i.getDescription()%></div>
+                        <div class="h-10"></div>
+                        <div class="absolute bottom-1 right-2"><%= price %> <%= i.getCurrency() %></div>
                     </div>
                 <% } %>
             </div>

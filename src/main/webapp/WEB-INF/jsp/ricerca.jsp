@@ -29,14 +29,14 @@
                 <% if (requestMessage != null) { %>
                 <div role="alert"><%= requestMessage %></div>
                 <% } %>
-                <div class="relative mx-auto h-28 w-96 rounded-lg bg-principale">
+                <div class="relative mx-auto h-28 w-1/3 rounded-xl bg-principale shadow-md">
                     <div class="h-3 w-96"></div>
                     <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
                     <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
-                        <input required class="rounded-lg px-3" type="text" name="zipcode" placeholder="ZIP Code">
+                        <input required class="rounded-xl px-3" type="text" name="zipcode" placeholder="ZIP Code">
                         <input type="hidden" name="page" value= 0>
                         <input type="hidden" name="action" value="search">
-                        <button class="w-20 rounded-lg border-2 hover:bg-button" type="submit">Search</button>
+                        <button class="w-20 rounded-xl border-2 hover:bg-button" type="submit">Search</button>
                     </form>
                 </div>
             </section>
