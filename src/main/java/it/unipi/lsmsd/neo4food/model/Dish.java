@@ -17,6 +17,7 @@ public class Dish {
         ownerid = o;
     }
 
+    public String getId() {return id;}
     public String getName() {return name;}
     public Float getCost() {return cost;}
     public String getCurrency() {return currency;}

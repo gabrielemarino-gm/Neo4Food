@@ -12,8 +12,55 @@
   <title>Restaurant Page</title>
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <script>
+        function removeProduct(idn){
 
-        
+        }
+
+        function addProduct(idn, name){
+            root = document.getElementById("ordini");
+            if(isPresent(idn) != null){
+
+                orderBox = document.createElement("div");
+                    details = document.createElement("div");
+                        title = document.createElement("div");
+                        price = document.createElement("div");
+                    buttons = document.createElement("div");
+                        remove = document.createElement("div");
+                        quantity = document.createElement("div");
+                        add = document.createElement("div");
+
+                orderBox.id = idn;
+
+                title.id = "name";
+                title.innerText = name;
+                price.id = "price";
+                price.innerText = 10;
+
+                remove.id = "remove";
+                remove.innerText = "-";
+                remove.onclick = function(){ removeProduct(idn)};
+                quantity.id = "quantity";
+                quantity.innerText = 1;
+                add.id = "add";
+                add.innerText = "+";
+                add.onclick = function (){ addProduct(idn, name)};
+
+                root.appendChild(orderBox);
+                    orderBox.appendChild(details);
+                        details.appendChild(title);
+                        details.appendChild(price);
+                    orderBox.appendChild(buttons);
+                        buttons.appendChild(remove);
+                        buttons.appendChild(quantity);
+                        buttons.appendChild(add);
+            }else{
+
+            }
+        }
+
+        function isPresent(id){
+            return document.getElementById(id);
+        }
     </script>
   </head>
 <body>
@@ -46,11 +93,20 @@
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
                         <div class="absolute bottom-1 right-2"><%= price %> <%= i.getCurrency() %></div>
+                        <button onclick = "addProduct('<%= i.getId() %>','<%=i.getName() %>')"> + </button>
                     </div>
                 <% } %>
             </div>
             <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
-                Orders
+                <div id="ordini">
+
+                </div>
+                <div>
+                    <div id="total"></div>
+                    <div>
+<%--                        Checkout button here--%>
+                    </div>
+                </div>
             </div>
         </div>
 
