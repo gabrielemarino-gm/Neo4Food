@@ -29,15 +29,17 @@
             <div><%= details.getRating() %></div>
         </div>
 
+        <div class="flex flex-wrap px-5 my-16 justify-center">
 <%--        List of available dishes--%>
-        <% for(Dish i: list.getList())
-        { %>
-            <div>
-                <div><%= i.getName()%></div>
-                <div><%= i.getDescription()%></div>
-                <div><%= i.getCost() %> <%= i.getCurrency() %></div>
-            </div>
-        <% } %>
+            <% for(Dish i: list.getList())
+            { %>
+                <div class="border rounded-xl w-96 h-44 mt-5 mr-5">
+                    <div><%= i.getName()%></div>
+                    <div><%= i.getDescription()%></div>
+                    <div><%= i.getCost() %> <%= i.getCurrency() %></div>
+                </div>
+            <% } %>
+        </div>
    <%@include file="template/footer.jsp"%>
   </body>
 </html>
