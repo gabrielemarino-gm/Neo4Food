@@ -6,13 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
-        <style>
-            h1, h2, h3, h4, h5, p, a, button
-            {
-                color: #7C2714;
-                font-family: gill sans, sans-serif;
-            }
-        </style>
+
         <title>Home Page</title>
     </head>
     <body>
@@ -40,7 +34,14 @@
                     </form>
                 </div>
             </section>
-        
-        <%@include file="template/footer.jsp"%>
+
+        <footer class="fixed bottom-0 w-full">
+            <div class="bg-principale text-xs h-14">
+                <p class="my-6 px-3 float-left">Neo4Food Italy S.r.l. - P.IVA 12345678910</p>
+                <img class="my-4 h-7 px-6 float-right" src="img/mastercard-securecode.png" alt="mastercard">
+                <img class="my-4 h-7 px-3 float-right" src="img/visa-logo.png" alt="visa">
+                <img class="my-5 h-6 px-3 float-right" src="img/paypal-logo.png" alt="paypal">
+            </div>
+        </footer>
     </body>
 </html>

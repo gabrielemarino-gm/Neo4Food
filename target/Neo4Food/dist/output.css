@@ -629,6 +629,14 @@ video {
   margin-right: 5rem;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
 .block {
   display: block;
 }
@@ -691,6 +699,10 @@ video {
 
 .h-10 {
   height: 2.5rem;
+}
+
+.h-5 {
+  height: 1.25rem;
 }
 
 .w-1\/3 {
