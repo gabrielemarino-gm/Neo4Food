@@ -17,8 +17,6 @@ public class LoadRestaurant extends HttpServlet{
         String res = (String) request.getParameter("rid");
         RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
         RestaurantDTO ret = restaurants.getRestaurantDetails(res);
-//        System.out.println(ret.getId());
-//        System.out.println(ret.getDishes().toString());
         request.setAttribute("details", ret);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);

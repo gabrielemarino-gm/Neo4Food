@@ -26,6 +26,7 @@
         <div class="relative mx-auto h-28 w-2/3 rounded-lg bg-principale text-center py-3 -my-11">
 <%--        Restaurant detailed infos--%>
             <div class="text-3xl font-bold"><%= details.getName() %></div>
+            <div><%= details.getPricerange() %></div>
             <div><%= details.getRating() %></div>
         </div>
 

@@ -32,9 +32,10 @@ public class RestaurantsMongoDAO extends BaseMongo{
                 Document res = (Document)cursor.next();
                 String id = res.get("_id").toString();
                 String name = res.get("name").toString();
+                String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available";
                 Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
 
-                RestaurantDTO e = new RestaurantDTO(id,name,rating,null);
+                RestaurantDTO e = new RestaurantDTO(id,name,range,rating,null);
                 supportList.add(e);
                 count++;
             }
@@ -51,18 +52,16 @@ public class RestaurantsMongoDAO extends BaseMongo{
 
         List<Dish> supp = new ArrayList<Dish>();
         int count;
-        System.out.println(rid);
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).iterator();
         ){
             while (cursor.hasNext()){
                 Document res = (Document) cursor.next();
                 String id = res.get("_id").toString();
-                System.out.println(id);
                 String name = res.get("name").toString();
+                String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available" ;
                 Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
                 ArrayList<Document> items = (ArrayList<Document>) res.get("dish");
-                System.out.println(items.toString());
                 count = 0;
                 for(Document i:items){
                     supp.add(new Dish(
@@ -77,7 +76,7 @@ public class RestaurantsMongoDAO extends BaseMongo{
                 }
                 list.setItemCount(count);
                 list.setList(supp);
-                ret = new RestaurantDTO(id,name,rating,list);
+                ret = new RestaurantDTO(id,name,range,rating,list);
             }
         }
         return ret;
