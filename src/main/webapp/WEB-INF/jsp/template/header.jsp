@@ -15,10 +15,16 @@
     
 <%-- Se ce un nomeutente lo stampo--%>
     <% if (isLogged) {%>
-        <button class="my-3 px-3 float-right rounded-lg hover:bg-button"><a href="<c:url value="/personal"/>"><%= username %></a></button>
-        <button class="my-3 px-3 float-right rounded-lg hover:bg-button"><a href="<c:url value="/logout"/>">Logout</a></button>
+        <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+            <a href="<c:url value="/personal"/>"><%= username %></a>
+        </button>
+        <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+            <a href="<c:url value="/logout"/>">Logout</a>
+        </button>
     <% } else { %>
 <%-- Altrimenti metto link alla pagina di login--%>
-        <button class="my-3 px-3 float-right rounded-lg hover:bg-button"><a href="<c:url value="/login"/>">Login</a></button>
+        <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+            <a href="<c:url value="/login"/>">Login</a>
+        </button>
     <% } %>
 </header>

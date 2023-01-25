@@ -12,30 +12,32 @@
   <title>Restaurant Page</title>
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
   </head>
-  <body>
+<body>
   <%
         RestaurantDTO details = (RestaurantDTO) request.getAttribute("details");
         ListDTO<Dish> list = details.getDishes();
   %>
 <%--                Header con login o nomeutente--%>
     <%@include file="template/header.jsp"%>
-    <div>
-<%--      Restaurant detailed infos--%>
-        <div><%= details.getName() %></div>
-        <div><%= details.getRating() %></div>
-    <div>
+      <div class="-top-6 overflow-hidden h-48 z-50">
+          <img class="blur-md w-full" src="https://ilfattoalimentare.it/wp-content/uploads/2017/06/junk-food-hamburger-patatine-fast-food-pizza-dolci-Fotolia_130389179_Subscription_Monthly_M.jpg" alt="imgFood">
+      </div>
 
-    </div>
-<%--      List of available dishes--%>
-    <% for(Dish i: list.getList()){ %>
-        <div><%= i.getName()%></div>
-        <div><%= i.getDescription()%></div>
-        <div><div><%= i.getCost() %></div><div><%= i.getCurrency() %></div></div>
-    <% } %>
-    <div>
+        <div class="relative mx-auto h-28 w-2/3 rounded-lg bg-principale text-center py-3 -my-11">
+<%--        Restaurant detailed infos--%>
+            <div class="text-3xl font-bold"><%= details.getName() %></div>
+            <div><%= details.getRating() %></div>
+        </div>
 
-    </div>
-    </div>
-    <%@include file="template/footer.jsp"%>
+<%--        List of available dishes--%>
+        <% for(Dish i: list.getList())
+        { %>
+            <div>
+                <div><%= i.getName()%></div>
+                <div><%= i.getDescription()%></div>
+                <div><%= i.getCost() %> <%= i.getCurrency() %></div>
+            </div>
+        <% } %>
+   <%@include file="template/footer.jsp"%>
   </body>
 </html>

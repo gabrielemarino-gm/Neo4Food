@@ -44,46 +44,41 @@
                             for (RestaurantDTO item: list)
                             {
                     %>
-                                <div class="bg-principale rounded-lg">
-                                    <div class="px-6">
-                                        <h2><%= item.getName() %></h2>
-                                        <a><%= item.getRating() %></a>
-                                    </div>
-                                    <div class="float-right px-3 -my-7">
-                                        <form method="post" action="<c:url value="/restaurant"/>">
-                                            <input type="hidden" name="rid" value= "<%= item.getId() %>" >
-                                            <button class="px-5 rounded-lg hover:bg-button" class="w-20 rounded-lg border-1 hover:bg-button" type="submit"> See more</button>
-                                        </form>
-                                    </div>
-                                </div>
+                                <form method="post" action="<c:url value="/restaurant"/>">
+                                    <input type="hidden" name="rid" value= "<%= item.getId() %>" >
+                                    <button class="w-full px-5 py-3 rounded-lg bg-principale" type="submit">
+                                        <h2 class="float-left"><%= item.getName() %></h2>
+                                        <a class="float-right"><%= item.getRating() %></a>
+                                    </button>
+                                </form>
+                                <div class="h-3"></div>
                     <%
                             }
                         }
                     %>
                     <div>
-                        <div>
-<%--                            Previous page--%>
-                            <% if(pagenum > 0){ %>
-                                <div>
-                                    <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
-                                        <input type="hidden" name="zipcode" value="<%= zipcode %>">
-                                        <input type="hidden" name="page" value= <%= pagenum - 1%>>
-                                        <input type="hidden" name="action" value="search">
-                                        <button class="w-20 rounded-lg border-2 hover:bg-button" type="submit"> < <%= pagenum %></button>
-                                    </form>
-                                </div>
-                            <% } %>
-<%--                            Next page--%>
-                            <% if (count == Constants.PAGE_SIZE){ %>
-                                <div>
-                                    <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
-                                        <input type="hidden" name="zipcode" value="<%= zipcode %>">
-                                        <input type="hidden" name="page" value= <%= pagenum + 1 %>>
-                                        <input type="hidden" name="action" value="search">
-                                        <button class="w-20 rounded-lg border-2 hover:bg-button" type="submit"><%= pagenum + 2%> > </button>
-                                    </form>
-                                </div>
-                            <% } %>
+                        <div class="flex justify-end items-end">
+
+<%--                Previous page--%>
+                    <% if(pagenum > 0)
+                    { %>
+                        <form class="my-4 bg-red-100" method="post" action="<c:url value="/ricerca"/>">
+                            <input type="hidden" name="zipcode" value="<%= zipcode %>">
+                            <input type="hidden" name="page" value= <%= pagenum - 1%>>
+                            <input type="hidden" name="action" value="search">
+                            <button class="w-20 mx-2 rounded-lg border-2 hover:bg-button" type="submit"> < <%= pagenum %></button>
+                        </form>
+                    <% } %>
+    <%--                Next page--%>
+                    <% if (count == Constants.PAGE_SIZE)
+                    { %>
+                        <form class="my-4 "  method="post" action="<c:url value="/ricerca"/>">
+                            <input type="hidden" name="zipcode" value="<%= zipcode %>">
+                            <input type="hidden" name="page" value= <%= pagenum + 1 %>>
+                            <input type="hidden" name="action" value="search">
+                            <button class="w-20 mx-2 rounded-lg border-2 hover:bg-button" type="submit"><%= pagenum + 2%> > </button>
+                        </form>
+                    <% } %>
                         </div>
                     </div>
                 </div>

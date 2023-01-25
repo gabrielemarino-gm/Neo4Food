@@ -2,4 +2,11 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <link href="<c:url value="/dist/output.css"/>" rel="stylesheet">
 <link href="<c:url value="/dist/text.css"/>" rel="stylesheet">
+<style>
+    h1, h2, h3, h4, h5, p, a, button, div
+    {
+        color: #7C2714;
+        font-family: gill sans, sans-serif;
+    }
+</style>
 
