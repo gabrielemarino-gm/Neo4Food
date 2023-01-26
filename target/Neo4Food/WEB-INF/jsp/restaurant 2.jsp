@@ -154,7 +154,7 @@
                         nStar = rateInt+1;
                     }
 
-                    for (; nStar<5; nStar++)
+                    for (; nStar<10; nStar++)
                     {
                 %>
                     <img class="h-5" src="img/empty_star.png" alt="star">
@@ -198,7 +198,7 @@
 
 
 
-            <div class="sticky top-10 mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
+            <div class="fixed mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
 
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">
