@@ -16,6 +16,10 @@ public class DishDTO {
         description = d;
         ownerid = o;
     }
+    public DishDTO(){
+        id = i;
+        
+    }
 
     public String getId() {return id;}
     public String getName() {return name;}
