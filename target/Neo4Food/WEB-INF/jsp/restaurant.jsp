@@ -58,9 +58,9 @@
                 titleInput = document.createElement("input");
                 priceInput = document.createElement("input");
                 buttonsDiv = document.createElement("div");
-                removeDiv = document.createElement("div");
+                removeButton = document.createElement("button");
                 quantityInput = document.createElement("input");
-                addDiv = document.createElement("div");
+                addButton = document.createElement("button");
 
                 orderBoxDiv.id = idDish;
                 titleInput.id = "name";
@@ -69,27 +69,27 @@
                 priceInput.innerText = parseFloat(cost).toFixed(2); // Aggiungo il prezzo nel formato XX.XX
 
                 // Bottone meno, per decrementare o eliminare il prodotto aggiunto
-                removeDiv.id = "remove";
-                removeDiv.innerText = "---";
-                removeDiv.onclick = function(){ removeProduct(idDish)};
+                removeButton.id = "remove";
+                removeButton.innerText = "---";
+                removeButton.onclick = function(){ removeProduct(idDish)};
 
                 // Quantita' attuale
                 quantityInput.id = "quantity";
+                quantityInput.innerText = 1;
 
                 // Bottene piu, per aggiungere altri prodotti
-                quantityInput.innerText = 1;
-                addDiv.id = "add";
-                addDiv.innerText = "+++";
-                addDiv.onclick = function (){ addProduct(idDish, name)};
+                addButton.id = "add";
+                addButton.innerText = "+++";
+                addButton.onclick = function (){ addProduct(idDish, name)};
 
                 root.appendChild(orderBoxDiv);
                 orderBoxDiv.appendChild(detailsDiv);
                 detailsDiv.appendChild(titleInput);
                 detailsDiv.appendChild(priceInput);
                 orderBoxDiv.appendChild(buttonsDiv);
-                buttonsDiv.appendChild(removeDiv);
+                buttonsDiv.appendChild(removeButton);
                 buttonsDiv.appendChild(quantityInput);
-                buttonsDiv.appendChild(addDiv);
+                buttonsDiv.appendChild(addButton);
 
                 total = document.getElementById("total");
                 total.innerText = (Math.round((parseFloat(total.innerText) + parseFloat(price.innerText))*100)/100).toFixed(2);
@@ -188,9 +188,9 @@
                         <div class="h-3"></div>
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
-                        <div class="absolute bottom-3 left-4"><%= price %> <%= i.getCurrency() %></div>
+                        <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
                         <button class="absolute bottom-3 right-4" onclick="addProduct('<%= i.getId() %>','<%=i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>')">
-                            <img class="h-5" src="img/plus.png" alt="plus">
+                            <img class="h-6" src="img/plus.png" alt="plus">
                         </button>
                     </div>
                 <% } %>
@@ -198,7 +198,7 @@
 
 
 
-            <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
+            <div class="fixed mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
 
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">

@@ -188,9 +188,9 @@
                         <div class="h-3"></div>
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
-                        <div class="absolute bottom-3 left-4"><%= price %> <%= i.getCurrency() %></div>
+                        <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
                         <button class="absolute bottom-3 right-4" onclick="addProduct('<%= i.getId() %>','<%=i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>')">
-                            <img class="h-5" src="img/plus.png" alt="plus">
+                            <img class="h-6" src="img/plus.png" alt="plus">
                         </button>
                     </div>
                 <% } %>
@@ -198,7 +198,7 @@
 
 
 
-            <div class="fixed mr-5 rounded-xl border h-80 w-1/4 my-20">
+            <div class="fixed mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
 
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">
