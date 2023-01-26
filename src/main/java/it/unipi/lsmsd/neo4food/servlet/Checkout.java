@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @WebServlet("/checkout")
 public class Checkout extends HttpServlet {
@@ -18,6 +22,19 @@ public class Checkout extends HttpServlet {
 
         if("checkout".equals(actionType)){
             System.out.println(request.getParameter("incremental"));
+        }
+        else if("test".equals(actionType)){
+
+            List<String> a = request.getParameter("transferObj").equals("empty") ? new ArrayList<String>() : Arrays.asList(request.getParameter("transferObj"));
+            System.out.println(request.getParameter("transferObj"));
+            a.add(request.getParameter("objectId"));
+
+            System.out.println("object= "+request.getParameter("objectId")+", List= "+ a);
+            String toSend = a.toString();
+            System.out.println(toSend);
+
+            response.getWriter().print(toSend);
+            response.getWriter().flush();
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);

@@ -114,6 +114,16 @@
             return document.getElementById(id);
         }
 
+        var listx = "empty";
+
+        function testing(obj){
+            $.post("<c:url value="/checkout"/>", {action: "test", objectId: "ff", transferObj: obj}, function (result){
+                print('success');
+            }).fail(function (xhr, status, error){
+                alert(xhr);
+            });
+        }
+
     </script>
   </head>
 <body>
@@ -197,8 +207,8 @@
             </div>
 
 
-
             <div class="fixed mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
+                <button type="text" onclick="testing(listx)">PRESS ME</button>
 
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">
