@@ -114,6 +114,16 @@
             return document.getElementById(id);
         }
 
+        var listx = "empty";
+
+        function testing(obj){
+            $.post("<c:url value="/checkout"/>", {action: "test", objectId: "ff", transferObj: obj}, function (result){
+                print('success');
+            }).fail(function (xhr, status, error){
+                alert(xhr);
+            });
+        }
+
     </script>
   </head>
 <body>
