@@ -1,5 +1,7 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
+import com.google.gson.Gson;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,38 +20,31 @@ public class Checkout extends HttpServlet
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "WEB-INF/jsp/checkout.jsp";
-        String actionType = request.getParameter("action").toString();
+        String actionType = request.getParameter("action");
 
-        if("checkout".equals(actionType))
-        {
-            System.out.println("if(\"checkout\".equals(actionType)) \n\t" + request.getParameter("incremental"));
+        if("checkout".equals(actionType)){
+//            TODO
+
         }
-        else if("test".equals(actionType))
-        {
-            // Ricevo la richiesta HTTP, e la stampo
-            List<String> a = (request.getParameter("transferObj").equals("empty")) ? new ArrayList<String>() : Arrays.asList(request.getParameter("transferObj"));
-            System.out.println(request.getParameter("transferObj"));
+        else if("add".equals(actionType)){
 
-            a.add(request.getParameter("objectId"));
+            String persistent = request.getParameter("transferObj");
+            String id = request.getParameter("objectId");
+            String name = request.getParameter("objectName");
+            Float price = Float.parseFloat(request.getParameter("objectPrice"));
+            String currency = request.getParameter("objectCurrency");
 
-            System.out.println("object= " + request.getParameter("objectId")+", List= "+ a);
-            String toSend = a.toString();
-            System.out.println("Ho creato l'oggetto da inviare:");
-            System.out.println(toSend);
+//            List<String> a = persistent.equals("") ? new ArrayList<String>() : new ArrayList<String>(Arrays.asList(new Gson().fromJson(persistent, String[].class)));;
 
-            System.out.println("Provo a inviare:");
 
-            try
-            {
-                response.getWriter().print(toSend);
-                response.getWriter().flush();
-                System.out.println("Inviato!");
-            }
-            catch (Exception e)
-            {
-                System.out.println("ERROR: " + e.getMessage());
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
+//            response.getWriter().print(new Gson().toJson(a));
+//            response.getWriter().flush();
+            return;
+        }else if("remove".equals(actionType)){
+            String persistent = request.getParameter("transferObj");
+            String id = request.getParameter("objectId");
+
+            
             return;
         }
 
