@@ -11,8 +11,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurant Page</title>
   <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
+    <style>
+        .tempOrder
+        {
+            color: #FFF4EA;
+        }
+    </style>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
+
 
         function clearDOM(target)
         {
@@ -116,12 +123,24 @@
 
         var listx = "empty";
 
-        function testing(obj){
-            $.post("<c:url value="/checkout"/>", {action: "test", objectId: "ff", transferObj: obj}, function (result){
-                print('success');
-            }).fail(function (xhr, status, error){
-                alert(xhr);
-            });
+        function testing()
+        {
+            data =
+            {
+                action: "test",
+                objectId: "ff",
+                transferObj: listx
+            };
+
+            $.get("<c:url value="/checkout"/>", data,
+                function(result) {
+                    window.alert("Success: " + result);
+                }
+            ).fail(
+                function (xhr, status, error) {
+                    alert('error');
+                }
+            );
         }
 
     </script>
@@ -187,13 +206,13 @@
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-end">
-            <div class="flex flex-wrap my-16 w-3/4 mr-20">
+        <div class="flex flex-wrap justify-center">
+            <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
 <%--            List of available dishes--%>
                 <% for(Dish i: list.getList())
                 { 
                     String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
-                    <div class="bg-principale rounded-xl w-1/3 mt-5 mr-5 text-center px-5 py-3 relative shadow-md">
+                    <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
                         <div class="text-xl font-bold"><%= i.getName()%></div>
                         <div class="h-3"></div>
                         <div class="text-left"><%= i.getDescription()%></div>
@@ -207,19 +226,17 @@
             </div>
 
 
+            <div class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col">
 
-            <div class="sticky top-10 mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
-
-                <form id="ordini" method="post" action="<c:url value="/checkout"/>">
+                <form id="ordini" method="post" action="/Neo4Food_war_exploded/checkout">
                     <input id="incremental" type="hidden" name="incremental" value="0">
                     <input type="hidden" name="action" value="checkout">
 
-                    <div>
-                        <div>Total: </div>
-                        <div id="total">0.0</div>
+                    <div class="flex flex-wrap px-5 py-2 justify-center">
+                        <div class="tempOrder mr-2">Total: </div>
+                        <div class="tempOrder mr-2" id="total">0.0</div>
                         <div>
-    <%--                    Checkout button here--%>
-                            <button type="submit">CHECKOUT</button>
+                            <button class="tempOrder" type="submit">CHECKOUT</button>
                         </div>
                     </div>
                 </form>
