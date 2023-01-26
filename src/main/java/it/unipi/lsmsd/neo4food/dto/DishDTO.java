@@ -17,7 +17,6 @@ public class DishDTO {
         ownerid = o;
     }
     public DishDTO(){
-        id = i;
         
     }
 
