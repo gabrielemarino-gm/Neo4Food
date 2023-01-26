@@ -16,12 +16,44 @@
         {
             color: #FFF4EA;
         }
+        .orderButton:hover
+        {
+            color: #7C2714;
+        }
     </style>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
-    <script type="text/javascript">
+    <script>
 
         var permanent = "";
-        function addItem(id, name, price, currency){
+        var contaPiatti = 0;
+
+        function addItem(id, name, price, currency)
+        {
+    // {    GESTIONE FRONTEND
+
+            // Rendo vidibile il div che contiene il resoconto dell'ordine
+            if (contaPiatti == 0)
+            {
+                $("#orderDiv").show();
+            }
+
+            // Rendo visibile il bottone meno
+            let currentId = "#remove" + id;
+            $(currentId).show();
+
+            // Aggiungo la quantita' di piatti ordinati
+            contaPiatti++;
+            $("#totalDiv").text(contaPiatti);
+
+            // Aggiungo il totale della spesa
+            console.log($("#moneyDiv").text());
+            let moneyStr = $("#moneyDiv").text();
+            let money = parseFloat(moneyStr);
+            money = money + parseFloat(price);
+            $("#moneyDiv").text(money.toFixed(2));
+
+    // }
+    // {    GESTIONE RICHIESTA SERVER
             data = {
                 action: "add",
                 objectId: id,
@@ -38,10 +70,35 @@
             }).fail(function (xhr, status, error){
                 alert(xhr+"\n"+status+"\n"+error);
             });
-
+    // }
         }
 
-        function removeItem(id){
+        function removeItem(id, name, price, currency)
+        {
+    // {    GESTIONE FRONTEND
+
+            // Aggiungo la quantita' di piatti ordinati
+            contaPiatti--;
+            $("#totalDiv").text(contaPiatti);
+
+            // Aggiungo il totale della spesa
+            let moneyStr = $("#moneyDiv").text();
+            let money = parseFloat(moneyStr);
+            money = money - parseFloat(price);
+            console.log("Price "+parseFloat(price));
+            console.log("Money "+money);
+            $("#moneyDiv").text(money.toFixed(2));
+
+            // Rendo invisibile il div che contiene il resoconto dell'ordine
+            if (contaPiatti == 0)
+            {
+                $("#orderDiv").hide();
+                // Rendo visibile il bottone meno
+                let currentId = "#remove" + id;
+                $(currentId).hide();
+            }
+    // }
+    // {    GESTIONE RICHIESTA SERVER
             data = {
                 action: "remove",
                 objectId: id,
@@ -55,6 +112,7 @@
             }).fail(function (xhr, status, error){
                 alert(xhr+"\n"+status+"\n"+error);
             });
+    // }
         }
 
     </script>
@@ -126,36 +184,46 @@
                 { 
                     String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
                     <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
+
                         <div class="text-xl font-bold"><%= i.getName()%></div>
                         <div class="h-3"></div>
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
                         <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
                         <div>
+<<<<<<< Updated upstream
                             <button hidden id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>')">
 
                             </button>
                             <div hidden id="count<%=i.getId()%>"><div>
+=======
+                            <button style="display: none;" class="absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
+                                <img class="h-6" src="img/meno.png" alt="meno">
+                            </button>
+                            <div id="count<%=i.getId()%>"> </div>
+>>>>>>> Stashed changes
                             <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
                                 <img class="h-6" src="img/plus.png" alt="plus">
                             </button>
                         </div>
                     </div>
-                <% } %>
+            <%  } %>
             </div>
 
 
-            <div class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col">
+            <div id="orderDiv" style="display: none;" class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col">
 
                 <form id="ordini" method="post" action="/Neo4Food_war_exploded/checkout">
                     <input id="incremental" type="hidden" name="incremental" value="0">
                     <input type="hidden" name="action" value="checkout">
 
                     <div class="flex flex-wrap px-5 py-2 justify-center">
-                        <div class="tempOrder mr-2">Total: </div>
-                        <div class="tempOrder mr-2" id="total">0.0</div>
+                        <div class="tempOrder mr-2">Take: </div>
+                        <div class="tempOrder mr-2" id="totalDiv"></div>
+                        <div class="tempOrder mr-2">for</div>
+                        <div class="tempOrder mr-2" id="moneyDiv">0</div>
                         <div>
-                            <button class="tempOrder" type="submit">CHECKOUT</button>
+                            <button class="tempOrder orderButton rounded-xl px-2 hover:bg-principale" type="submit">Checkout</button>
                         </div>
                     </div>
                 </form>

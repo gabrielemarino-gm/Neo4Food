@@ -541,6 +541,10 @@ video {
   left: 1rem;
 }
 
+.right-20 {
+  right: 5rem;
+}
+
 .right-4 {
   right: 1rem;
 }
@@ -733,6 +737,10 @@ video {
 
 .w-3\/6 {
   width: 50%;
+}
+
+.w-p70 {
+  width: 70%;
 }
 
 .flex-wrap {
@@ -941,4 +949,9 @@ video {
 .hover\:bg-button:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 232 211 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-principale:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 244 234 / var(--tw-bg-opacity));
 }

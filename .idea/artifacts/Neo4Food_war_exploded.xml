@@ -19,7 +19,7 @@
           <element id="library" level="project" name="Maven: org.mongodb:bson:4.7.2" />
           <element id="library" level="project" name="Maven: org.mongodb:mongodb-driver-core:4.7.2" />
           <element id="library" level="project" name="Maven: org.mongodb:bson-record-codec:4.7.2" />
-          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.2.2" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.9" />
         </element>
       </element>
       <element id="directory" name="META-INF">

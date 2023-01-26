@@ -31,6 +31,7 @@ module.exports = {
             12: '3rem',
             14: '3.5rem',
             16: '4rem',
+            18: '4.8rem',
             20: '5rem',
             24: '6rem',
             28: '7rem',
@@ -47,7 +48,10 @@ module.exports = {
             80: '20rem',
             96: '24rem',
             'h-filtro':'70rem',
-            'w-filtro':'30rem'
+            'w-filtro':'30rem',
+            'p20':'10%',
+            'p45':'45%',
+            'p70':'70%'
         }
     },
     plugins: [],
