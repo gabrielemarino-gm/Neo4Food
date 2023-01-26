@@ -116,8 +116,13 @@
 
         var listx = "empty";
 
-        function testing(obj){
-            $.post("<c:url value="/checkout"/>", {action: "test", objectId: "ff", transferObj: obj}, function (result){
+        function testing(){
+            data = {
+                action: "test",
+                objectId: "ff",
+                transferObj: listx
+            };
+            $.post("<c:url value="/checkout"/>", data, function (result){
                 print('success');
             }).fail(function (xhr, status, error){
                 alert(xhr);
@@ -208,7 +213,7 @@
 
 
             <div class="sticky top-10 mr-5 rounded-xl border w-1/4 my-20  px-3 py-3">
-                <button type="text" onclick="testing(listx)">PRESS ME</button>
+                <button type="text" onclick="testing()">PRESS ME</button>
 
                 <form id="ordini" method="post" action="<c:url value="/checkout"/>">
                     <input id="incremental" type="hidden" name="incremental" value="0">
