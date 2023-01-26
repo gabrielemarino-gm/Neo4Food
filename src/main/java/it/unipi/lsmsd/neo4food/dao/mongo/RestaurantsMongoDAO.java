@@ -7,8 +7,8 @@ import com.mongodb.ConnectionString;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
+import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.constants.Constants;
-import it.unipi.lsmsd.neo4food.model.Dish;
 import jdk.nashorn.internal.runtime.ListAdapter;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -48,9 +48,9 @@ public class RestaurantsMongoDAO extends BaseMongo{
 
     public RestaurantDTO getRestaurantDetails(String rid){
         RestaurantDTO ret = null;
-        ListDTO<Dish> list = new ListDTO<Dish>();
+        ListDTO<DishDTO> list = new ListDTO<DishDTO>();
 
-        List<Dish> supp = new ArrayList<Dish>();
+        List<DishDTO> supp = new ArrayList<DishDTO>();
         int count;
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).iterator();
@@ -64,7 +64,7 @@ public class RestaurantsMongoDAO extends BaseMongo{
                 ArrayList<Document> items = (ArrayList<Document>) res.get("dish");
                 count = 0;
                 for(Document i:items){
-                    supp.add(new Dish(
+                    supp.add(new DishDTO(
                             i.get("_id").toString(),
                             i.get("name").toString(),
                             Float.parseFloat(i.get("price").toString().replaceAll("[^0-9.]","")),

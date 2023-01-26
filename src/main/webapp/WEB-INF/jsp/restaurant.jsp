@@ -2,7 +2,7 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
-<%@ page import="it.unipi.lsmsd.neo4food.model.Dish" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +62,7 @@
 <body>
   <%
         RestaurantDTO details = (RestaurantDTO) request.getAttribute("details");
-        ListDTO<Dish> list = details.getDishes();
+        ListDTO<DishDTO> list = details.getDishes();
   %>
 <%--                Header con login o nomeutente--%>
     <%@include file="template/header.jsp"%>
@@ -122,7 +122,7 @@
         <div class="flex flex-wrap justify-center">
             <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
 <%--            List of available dishes--%>
-                <% for(Dish i: list.getList())
+                <% for(DishDTO i: list.getList())
                 { 
                     String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
                     <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
@@ -132,10 +132,10 @@
                         <div class="h-10"></div>
                         <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
                         <div>
-                            <button id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>')">
+                            <button hidden id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>')">
 
                             </button>
-                            <div id="count<%=i.getId()%>"><div>
+                            <div hidden id="count<%=i.getId()%>"><div>
                             <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
                                 <img class="h-6" src="img/plus.png" alt="plus">
                             </button>

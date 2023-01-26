@@ -2,7 +2,7 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
-<%@ page import="it.unipi.lsmsd.neo4food.model.Dish" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,127 +20,41 @@
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
 
-
-        function clearDOM(target)
-        {
-            while(target.hasChildNodes())
-            {
-                clearDOM(target.firstChild);
-                target.removeChild(target.firstChild);
-            }
-        }
-
-        function removeProduct(idTarget)
-        {
-            target = document.getElementById(idTarget);
-            quantity = target.childNodes[1].childNodes[1];
-            price = target.childNodes[0].childNodes[1];
-            total = document.getElementById("total");
-
-            total.innerText = (Math.round((parseFloat(total.innerText) - parseFloat(price.innerText))*100)/100).toFixed(2);
-            quantity.innerText = parseInt(quantity.innerText) - 1;
-            if(parseInt(quantity.innerText) == 0)
-            {
-                clearDOM(target);
-                target.remove();
-            }
-        }
-
-        // Aggiunge un Piatto al tuo ordine visualizzato a schermo
-        function addProduct(idDish, name, cost)
-        {
-            // Prendi il form che forma gli ordini
-            root = document.getElementById("ordini");
-
-            // L'incremental serve per contare gli ordini aggiunti
-            inc = document.getElementById("incremental");
-
-            // Controllo se il Piatto e presente fra quelli disponibili nella pagina
-            if(!isPresent(idDish))
-            {
-                // Creo i campi che rappresentano il piatto dentro l'ordine
-                orderBoxDiv = document.createElement("div");
-                detailsDiv = document.createElement("div");
-                // pIdInput = document.createElement("input");
-                titleInput = document.createElement("input");
-                priceInput = document.createElement("input");
-                buttonsDiv = document.createElement("div");
-                removeButton = document.createElement("button");
-                quantityInput = document.createElement("input");
-                addButton = document.createElement("button");
-
-                orderBoxDiv.id = idDish;
-                titleInput.id = "name";
-                titleInput.innerText = name;
-                priceInput.id = "price";
-                priceInput.innerText = parseFloat(cost).toFixed(2); // Aggiungo il prezzo nel formato XX.XX
-
-                // Bottone meno, per decrementare o eliminare il prodotto aggiunto
-                removeButton.id = "remove";
-                removeButton.innerText = "---";
-                removeButton.onclick = function(){ removeProduct(idDish)};
-
-                // Quantita' attuale
-                quantityInput.id = "quantity";
-                quantityInput.innerText = 1;
-
-                // Bottene piu, per aggiungere altri prodotti
-                addButton.id = "add";
-                addButton.innerText = "+++";
-                addButton.onclick = function (){ addProduct(idDish, name)};
-
-                root.appendChild(orderBoxDiv);
-                orderBoxDiv.appendChild(detailsDiv);
-                detailsDiv.appendChild(titleInput);
-                detailsDiv.appendChild(priceInput);
-                orderBoxDiv.appendChild(buttonsDiv);
-                buttonsDiv.appendChild(removeButton);
-                buttonsDiv.appendChild(quantityInput);
-                buttonsDiv.appendChild(addButton);
-
-                total = document.getElementById("total");
-                total.innerText = (Math.round((parseFloat(total.innerText) + parseFloat(price.innerText))*100)/100).toFixed(2);
-
-                inc.nodeValue = parseInt(inc.nodeValue) + 1;
-            }
-            else
-            {
-                orderBoxDiv = document.getElementById(idDish);
-
-                total = document.getElementById("total");
-                price = orderBoxDiv.childNodes[0].childNodes[1];
-                quantity = orderBoxDiv.childNodes[1].childNodes[1];
-
-                total.innerText = (Math.round((parseFloat(total.innerText) + parseFloat(price.innerText))*100)/100).toFixed(2);
-                quantity.innerText = parseInt(quantity.innerText) + 1;
-            }
-        }
-
-        function isPresent(id)
-        {
-            return document.getElementById(id);
-        }
-
-        var listx = "empty";
-
-        function testing()
-        {
-            data =
-            {
-                action: "test",
-                objectId: "ff",
-                transferObj: listx
+        var permanent = "";
+        function addItem(id, name, price, currency){
+            data = {
+                action: "add",
+                objectId: id,
+                objectName: name,
+                objectPrice: price,
+                objectCurrency: currency,
+                transferObj: permanent,
             };
+            $.post("<c:url value="/checkout"/>", data, function (result){
+                permanent = result;
+            //    ---Gestione aggiunta prodotto---
 
-            $.get("<c:url value="/checkout"/>", data,
-                function(result) {
-                    window.alert("Success: " + result);
-                }
-            ).fail(
-                function (xhr, status, error) {
-                    alert('error');
-                }
-            );
+            //    --------------------------------
+            }).fail(function (xhr, status, error){
+                alert(xhr+"\n"+status+"\n"+error);
+            });
+
+        }
+
+        function removeItem(id){
+            data = {
+                action: "remove",
+                objectId: id,
+                transferObj: permanent,
+            };
+            $.post("<c:url value="/checkout"/>", data, function (result){
+                permanent = result;
+            //    ---Gestione rimozione prodotto---
+
+            //    ---------------------------------
+            }).fail(function (xhr, status, error){
+                alert(xhr+"\n"+status+"\n"+error);
+            });
         }
 
     </script>
@@ -148,7 +62,7 @@
 <body>
   <%
         RestaurantDTO details = (RestaurantDTO) request.getAttribute("details");
-        ListDTO<Dish> list = details.getDishes();
+        ListDTO<DishDTO> list = details.getDishes();
   %>
 <%--                Header con login o nomeutente--%>
     <%@include file="template/header.jsp"%>
@@ -182,7 +96,6 @@
                 <%
                         nStar = rateInt+1;
                     }
-
                     for (; nStar<5; nStar++)
                     {
                 %>
@@ -209,7 +122,7 @@
         <div class="flex flex-wrap justify-center">
             <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
 <%--            List of available dishes--%>
-                <% for(Dish i: list.getList())
+                <% for(DishDTO i: list.getList())
                 { 
                     String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
                     <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
@@ -218,9 +131,15 @@
                         <div class="text-left"><%= i.getDescription()%></div>
                         <div class="h-10"></div>
                         <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
-                        <button class="absolute bottom-3 right-4" onclick="addProduct('<%= i.getId() %>','<%=i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>')">
-                            <img class="h-6" src="img/plus.png" alt="plus">
-                        </button>
+                        <div>
+                            <button hidden id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>')">
+
+                            </button>
+                            <div hidden id="count<%=i.getId()%>"><div>
+                            <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
+                                <img class="h-6" src="img/plus.png" alt="plus">
+                            </button>
+                        </div>
                     </div>
                 <% } %>
             </div>
