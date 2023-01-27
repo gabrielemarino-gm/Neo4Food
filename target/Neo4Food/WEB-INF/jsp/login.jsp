@@ -47,7 +47,7 @@
     <img class="w-full blur-md" src="https://ilfattoalimentare.it/wp-content/uploads/2017/06/junk-food-hamburger-patatine-fast-food-pizza-dolci-Fotolia_130389179_Subscription_Monthly_M.jpg" alt="imgFood" />
 </div>
 <section>
-    <div class="mx-auto -my-20 text-center relative " id="external">
+    <div class="mx-auto -my-20 text-center relative shadow-md" id="external">
         <div id="loginForm" class="mx-auto h-auto w-96 rounded-lg bg-principale pb-7 shadow-2xl">
             <div class="border-gray-300 rounded-t-lg border-b-2 bg-button p-1"><h3 class="py-5 text-3xl font-bold ">Login</h3></div>
             <form method="post" action="/Neo4Food_war_exploded/login" class="pt-7">
@@ -74,7 +74,7 @@
 
         </div>
 
-        <div id="signupForm" style="display: none" class="mx-auto h-auto w-96 rounded-lg bg-principale py-7">
+        <div id="signupForm" style="display: none" class="mx-auto h-auto w-96 rounded-lg bg-principale py-7 shadow-md">
             <h3 class="py-5 text-4xl ">Login</h3>
             <form method="post" action="/Neo4Food_war_exploded/login">
                 <input required="" class="h-9 w-52 rounded-lg px-3" type="text" name="username" placeholder="Username" />
