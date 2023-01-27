@@ -112,12 +112,12 @@
             console.log("Count - = " + count)
             // Se è zero nascondo la quantita, altrimenti aggiorno il valore
             if (count == 0) {
-                console.log("if (count == 0)")
                 currentId = "#countDiv" + id;
-                console.log("id = " + currentId)
+                $(currentId).text(count);
                 $(currentId).hide();
                 currentId = "#remove" + id;
                 $(currentId).hide();
+
             } else {
                 $(currentId).text(count);
             }
