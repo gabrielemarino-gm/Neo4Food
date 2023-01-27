@@ -30,7 +30,7 @@
 
         function addItem(id, name, price, currency)
         {
-            // {    GESTIONE FRONTEND
+    // {    GESTIONE FRONTEND
 
             // Rendo vidibile il div che contiene il resoconto dell'ordine
             if (contaPiatti == 0)
@@ -44,17 +44,31 @@
 
             // Aggiungo la quantita' di piatti ordinati
             contaPiatti++;
+            console.log("contaPiatti + = " + contaPiatti)
             $("#totalDiv").text(contaPiatti);
 
             // Aggiungo il totale della spesa
-            console.log($("#moneyDiv").text());
             let moneyStr = $("#moneyDiv").text();
             let money = parseFloat(moneyStr);
             money = money + parseFloat(price);
-            $("#moneyDiv").text(money.toFixed(2));
+            $("#moneyDiv").text(money.toFixed(2) + " " + currency);
 
-            // }
-            // {    GESTIONE RICHIESTA SERVER
+
+            // Rendo vidibile il div del piatto che indica la quantita ordinata
+            currentId = "#countDiv" + id;
+            $(currentId).show();
+
+            // Prendo il count corrente
+            let countStr = $(currentId).text();
+            let count = parseInt(countStr);
+
+            count++;
+            console.log("Count + = " + count)
+            // Aggiungo dentro il Div della quantita
+            $(currentId).text(count);
+
+    // }
+    // {    GESTIONE RICHIESTA SERVER
             data = {
                 action: "add",
                 objectId: id,
@@ -63,36 +77,53 @@
                 objectCurrency: currency,
                 transferObj: permanent,
             };
-            $.post("<c:url value="/checkout"/>", data, function (result){
+            $.post("<c:url value="/checkout"/>", data, function (result) {
                 permanent = result;
                 //    ---Gestione aggiunta prodotto---
 
                 //    --------------------------------
-            }).fail(function (xhr, status, error){
-                alert(xhr+"\n"+status+"\n"+error);
+            }).fail(function (xhr, status, error) {
+                alert(xhr + "\n" + status + "\n" + error);
             });
             // }
         }
 
-        function removeItem(id, name, price, currency)
-        {
+        function removeItem(id, name, price, currency) {
             // {    GESTIONE FRONTEND
 
-            // Aggiungo la quantita' di piatti ordinati
+            // Aggiorno la quantita' di piatti ordinati nell'ordine
             contaPiatti--;
+            console.log("contaPiatti - = " + contaPiatti)
             $("#totalDiv").text(contaPiatti);
 
-            // Aggiungo il totale della spesa
+            // Aggiorno il totale della spesa
             let moneyStr = $("#moneyDiv").text();
             let money = parseFloat(moneyStr);
             money = money - parseFloat(price);
-            console.log("Price "+parseFloat(price));
-            console.log("Money "+money);
-            $("#moneyDiv").text(money.toFixed(2));
+            $("#moneyDiv").text(money.toFixed(2) + " " + currency);
+
+            // Rendo vidibile il div del piatto che indica la quantita ordinata
+            currentId = "#countDiv" + id;
+
+            // Prendo il count corrente
+            let countStr = $(currentId).text();
+            let count = parseInt(countStr);
+            count--;
+            console.log("Count - = " + count)
+            // Se è zero nascondo la quantita, altrimenti aggiorno il valore
+            if (count == 0) {
+                console.log("if (count == 0)")
+                currentId = "#countDiv" + id;
+                console.log("id = " + currentId)
+                $(currentId).hide();
+                currentId = "#remove" + id;
+                $(currentId).hide();
+            } else {
+                $(currentId).text(count);
+            }
 
             // Rendo invisibile il div che contiene il resoconto dell'ordine
-            if (contaPiatti == 0)
-            {
+            if (contaPiatti == 0) {
                 $("#orderDiv").hide();
                 // Rendo invisibile tutti i bottoni meno
                 $(".buttonMeno").hide();
@@ -183,23 +214,23 @@
         <% for(DishDTO i: list.getList())
         {
             String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
-        <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
+            <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
 
-            <div class="text-xl font-bold"><%= i.getName()%></div>
-            <div class="h-3"></div>
-            <div class="text-left"><%= i.getDescription()%></div>
-            <div class="h-10"></div>
-            <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
-            <div>
-                <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
-                    <img class="h-6" src="img/meno.png" alt="meno">
-                </button>
-                <div id="count<%=i.getId()%>"> </div>
-                <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
-                    <img class="h-6" src="img/plus.png" alt="plus">
-                </button>
+                <div class="text-xl font-bold"><%= i.getName()%></div>
+                <div class="h-3"></div>
+                <div class="text-left"><%= i.getDescription()%></div>
+                <div class="h-10"></div>
+                <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
+                <div>
+                    <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
+                        <img class="h-6" src="img/meno.png" alt="meno">
+                    </button>
+                    <div class="absolute bottom-3 right-14" style="display: none;" id="countDiv<%=i.getId()%>">0</div>
+                    <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
+                        <img class="h-6" src="img/plus.png" alt="plus">
+                    </button>
+                </div>
             </div>
-        </div>
         <%  } %>
     </div>
 
