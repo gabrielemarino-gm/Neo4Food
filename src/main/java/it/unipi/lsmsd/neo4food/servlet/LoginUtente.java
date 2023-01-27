@@ -63,6 +63,7 @@ public class LoginUtente extends HttpServlet
                 request.setAttribute("message", "Wrong credentials");
             }
         }
+        
 //        Se actionType vale "Signup" la richiesta e' un signup
         else if ("signup".equals(actionType)) {
             UserMongoDAO users = new UserMongoDAO();
