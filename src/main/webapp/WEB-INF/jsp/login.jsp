@@ -75,7 +75,7 @@
                 <input required="" class="my-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="password" name="password" placeholder="Password" />
                 <input type="hidden" name="action" value="login" id="login" />
                 </br>
-                <button class="my-3 w-36 rounded-lg border-2 shadow-xl" type="submit" id="logintext">Login</button>
+                <button class="my-3 w-36 rounded-lg border-2 shadow-xl hover:bg-button" type="submit" id="logintext">Login</button>
             </form>
             <button class="my-3 w-36 rounded-lg border-2 shadow-xl" onclick="hideshow()">SignUp</button>
             <br>
@@ -94,20 +94,20 @@
 
         </div>
 
-        <div id="signupForm" style="display: none" class="mx-auto h-auto w-96 rounded-lg bg-principale py-7 shadow-md">
-            <h3 class="py-5 text-4xl ">Login</h3>
+        <div id="signupForm" style="display:none;" class="mx-auto h-auto w-96 rounded-lg bg-principale py-7 shadow-2xl">
+            <div class="border-gray-300 rounded-t-lg border-b-2 bg-button p-1 -my-7"><h3 class="py-5 text-3xl font-bold">SignUp</h3></div>
             <form method="post" action="/Neo4Food_war_exploded/login">
-                <input required="" class="h-9 w-52 rounded-lg px-3" type="text" name="username" placeholder="Username" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="email" name="email" placeholder="E-Mail" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="text" name="firstname" placeholder="First name" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="text" name="lastname" placeholder="Last name" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="text" name="phonenumber" placeholder="Phone number" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="text" name="address" placeholder="Address" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="text" name="zipcode" placeholder="Zipcode" />
-                <input required="" class="my-4 h-9 w-52 rounded-lg px-3" type="password" name="password" placeholder="Password" />
+                <input required="" class="mt-14 h-9 w-52 rounded-lg px-3" type="text" name="username" placeholder="Username" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="email" name="email" placeholder="E-Mail" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="text" name="firstname" placeholder="First name" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="text" name="lastname" placeholder="Last name" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="text" name="phonenumber" placeholder="Phone number" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="text" name="address" placeholder="Address" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="text" name="zipcode" placeholder="Zipcode" />
+                <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="password" name="password" placeholder="Password" />
                 <input type="hidden" name="action" value="signup" />
 
-                <button class="my-3 w-52 rounded-lg border-2" type="submit">Signup</button>
+                <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" type="submit">Signup</button>
             </form>
             <button class="my-3 w-52 rounded-lg border-2" onclick="hideshow()">SignIn</button>
         </div>
