@@ -29,6 +29,26 @@
                 y.style.display = "block";
             }
         }
+
+
+        function isChecked() {
+            let logintext = document.getElementById("logintext")
+            let login = document.getElementById("login")
+            let checkbox = document.getElementById("checkboxrestaurant")
+            if (checkbox.checked) {
+                logintext.innerHTML = "Login Restaurant"
+                login.value = "loginrestaurant";
+                console.log("loginRestaurant");
+            } else {
+                logintext.innerHTML = "Login"
+                login.value = "login";
+                console.log("login");
+            }
+        };
+
+
+
+
     </script>
     <style type="text/css" id="operaUserStyle"></style>
     <title>Login Page</title>
@@ -53,9 +73,9 @@
             <form method="post" action="/Neo4Food_war_exploded/login" class="pt-7">
                 <input required="" class="h-9 w-52 rounded-lg px-3  shadow-xl" type="email" name="email" placeholder="E-Mail" />
                 <input required="" class="my-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="password" name="password" placeholder="Password" />
-                <input type="hidden" name="action" value="login" />
+                <input type="hidden" name="action" value="login" id="login" />
                 </br>
-                <button class="my-3 w-36 rounded-lg border-2 shadow-xl" type="submit">Login</button>
+                <button class="my-3 w-36 rounded-lg border-2 shadow-xl" type="submit" id="logintext">Login</button>
             </form>
             <button class="my-3 w-36 rounded-lg border-2 shadow-xl" onclick="hideshow()">SignUp</button>
             <br>
@@ -66,7 +86,7 @@
                     <label class="form-check-label text-gray-800 " for="flexCheckDefault">
                         Are you a Restaurant?
                     </label>
-                    <input type="checkbox" class="form-checkbox bg-test_col-100 border border-principale-300 text-button-500 focus:ring-200 "  >
+                    <input type="checkbox" class="form-checkbox bg-test_col-100 border border-principale-300 text-button-500 focus:ring-200" id="checkboxrestaurant" value="login"  onclick="isChecked()" >
                 </div>
 
             </div>

@@ -1,11 +1,12 @@
 package it.unipi.lsmsd.neo4food.dao.mongo;
 
 import com.mongodb.client.*;
+
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 import com.mongodb.ConnectionString;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
-
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
@@ -46,6 +47,27 @@ public class RestaurantsMongoDAO extends BaseMongo{
         returnList.setItemCount(count);
         return returnList;
     }
+public RestaurantDTO getRestaurantOwner(String e, String password){
+    MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
+    try(MongoCursor cursor = collection.find(and(eq("email", e),eq("password",password))).limit(1).iterator();)
+    {
+
+        if (cursor.hasNext()) {
+
+        Document res = (Document) cursor.next();
+//            One restaurantOwner found!
+        String id = res.get("_id").toString();
+        String name = res.get("name").toString();
+        String address = res.get("full_address").toString();
+        String email = res.get("email").toString();
+
+        return new RestaurantDTO(id, name,email, address );
+    }
+
+    }
+return new RestaurantDTO("0","","","");
+}
+
 
     public RestaurantDTO getRestaurantDetails(String rid){
         RestaurantDTO ret = null;

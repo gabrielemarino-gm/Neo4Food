@@ -1,9 +1,11 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
+import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
 import it.unipi.lsmsd.neo4food.dao.mongo.UserMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 import java.io.*;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +23,29 @@ public class LoginUtente extends HttpServlet
         if (actionType == null){
             targetJSP = "WEB-INF/jsp/login.jsp";
         }
+
+        if ("loginrestaurant".equals(actionType)){
+            String email = (String) request.getParameter("email");
+            String password = (String) request.getParameter("password");
+            RestaurantsMongoDAO users = new RestaurantsMongoDAO();
+            RestaurantDTO result = users.getRestaurantOwner(email, password);
+
+            if (!result.getId().equals("0"))
+                {
+                HttpSession session = request.getSession();
+                session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
+                session.setAttribute("name", result.getName());
+                System.out.println("Logged as Restaurant");
+                }
+            else
+                {
+//                No match
+                    targetJSP = "WEB-INF/jsp/search.jsp";
+                    request.setAttribute("message", "Wrong credentials");
+                    System.out.println("Not Logged as Restaurant");
+                }
+            }
+
 //        Se actionType vale "login" la richiesta viene da login.jsp
         else if ("login".equals(actionType)) {
             String email = (String) request.getParameter("email");
