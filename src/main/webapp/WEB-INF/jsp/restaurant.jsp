@@ -227,9 +227,12 @@
                     <img class="h-6" src="img/meno.png" alt="meno">
                 </button>
                 <div class="absolute bottom-3 right-14" style="display: none;" id="countDiv<%=i.getId()%>">0</div>
-                <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
-                    <img class="h-6" src="img/plus.png" alt="plus">
-                </button>
+                <%if (i.getPrice() != 0.0)
+                {%>
+                    <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
+                        <img class="h-6" src="img/plus.png" alt="plus">
+                    </button>
+                <%}%>
             </div>
         </div>
         <%  } %>
