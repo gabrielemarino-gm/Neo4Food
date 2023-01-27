@@ -5,16 +5,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link href="/Neo4Food_war_exploded/dist/output.css" rel="stylesheet" />
-    <link href="/Neo4Food_war_exploded/dist/text.css" rel="stylesheet" />
-    <style>
-        h1, h2, h3, h4, h5, p, a, button, div
-        {
-            color: #7C2714;
-            font-family: gill sans, sans-serif;
-        }
-    </style>
+
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
         function hideshow(){

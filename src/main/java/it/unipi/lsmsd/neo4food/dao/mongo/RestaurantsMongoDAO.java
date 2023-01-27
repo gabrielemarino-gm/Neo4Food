@@ -8,6 +8,7 @@ import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.ConnectionString;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.OrderDTO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.constants.Constants;
@@ -37,7 +38,7 @@ public class RestaurantsMongoDAO extends BaseMongo{
                 String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available";
                 Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
 
-                RestaurantDTO e = new RestaurantDTO(id,name,range,rating,null);
+                RestaurantDTO e = new RestaurantDTO(id,name,range,rating,null,null);
                 supportList.add(e);
                 count++;
             }
@@ -69,25 +70,37 @@ return new RestaurantDTO("0","","","");
 }
 
 
-    public RestaurantDTO getRestaurantDetails(String rid){
+    public RestaurantDTO getRestaurantDetails(String rid)
+    {
         RestaurantDTO ret = null;
-        ListDTO<DishDTO> list = new ListDTO<DishDTO>();
+        // Piatti
+        ListDTO<DishDTO> listD = new ListDTO<DishDTO>();
+        List<DishDTO> suppD = new ArrayList<DishDTO>();
 
-        List<DishDTO> supp = new ArrayList<DishDTO>();
+        // Ordini Pending
+        ListDTO<OrderDTO> listO = new ListDTO<OrderDTO>();
+        List<OrderDTO> suppO = new ArrayList<OrderDTO>();
+
         int count;
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
-        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).iterator();
-        ){
-            while (cursor.hasNext()){
+
+
+        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).iterator();)
+        {
+            while (cursor.hasNext())
+            {
                 Document res = (Document) cursor.next();
                 String id = res.get("_id").toString();
                 String name = res.get("name").toString();
                 String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available" ;
                 Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
-                ArrayList<Document> items = (ArrayList<Document>) res.get("dish");
+
+                // PIATTI
+                ArrayList<Document> itemsDishs = (ArrayList<Document>) res.get("dish");
                 count = 0;
-                for(Document i:items){
-                    supp.add(new DishDTO(
+                for(Document i:itemsDishs)
+                {
+                    suppD.add(new DishDTO(
                             i.get("_id").toString(),
                             i.get("name").toString(),
                             Float.parseFloat(i.get("price").toString().replaceAll("[^0-9.]","")),
@@ -97,9 +110,15 @@ return new RestaurantDTO("0","","","");
                     ));
                     count++;
                 }
-                list.setItemCount(count);
-                list.setList(supp);
-                ret = new RestaurantDTO(id,name,range,rating,list);
+                listD.setItemCount(count);
+                listD.setList(suppD);
+
+
+
+                // ORDINI PENDING
+                ArrayList<Document> itemsOrder = (ArrayList<Document>) res.get("orders");
+
+                ret = new RestaurantDTO(id,name,range,rating,listD,listO);
             }
         }
         return ret;
