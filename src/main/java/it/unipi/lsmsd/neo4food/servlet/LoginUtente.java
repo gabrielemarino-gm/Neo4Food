@@ -44,6 +44,7 @@ public class LoginUtente extends HttpServlet
                 }
             }
         }
+        
 //        Se actionType vale "Signup" la richiesta e' un signup
         else if ("signup".equals(actionType)) {
             UserMongoDAO users = new UserMongoDAO();
