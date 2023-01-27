@@ -51,8 +51,20 @@
             let moneyStr = $("#moneyDiv").text();
             let money = parseFloat(moneyStr);
             money = money + parseFloat(price);
-            $("#moneyDiv").text(money.toFixed(2));
+            $("#moneyDiv").text(money.toFixed(2) + " " + currency);
 
+            // Rendo vidibile il div del piatto che indica la quantita ordinata
+            currentId = "#countDiv" + id;
+            $(currentId).show();
+
+            // Prendo il count corrente
+            let countStr = $(currentId).text();
+            let count = parseInt(countStr);
+
+            count++;
+            console.log("Count + = " + count)
+            // Aggiungo dentro il Div della quantita
+            $(currentId).text(count);
             // }
             // {    GESTIONE RICHIESTA SERVER
             data = {
@@ -88,7 +100,27 @@
             money = money - parseFloat(price);
             console.log("Price "+parseFloat(price));
             console.log("Money "+money);
-            $("#moneyDiv").text(money.toFixed(2));
+            $("#moneyDiv").text(money.toFixed(2) + " " + currency);
+
+            // Rendo vidibile il div del piatto che indica la quantita ordinata
+            currentId = "#countDiv" + id;
+
+            // Prendo il count corrente
+            let countStr = $(currentId).text();
+            let count = parseInt(countStr);
+            count--;
+            console.log("Count - = " + count)
+            // Se è zero nascondo la quantita, altrimenti aggiorno il valore
+            if (count == 0) {
+                console.log("if (count == 0)")
+                currentId = "#countDiv" + id;
+                console.log("id = " + currentId)
+                $(currentId).hide();
+                currentId = "#remove" + id;
+                $(currentId).hide();
+            } else {
+                $(currentId).text(count);
+            }
 
             // Rendo invisibile il div che contiene il resoconto dell'ordine
             if (contaPiatti == 0)
@@ -194,7 +226,7 @@
                 <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
                     <img class="h-6" src="img/meno.png" alt="meno">
                 </button>
-                <div id="count<%=i.getId()%>"> </div>
+                <div class="absolute bottom-3 right-14" style="display: none;" id="countDiv<%=i.getId()%>">0</div>
                 <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
                     <img class="h-6" src="img/plus.png" alt="plus">
                 </button>

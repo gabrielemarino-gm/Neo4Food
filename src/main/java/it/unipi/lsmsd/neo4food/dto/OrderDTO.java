@@ -52,7 +52,7 @@ public class OrderDTO {
 //            Elemento assente, devo inserirne uno nuovo
             items.add(newDish);
         }
-        addToTotal(e.getPrice());
+        addToTotal(newDish.getPrice());
         return 1;
     }
     public int removeItem(String id){
