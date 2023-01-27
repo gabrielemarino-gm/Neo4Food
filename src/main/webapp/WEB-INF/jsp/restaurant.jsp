@@ -30,7 +30,7 @@
 
         function addItem(id, name, price, currency)
         {
-    // {    GESTIONE FRONTEND
+            // {    GESTIONE FRONTEND
 
             // Rendo vidibile il div che contiene il resoconto dell'ordine
             if (contaPiatti == 0)
@@ -44,31 +44,17 @@
 
             // Aggiungo la quantita' di piatti ordinati
             contaPiatti++;
-            console.log("contaPiatti + = " + contaPiatti)
             $("#totalDiv").text(contaPiatti);
 
             // Aggiungo il totale della spesa
+            console.log($("#moneyDiv").text());
             let moneyStr = $("#moneyDiv").text();
             let money = parseFloat(moneyStr);
             money = money + parseFloat(price);
-            $("#moneyDiv").text(money.toFixed(2) + " " + currency);
+            $("#moneyDiv").text(money.toFixed(2));
 
-
-            // Rendo vidibile il div del piatto che indica la quantita ordinata
-            currentId = "#countDiv" + id;
-            $(currentId).show();
-
-            // Prendo il count corrente
-            let countStr = $(currentId).text();
-            let count = parseInt(countStr);
-
-            count++;
-            console.log("Count + = " + count)
-            // Aggiungo dentro il Div della quantita
-            $(currentId).text(count);
-
-    // }
-    // {    GESTIONE RICHIESTA SERVER
+            // }
+            // {    GESTIONE RICHIESTA SERVER
             data = {
                 action: "add",
                 objectId: id,
@@ -77,53 +63,36 @@
                 objectCurrency: currency,
                 transferObj: permanent,
             };
-            $.post("<c:url value="/checkout"/>", data, function (result) {
+            $.post("<c:url value="/checkout"/>", data, function (result){
                 permanent = result;
                 //    ---Gestione aggiunta prodotto---
 
                 //    --------------------------------
-            }).fail(function (xhr, status, error) {
-                alert(xhr + "\n" + status + "\n" + error);
+            }).fail(function (xhr, status, error){
+                alert(xhr+"\n"+status+"\n"+error);
             });
             // }
         }
 
-        function removeItem(id, name, price, currency) {
+        function removeItem(id, name, price, currency)
+        {
             // {    GESTIONE FRONTEND
 
-            // Aggiorno la quantita' di piatti ordinati nell'ordine
+            // Aggiungo la quantita' di piatti ordinati
             contaPiatti--;
-            console.log("contaPiatti - = " + contaPiatti)
             $("#totalDiv").text(contaPiatti);
 
-            // Aggiorno il totale della spesa
+            // Aggiungo il totale della spesa
             let moneyStr = $("#moneyDiv").text();
             let money = parseFloat(moneyStr);
             money = money - parseFloat(price);
-            $("#moneyDiv").text(money.toFixed(2) + " " + currency);
-
-            // Rendo vidibile il div del piatto che indica la quantita ordinata
-            currentId = "#countDiv" + id;
-
-            // Prendo il count corrente
-            let countStr = $(currentId).text();
-            let count = parseInt(countStr);
-            count--;
-            console.log("Count - = " + count)
-            // Se è zero nascondo la quantita, altrimenti aggiorno il valore
-            if (count == 0) {
-                console.log("if (count == 0)")
-                currentId = "#countDiv" + id;
-                console.log("id = " + currentId)
-                $(currentId).hide();
-                currentId = "#remove" + id;
-                $(currentId).hide();
-            } else {
-                $(currentId).text(count);
-            }
+            console.log("Price "+parseFloat(price));
+            console.log("Money "+money);
+            $("#moneyDiv").text(money.toFixed(2));
 
             // Rendo invisibile il div che contiene il resoconto dell'ordine
-            if (contaPiatti == 0) {
+            if (contaPiatti == 0)
+            {
                 $("#orderDiv").hide();
                 // Rendo invisibile tutti i bottoni meno
                 $(".buttonMeno").hide();
@@ -230,6 +199,7 @@
                     <img class="h-6" src="img/plus.png" alt="plus">
                 </button>
             </div>
+        </div>
         <%  } %>
     </div>
 
