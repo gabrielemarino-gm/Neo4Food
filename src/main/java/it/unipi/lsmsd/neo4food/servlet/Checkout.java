@@ -6,13 +6,10 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import it.unipi.lsmsd.neo4food.dto.OrderDTO;
-import it.unipi.lsmsd.neo4food.dto.DishDTO;
-import it.unipi.lsmsd.neo4food.model.Order;
 
 @WebServlet("/checkout")
 public class Checkout extends HttpServlet
@@ -34,31 +31,17 @@ public class Checkout extends HttpServlet
             Float price = Float.parseFloat(request.getParameter("objectPrice"));
             String currency = request.getParameter("objectCurrency");
 
-            OrderDTO order = persistent.equals("") ?
-                    new OrderDTO() :
-                    new Gson().fromJson(persistent, OrderDTO.class);
+//            List<String> a = persistent.equals("") ? new ArrayList<String>() : new ArrayList<String>(Arrays.asList(new Gson().fromJson(persistent, String[].class)));;
 
-            order.addItem(new DishDTO(id,name,price,currency));
 
-            System.out.println(order);
-
-            response.getWriter().print(new Gson().toJson(order));
-            response.getWriter().flush();
+//            response.getWriter().print(new Gson().toJson(a));
+//            response.getWriter().flush();
             return;
         }else if("remove".equals(actionType)){
             String persistent = request.getParameter("transferObj");
             String id = request.getParameter("objectId");
 
-            OrderDTO order = persistent.equals("") ?
-                    new OrderDTO() :
-                    new Gson().fromJson(persistent, OrderDTO.class);
-
-            order.removeItem(id);
-
-            System.out.println(order);
-
-            response.getWriter().print(new Gson().toJson(order));
-            response.getWriter().flush();
+            
             return;
         }
 

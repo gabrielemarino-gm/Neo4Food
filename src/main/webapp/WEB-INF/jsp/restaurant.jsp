@@ -213,22 +213,23 @@
         <%--            List of available dishes--%>
         <% for(DishDTO i: list.getList())
         {
-            String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString(); %>
-        <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
+            String price = i.getCost() == 0.0 ? "-.-": i.getCost().toString(); %>
+            <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
 
-            <div class="text-xl font-bold"><%= i.getName()%></div>
-            <div class="h-3"></div>
-            <div class="text-left"><%= i.getDescription()%></div>
-            <div class="h-10"></div>
-            <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
-            <div>
-                <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
-                    <img class="h-6" src="img/meno.png" alt="meno">
-                </button>
-                <div id="count<%=i.getId()%>"> </div>
-                <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
-                    <img class="h-6" src="img/plus.png" alt="plus">
-                </button>
+                <div class="text-xl font-bold"><%= i.getName()%></div>
+                <div class="h-3"></div>
+                <div class="text-left"><%= i.getDescription()%></div>
+                <div class="h-10"></div>
+                <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
+                <div>
+                    <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
+                        <img class="h-6" src="img/meno.png" alt="meno">
+                    </button>
+                    <div class="absolute bottom-3 right-14" style="display: none;" id="countDiv<%=i.getId()%>">0</div>
+                    <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getCost() %>','<%= i.getCurrency() %>')">
+                        <img class="h-6" src="img/plus.png" alt="plus">
+                    </button>
+                </div>
             </div>
         <%  } %>
     </div>
