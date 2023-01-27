@@ -747,6 +747,10 @@ video {
   width: 70%;
 }
 
+.w-80 {
+  width: 20rem;
+}
+
 .flex-wrap {
   flex-wrap: wrap;
 }

@@ -215,7 +215,7 @@
         <% for(DishDTO i: list.getList())
         {
             String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString(); %>
-        <div class="bg-principale rounded-xl w-96 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
 
             <div class="text-xl font-bold"><%= i.getName()%></div>
             <div class="h-3"></div>
