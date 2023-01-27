@@ -24,43 +24,24 @@ public class LoginUtente extends HttpServlet
             targetJSP = "WEB-INF/jsp/login.jsp";
         }
 
-        if ("loginrestaurant".equals(actionType)){
-            String email = (String) request.getParameter("email");
-            String password = (String) request.getParameter("password");
-            RestaurantsMongoDAO users = new RestaurantsMongoDAO();
-            RestaurantDTO result = users.getRestaurantOwner(email, password);
-
-            if (!result.getId().equals("0"))
-                {
-                HttpSession session = request.getSession();
-                session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
-                session.setAttribute("name", result.getName());
-                System.out.println("Logged as Restaurant");
-                }
-            else
-                {
-//                No match
-                    targetJSP = "WEB-INF/jsp/search.jsp";
-                    request.setAttribute("message", "Wrong credentials");
-                    System.out.println("Not Logged as Restaurant");
-                }
-            }
 
 //        Se actionType vale "login" la richiesta viene da login.jsp
         else if ("login".equals(actionType)) {
-            String email = (String) request.getParameter("email");
-            String password = (String) request.getParameter("password");
-            UserMongoDAO users = new UserMongoDAO();
-            UserDTO result = users.getUser("", email, password);
-//            Utente trovato
-            if (!result.getId().equals("0")) {
-                HttpSession session = request.getSession();
-                session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
-                session.setAttribute("username", result.getUsername());
-            } else {
-//                No match
-                targetJSP = "WEB-INF/jsp/login.jsp";
-                request.setAttribute("message", "Wrong credentials");
+//          Login come ristorante
+            if (request.getParameter("isRestaurant") != null){
+//              Se fallita torno a login
+                if(!loginAsRestaurant(request,response)){
+                    targetJSP = "WEB-INF/jsp/login.jsp";
+                }else{
+//              Se non e' fallita lo mando alla pagina ristorante
+                    targetJSP = "WEB-INF/jsp/personalrestaurant.jsp";
+                }
+//          Login come utente
+            }else{
+//                Login fallito
+                if(!loginAsUser(request,response)){
+                    targetJSP = "WEB-INF/jsp/login.jsp";
+                }
             }
         }
 //        Se actionType vale "Signup" la richiesta e' un signup
@@ -76,10 +57,10 @@ public class LoginUtente extends HttpServlet
             String address = (String) request.getParameter("address");
             User user = new User("0",email,username,password,firstname,lastname,phonenumber,address,zipcode);
 
-            if (users.getUser(username ,email, password).getId().equals("0")) {
+            if (!users.userExists(username ,email)) {
 //                Can create new user
                     users.registerUser(user);
-                    UserDTO registered = users.getUser(user.getUsername(), user.getEmail(), user.getPassword());
+                    UserDTO registered = users.getUserLogin(user.getEmail(), user.getPassword());
                     HttpSession session = request.getSession();
                     session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
                     session.setAttribute("username", registered.getUsername());
@@ -102,5 +83,45 @@ public class LoginUtente extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         doRequest(request, response);
+    }
+
+    private Boolean loginAsRestaurant(HttpServletRequest request, HttpServletResponse response){
+        String email = (String) request.getParameter("email");
+        String password = (String) request.getParameter("password");
+        RestaurantsMongoDAO users = new RestaurantsMongoDAO();
+        RestaurantDTO result = users.getRestaurantOwner(email, password);
+//                  Ristorante trovato
+        if (!result.getId().equals("0"))
+        {
+            HttpSession session = request.getSession();
+            session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
+            session.setAttribute("name", result.getName());
+            return true;
+        }
+        else
+        //                No match
+        {
+            request.setAttribute("message", "Wrong credentials");
+            return false;
+        }
+    }
+
+    private Boolean loginAsUser(HttpServletRequest request, HttpServletResponse response){
+        String email = (String) request.getParameter("email");
+        String password = (String) request.getParameter("password");
+        UserMongoDAO users = new UserMongoDAO();
+        UserDTO result = users.getUserLogin(email, password);
+
+//      Utente trovato
+        if (!result.getId().equals("0")) {
+            HttpSession session = request.getSession();
+            session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
+            session.setAttribute("username", result.getUsername());
+            return true;
+        } else {
+//          No match
+            request.setAttribute("message", "Wrong credentials");
+            return false;
+        }
     }
 }

@@ -3,9 +3,6 @@ package it.unipi.lsmsd.neo4food.dao.mongo;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-
 import com.mongodb.client.result.InsertOneResult;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
@@ -13,27 +10,32 @@ import it.unipi.lsmsd.neo4food.model.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import static com.mongodb.client.model.Filters.*;
+
 public class UserMongoDAO extends BaseMongo{
 
-    public UserDTO getUser(String usr, String eml, String psw){
+        //LOGIN - Email, Password
+        //CREDENTIALS - Username, Email
+    public Boolean userExists(String usr, String eml){
+        MongoCollection<Document> collection = getDatabase().getCollection("Users");
+        try(MongoCursor cursor = collection.find(or(eq("email", eml),eq("username",usr))).limit(1).iterator();
+        ){
+            if (cursor.hasNext()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public UserDTO getUserLogin(String eml, String psw){
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
 
         try(MongoCursor cursor = collection.find(and(eq("email", eml),eq("password",psw))).limit(1).iterator();
         ){
-            Document res = null;
             if (cursor.hasNext()) {
-                res = (Document) cursor.next();
+                Document res = (Document) cursor.next();
 //            One user found
-            } else {
-                try(MongoCursor cursor1 = collection.find(eq("username", usr)).limit(1).iterator();
-                ) {
-                    if (cursor1.hasNext()) {
-                        res = (Document) cursor1.next();
-                    }
-                }
-            }
-            if(res != null){
+
                 String id = res.get("_id").toString();
                 String username = res.get("username").toString();
                 String firstName = res.get("firstname").toString();
@@ -42,7 +44,6 @@ public class UserMongoDAO extends BaseMongo{
                 String phoneNumber = res.get("phonenumber").toString();
                 String address = res.get("address").toString();
                 String zipcode = res.get("zipcode").toString();
-
                 return new UserDTO(id, username, firstName, lastName, email, phoneNumber, address, zipcode);
             }
 //            No match

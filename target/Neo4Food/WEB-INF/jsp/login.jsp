@@ -15,8 +15,8 @@
             font-family: gill sans, sans-serif;
         }
     </style>
-
-    <script>
+    <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
+    <script type="text/javascript">
         function hideshow(){
             var x = document.getElementById("loginForm");
             var y = document.getElementById("signupForm");
@@ -30,47 +30,38 @@
             }
         }
     </script>
-    <style type="text/css" id="operaUserStyle"></style>
     <title>Login Page</title>
-    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
 </head>
 
 <body>
-<header class="text-1xs h-12 bg-principale px-5 font-bold">
-    <a href="/Neo4Food_war_exploded/ricerca"><img class="float-left h-12" src="img/logo_2.png" alt="logo" /></a>
-
-    <button class="float-right my-3 rounded-lg px-3 hover:bg-button">
-        <a href="/Neo4Food_war_exploded/login">Login</a>
-    </button>
-</header>
-<div class="z-40 h-48 overflow-hidden w-full" style="top">
+<%@include file="template/header.jsp"%>
+<div class="z-40 h-48 overflow-hidden w-full">
     <img class="w-full blur-md" src="https://ilfattoalimentare.it/wp-content/uploads/2017/06/junk-food-hamburger-patatine-fast-food-pizza-dolci-Fotolia_130389179_Subscription_Monthly_M.jpg" alt="imgFood" />
 </div>
 <section>
-    <div class="mx-auto -my-20 text-center relative" id="external">
-
+    <div class="mx-auto -my-20 text-center relative shadow-md" id="external">
         <div id="loginForm" class="mx-auto h-auto w-96 rounded-lg bg-principale pb-7 shadow-2xl">
-            <div class="border-gray-300 rounded-t-lg border-b-2 bg-button p-1"><h3 class="py-5 text-3xl font-bold ">Login</h3></div>
-            <form method="post" action="/Neo4Food_war_exploded/login" class="pt-7">
+            <div class="border-gray-300 rounded-t-lg border-b-2 bg-button p-1"><h3 class="py-5 text-3xl font-bold ">Login</h3>
+                <% if(request.getAttribute("message") != null){ %>
+                <div> <%= request.getAttribute("message").toString() %></div>
+                <%}%></div>
+            <form id="formL" method="post" action="/Neo4Food_war_exploded/login" class="pt-7">
                 <input required="" class="h-9 w-52 rounded-lg px-3  shadow-xl" type="email" name="email" placeholder="E-Mail" />
                 <input required="" class="my-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="password" name="password" placeholder="Password" />
-                <input type="hidden" name="action" value="login" />
+                <input type="hidden" name="action" value="login" id="actionType"/>
                 </br>
-                <button class="my-3 w-36 rounded-lg border-2 shadow-xl hover:bg-button" type="submit">Login</button>
-            </form>
-            <button class="my-3 w-36 rounded-lg border-2 shadow-xl hover:bg-button" onclick="hideshow()">SignUp</button>
-            <br>
-            <div class="flex justify-center">
-                <div class="form-check border-2 w-52 rounded-lg shadow-xl my-3">
+                <button class="my-3 w-36 rounded-lg border-2 shadow-xl hover:bg-button" type="submit" id="loginButton">Login</button>
+                <button class="my-3 w-36 rounded-lg border-2 shadow-xl" onclick="hideshow()">SignUp</button>
+                <div class="flex justify-center">
+                    <div class="form-check border-2 w-52 rounded-lg shadow-xl my-3">
 
-
-                    <label class="form-check-label text-gray-800 " for="flexCheckDefault">
-                        Are you a Restaurant?
-                    </label>
-                    <input type="checkbox" class="form-checkbox bg-test_col-100 border border-principale-300 text-button-500 focus:ring-200 "  >
+                        <label class="form-check-label text-gray-800">
+                            Are you a Restaurant?
+                        </label>
+                        <input type="checkbox" class="form-checkbox bg-test_col-100 border border-principale-300 text-button-500 focus:ring-200"name="isRestaurant">
+                    </div>
                 </div>
-            </div>
-
+            </form>
 
         </div>
 
@@ -89,9 +80,11 @@
 
                 <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" type="submit">Signup</button>
             </form>
+            <button class="my-3 w-52 rounded-lg border-2" onclick="hideshow()">SignIn</button>
         </div>
     </div>
 </section>
+<%@include file="template/footer.jsp"%>
 </body>
 
 
