@@ -9,7 +9,8 @@ import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 @WebServlet("/restaurant")
-public class LoadRestaurant extends HttpServlet{
+public class LoadRestaurant extends HttpServlet
+{
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";

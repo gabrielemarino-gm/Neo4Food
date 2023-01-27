@@ -541,40 +541,16 @@ video {
   left: 1rem;
 }
 
+.right-20 {
+  right: 5rem;
+}
+
 .right-4 {
   right: 1rem;
 }
 
 .top-10 {
   top: 2.5rem;
-}
-
-.right-8 {
-  right: 2rem;
-}
-
-.right-6 {
-  right: 1.5rem;
-}
-
-.right-5 {
-  right: 1.25rem;
-}
-
-.right-7 {
-  right: 1.75rem;
-}
-
-.right-10 {
-  right: 2.5rem;
-}
-
-.right-16 {
-  right: 4rem;
-}
-
-.right-20 {
-  right: 5rem;
 }
 
 .z-40 {

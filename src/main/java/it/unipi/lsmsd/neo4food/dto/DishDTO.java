@@ -1,6 +1,7 @@
 package it.unipi.lsmsd.neo4food.dto;
 
-public class DishDTO {
+public class DishDTO
+{
     private String id;
     private String name;
     private Float cost;
@@ -8,16 +9,14 @@ public class DishDTO {
     private String description;
     private String ownerid;
 
-    public DishDTO(String i, String n, Float c, String cu, String d, String o){
+    public DishDTO(String i, String n, Float c, String cu, String d, String o)
+    {
         id = i;
         name = n;
         cost = c;
         currency = cu;
         description = d;
         ownerid = o;
-    }
-    public DishDTO(){
-        
     }
 
     public String getId() {return id;}
