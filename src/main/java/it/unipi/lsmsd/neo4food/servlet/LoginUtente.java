@@ -51,7 +51,7 @@ public class LoginUtente extends HttpServlet
             String email = (String) request.getParameter("email");
             String password = (String) request.getParameter("password");
             UserMongoDAO users = new UserMongoDAO();
-            UserDTO result = users.getUser(email, password);
+            UserDTO result = users.getUser("", email, password);
 //            Utente trovato
             if (!result.getId().equals("0")) {
                 HttpSession session = request.getSession();
@@ -76,10 +76,10 @@ public class LoginUtente extends HttpServlet
             String address = (String) request.getParameter("address");
             User user = new User("0",email,username,password,firstname,lastname,phonenumber,address,zipcode);
 
-            if (users.getUser(email, password).getId().equals("0")) {
+            if (users.getUser(username ,email, password).getId().equals("0")) {
 //                Can create new user
                     users.registerUser(user);
-                    UserDTO registered = users.getUser(user.getEmail(), user.getPassword());
+                    UserDTO registered = users.getUser(user.getUsername(), user.getEmail(), user.getPassword());
                     HttpSession session = request.getSession();
                     session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
                     session.setAttribute("username", registered.getUsername());

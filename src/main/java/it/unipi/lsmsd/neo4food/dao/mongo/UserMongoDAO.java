@@ -15,15 +15,25 @@ import org.bson.types.ObjectId;
 
 public class UserMongoDAO extends BaseMongo{
 
-    public UserDTO getUser(String e, String password){
+    public UserDTO getUser(String usr, String eml, String psw){
 
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
 
-        try(MongoCursor cursor = collection.find(and(eq("email", e),eq("password",password))).limit(1).iterator()
+        try(MongoCursor cursor = collection.find(and(eq("email", eml),eq("password",psw))).limit(1).iterator();
         ){
+            Document res = null;
             if (cursor.hasNext()) {
-                Document res = (Document) cursor.next();
+                res = (Document) cursor.next();
 //            One user found
+            } else {
+                try(MongoCursor cursor1 = collection.find(eq("username", usr)).limit(1).iterator();
+                ) {
+                    if (cursor1.hasNext()) {
+                        res = (Document) cursor1.next();
+                    }
+                }
+            }
+            if(res != null){
                 String id = res.get("_id").toString();
                 String username = res.get("username").toString();
                 String firstName = res.get("firstname").toString();
