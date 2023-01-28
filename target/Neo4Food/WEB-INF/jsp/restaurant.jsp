@@ -190,6 +190,41 @@
 </div>
 
 <div class="flex flex-wrap justify-center">
+<<<<<<< Updated upstream
+=======
+    <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
+        <%--            List of available dishes--%>
+<%
+        for(DishDTO i: list.getList())
+        {
+            String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString();
+%>
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
+
+            <div class="text-xl font-bold"><%= i.getName()%></div>
+            <div class="h-3"></div>
+            <div class="text-left"><%= i.getDescription()%></div>
+            <div class="h-10"></div>
+            <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
+            <div>
+                <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
+                    <img class="h-6" src="img/meno.png" alt="meno">
+                </button>
+                <div class="absolute bottom-3 right-14" style="display: none;" id="countDiv<%=i.getId()%>">0</div>
+<%
+                if (i.getPrice() != 0.0)
+                {
+%>
+                    <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
+                        <img class="h-6" src="img/plus.png" alt="plus">
+                    </button>
+<%              }
+%>
+            </div>
+        </div>
+        <%  } %>
+    </div>
+>>>>>>> Stashed changes
 
     <form id="ordini" method="post" action="<c:url value="/checkout"/>">
         <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
