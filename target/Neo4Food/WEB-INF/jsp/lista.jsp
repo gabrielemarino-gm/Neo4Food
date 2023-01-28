@@ -46,6 +46,7 @@
                     %>
                                 <form method="post" action="<c:url value="/restaurant"/>">
                                     <input type="hidden" name="rid" value= "<%= item.getId() %>" >
+                                    <input type="hidden" name="action" value="details">
                                     <button class="w-full px-5 py-3 rounded-lg bg-principale shadow-md" type="submit">
                                         <h2 class="float-left"><%= item.getName() %></h2>
                                         <a class="float-right"><%= item.getRating() %></a>

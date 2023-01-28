@@ -5,7 +5,7 @@
     String username = null;
     String restaurantname = null;
     Boolean isLogged = false;
-    Boolean isRestaurant=false;
+    Boolean isRestaurant = false;
 
     if (session != null && session.getAttribute("userToken") != null){
         isLogged = true;

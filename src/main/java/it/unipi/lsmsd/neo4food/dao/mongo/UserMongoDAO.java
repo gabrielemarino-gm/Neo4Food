@@ -3,12 +3,20 @@ package it.unipi.lsmsd.neo4food.dao.mongo;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
+import it.unipi.lsmsd.neo4food.dto.DishDTO;
+import it.unipi.lsmsd.neo4food.dto.OrderDTO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+
+import javax.print.Doc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -69,5 +77,38 @@ public class UserMongoDAO extends BaseMongo{
         }catch (MongoException e){
             System.err.println(e);
         }
+    }
+
+    public void insertOrder(OrderDTO order){
+        MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
+        MongoCollection<Document> collection1 = getDatabase().getCollection("Orders");
+
+//        Devo aggiungere un ordine
+//        Un ordine ha dei campi e una lista di piatti
+//        Inizio creando una lista di documenti di tipo piatto
+//        Aggiungo i campi importanti per ogni piatto nell'ordine
+        List<Document> dishes = new ArrayList<>();
+        for(DishDTO item: order.getItems()){
+            dishes.add(new Document("_id", new ObjectId())
+                    .append("name", item.getName())
+                    .append("price", item.getPrice())
+                    .append("quantity", item.getQuantity())
+                    .append("currency", item.getCurrency().replace(" ","")));
+        }
+//        A questo punto creo il documento dell ordine
+        Document toInsert = new Document("_id", new ObjectId()).
+                append("user", order.getUser()).
+                append("restaurant", order.getRestaurant()).
+                append("paymentMethod", order.getPaymentMethod()).
+                append("paymentNumber", order.getPaymentNumber()).
+                append("address", order.getAddress()).
+                append("zipcode", order.getZipcode()).
+                append("total", order.getTotal()).
+                append("status", order.getStatus()).
+                append("dish", dishes);
+
+        collection1.insertOne(toInsert);
+        collection.updateOne(eq("name", order.getRestaurant()),
+                            Updates.addToSet("orders", toInsert));
     }
 }

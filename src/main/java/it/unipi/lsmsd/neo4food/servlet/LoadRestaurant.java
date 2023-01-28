@@ -15,11 +15,13 @@ public class LoadRestaurant extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
 
-        String res = (String) request.getParameter("rid");
-        RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
-        RestaurantDTO ret = restaurants.getRestaurantDetails(res);
-        request.setAttribute("details", ret);
-
+        String res = request.getParameter("rid");
+        String actionType = request.getParameter("action");
+        if("details".equals(actionType)) {
+            RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
+            RestaurantDTO ret = restaurants.getRestaurantDetails(res);
+            request.setAttribute("restaurantDTO", ret);
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

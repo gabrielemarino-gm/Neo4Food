@@ -37,7 +37,7 @@
                 <% if(request.getAttribute("message") != null){ %>
                 <div> <%= request.getAttribute("message").toString() %></div>
                 <%}%></div>
-            <form id="formL" method="post" action="/Neo4Food_war_exploded/login" class="pt-7">
+            <form id="formL" method="post" action="<c:url value="/login"/>" class="pt-7">
                 <input required="" class="h-9 w-52 rounded-lg px-3  shadow-xl" type="email" name="email" placeholder="E-Mail" />
                 <input required="" class="my-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="password" name="password" placeholder="Password" />
                 <input type="hidden" name="action" value="login" id="actionType"/>

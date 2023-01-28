@@ -19,7 +19,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantsMongoDAO extends BaseMongo{
+public class  RestaurantsMongoDAO extends BaseMongo{
 
     public ListDTO<RestaurantDTO> getRestaurants(int page, String zipcode){
         ListDTO<RestaurantDTO> returnList = new ListDTO<RestaurantDTO>();
@@ -73,6 +73,7 @@ return new RestaurantDTO("0","","","");
     public RestaurantDTO getRestaurantDetails(String rid)
     {
         RestaurantDTO ret = null;
+
         // Piatti
         ListDTO<DishDTO> listD = new ListDTO<DishDTO>();
         List<DishDTO> suppD = new ArrayList<DishDTO>();
@@ -95,32 +96,74 @@ return new RestaurantDTO("0","","","");
                 String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available" ;
                 Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()) : 0;
 
-                // PIATTI
+                // Attributo dish del documento
                 ArrayList<Document> itemsDishs = (ArrayList<Document>) res.get("dish");
                 count = 0;
+//                Per ogni piatto nel documento, genera un DishDTO
                 for(Document i:itemsDishs)
                 {
                     suppD.add(new DishDTO(
                             i.get("_id").toString(),
                             i.get("name").toString(),
-                            Float.parseFloat(i.get("price").toString().replaceAll("[^0-9.]","")),
+                            Double.parseDouble(i.get("price").toString().replaceAll("[^0-9.]","")),
                             i.get("price").toString().replaceAll("[0-9.]",""),
                             i.get("description") != null ? i.get("description").toString() : "No description available",
                             id
                     ));
                     count++;
                 }
+//                ListDTO di DishDTO e quantita
                 listD.setItemCount(count);
                 listD.setList(suppD);
+//                -----
 
 
 
-                // ORDINI PENDING
+                // Prende array di documenti
                 ArrayList<Document> itemsOrder = (ArrayList<Document>) res.get("orders");
-
+                //Per ogni documento ordine, genero un ordine e lo metto nella ListDTO
+                count = 0;
+                if(itemsOrder != null) {
+                    for (Document j : itemsOrder) {
+                        List<DishDTO> dishes = new ArrayList<DishDTO>();
+                        for (Document i : (List<Document>) j.get("dish")){
+                            dishes.add(new DishDTO(i.get("_id").toString(),
+                                    i.get("name").toString(),
+                                    Double.parseDouble(i.get("price").toString()),
+                                    i.get("currency").toString(),
+                                    Integer.parseInt(i.get("quantity").toString()))
+                            );
+                        }
+                        suppO.add(new OrderDTO(
+                                j.get("_id").toString(),
+                                j.get("user").toString(),
+                                j.get("restaurant").toString(),
+                                j.get("paymentMethod").toString(),
+                                j.get("paymentNumber").toString(),
+                                j.get("address").toString(),
+                                j.get("zipcode").toString(),
+                                Double.parseDouble(j.get("total").toString()),
+                                Boolean.parseBoolean(j.get("status").toString()),
+                                dishes
+                        ));
+                        count++;
+                    }
+                    //                ListDTO di OrderDTO e quantita
+                    listO.setItemCount(count);
+                    listO.setList(suppO);
+                }else{
+                    listO = null;
+                }
                 ret = new RestaurantDTO(id,name,range,rating,listD,listO);
             }
         }
         return ret;
+    }
+
+    public ListDTO<OrderDTO> getRestaurantOrders(String rid){
+        ListDTO<OrderDTO> toReturn = new ListDTO<OrderDTO>();
+        toReturn.setList(getRestaurantDetails(rid).getOrders().getList());
+        toReturn.setItemCount(getRestaurantDetails(rid).getOrders().getList().size());
+        return toReturn;
     }
 }

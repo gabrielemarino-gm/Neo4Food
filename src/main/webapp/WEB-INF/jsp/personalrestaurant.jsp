@@ -12,7 +12,7 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.OrderDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ page import="java.util.List" %>
-
+<%@ page import="it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO" %>
 
 <html>
 <head>
@@ -25,8 +25,9 @@
 
     <%
         RestaurantDTO details = (RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
-        ListDTO<OrderDTO> list = details.getOrders();
+        ListDTO<OrderDTO> list = new RestaurantsMongoDAO().getRestaurantOrders(details.getId());
         List<OrderDTO> ordini = list.getList();
+        int count = list.getItemCount();
     %>
 
     <%@include file="template/header.jsp"%>
@@ -87,8 +88,18 @@
     <div class="flex flex-wrap justify-center">
         <%
             for(OrderDTO order: ordini)
-            {
-                String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString(); %>
+            { %>
+            <div>
+                <%= order.getUser() %>
+                <%= order.getAddress() %>, <%= order.getZipcode() %>
+                <%= order.getTotal()%>
+                <div>
+                    <% for(DishDTO dish: order.getItems()){%>
+                        <%= dish.getName() %>
+                        <%= dish.getQuantity() %>
+                    <% } %>
+                </div>
+            </div>
         <%  } %>
     </div>
 

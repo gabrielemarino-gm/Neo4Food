@@ -20,10 +20,10 @@ public class LoginUtente extends HttpServlet
         String actionType = (String) request.getParameter("action");
         String targetJSP = "WEB-INF/jsp/ricerca.jsp";
 //        Se actionType e' null la richiesta viene da header.jsp
+
         if (actionType == null){
             targetJSP = "WEB-INF/jsp/login.jsp";
         }
-
 
 //        Se actionType vale "login" la richiesta viene da login.jsp
         else if ("login".equals(actionType)) {

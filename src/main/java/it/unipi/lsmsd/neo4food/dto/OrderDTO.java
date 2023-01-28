@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class OrderDTO {
 //        Li setto solo al momento del checkout
+    private String id;
     private String user;
     private String restaurant;
     private String paymentMethod;
@@ -14,11 +15,26 @@ public class OrderDTO {
     private String address;
     private String zipcode;
 //        ---------------------------------------
-    private float total;
+    private double total;
+    private boolean isSent;
     private List<DishDTO> items;
+
+    public OrderDTO(String i, String u, String r, String pm, String pn, String a, String z, double t, Boolean s,List<DishDTO> items){
+        id = i;
+        user = u;
+        restaurant = r;
+        paymentMethod = pm;
+        paymentNumber = pn;
+        address = a;
+        zipcode = z;
+        isSent = s;
+        total = t;
+        this.items = items;
+    }
 
     public OrderDTO(){
         total = 0;
+        isSent = false;
         items = new ArrayList<DishDTO>();
     }
 
@@ -29,11 +45,12 @@ public class OrderDTO {
     public void setAddress(String address) {this.address = address;}
     public void setZipcode(String zipcode) {this.zipcode = zipcode;}
 
-    public void setTotal(float total) {this.total = total;}
+    public void setSent() {isSent = true;}
+    public void setTotal(double total) {this.total = total;}
     public void setItems(List<DishDTO> items) {this.items = items;}
 //    ---------------
-    private float addToTotal(float q){return (total+=q);}
-    private float removeFromTotal(float q){return (total-=q);}
+    private double addToTotal(double q){return (total+=q);}
+    private double removeFromTotal(double q){return (total-=q);}
 
     private DishDTO getDish(String id){
         for(DishDTO i: items){
@@ -69,6 +86,16 @@ public class OrderDTO {
         }
         return 1;
     }
+
+    public String getUser() {return user;}
+    public String getRestaurant() {return restaurant;}
+    public String getAddress() {return address;}
+    public String getZipcode() {return zipcode;}
+    public String getPaymentMethod() {return paymentMethod;}
+    public String getPaymentNumber() {return paymentNumber;}
+    public List<DishDTO> getItems() {return items;}
+    public boolean getStatus(){return isSent;}
+    public double getTotal() {return total;}
 
     @Override
     public String toString() {
