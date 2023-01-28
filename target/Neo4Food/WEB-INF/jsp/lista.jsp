@@ -18,6 +18,7 @@
             <%@include file="template/header.jsp"%>
             <%
                 String requestMessage = (String) request.getAttribute("message");
+                String filter = request.getAttribute("filter") != null ? (String) request.getAttribute("filter") : "";
                 String zipcode = (String) request.getAttribute("zipcode");
                 int pagenum = Integer.parseInt(request.getAttribute("page").toString());
 
@@ -35,7 +36,21 @@
 
             <div class="my-5 flex px-2">
                 <div class="w-1/3 border rounded-lg">
-                    List of filter to be add
+                    <% for(String x : Constants.RESTAURANTS_CATEGORIES)
+                        {
+                    %>
+                        <div>
+                            <form>
+                                <input type="hidden" name="page" value="0"/>
+                                <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
+                                <input type="hidden" name="action" value="search"/>
+                                <input type="hidden" name="filter" value="<%= x %>"/>
+                                <button type="submit"><%= x %></button>
+                            </form>
+                        </div>
+                    <%
+                        }
+                    %>
                 </div>
 
                 <div class="px-4 w-2/3 position-relative">
@@ -67,6 +82,7 @@
                             <input type="hidden" name="zipcode" value="<%= zipcode %>">
                             <input type="hidden" name="page" value= <%= pagenum - 1%>>
                             <input type="hidden" name="action" value="search">
+                            <input type="hidden" name="filter" value="<%= filter %>" />
                             <button class="w-20 mx-2 rounded-lg border-2 hover:bg-button" type="submit"> < <%= pagenum %></button>
                         </form>
                     <% } %>
@@ -77,6 +93,7 @@
                             <input type="hidden" name="zipcode" value="<%= zipcode %>">
                             <input type="hidden" name="page" value= <%= pagenum + 1 %>>
                             <input type="hidden" name="action" value="search">
+                            <input type="hidden" name="filter" value="<%= filter %>" />
                             <button class="w-20 mx-2 rounded-lg border-2 hover:bg-button" type="submit"><%= pagenum + 2%> > </button>
                         </form>
                     <% } %>

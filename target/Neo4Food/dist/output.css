@@ -553,12 +553,12 @@ video {
   right: 1rem;
 }
 
-.top-10 {
-  top: 2.5rem;
-}
-
 .left-64 {
   left: 16rem;
+}
+
+.top-10 {
+  top: 2.5rem;
 }
 
 .z-40 {
@@ -670,6 +670,10 @@ video {
 
 .mt-auto {
   margin-top: auto;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
 }
 
 .block {

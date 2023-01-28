@@ -100,6 +100,8 @@ public class UserMongoDAO extends BaseMongo{
                     .append("address", user.getAddress())
                     .append("zipcode", user.getZipcode())
                     .append("password", user.getPassword())
+                    .append("paymentMethod", "")
+                    .append("paymentNumber", "")
             );
 
         }
@@ -112,37 +114,55 @@ public class UserMongoDAO extends BaseMongo{
     public void insertOrder(OrderDTO order)
     {
         // Devo aggiungere sia in Ordini che in Ristoranti
-        MongoCollection<Document> collectionRest = getDatabase().getCollection("Restaurants");
-        MongoCollection<Document> collectionOrd = getDatabase().getCollection("Orders");
+        MongoCollection<Document> collectionOrders = getDatabase().getCollection("Orders");
+        MongoCollection<Document> collectionRestaurants = getDatabase().getCollection("Restaurants");
 
         // Devo aggiungere un ordine
         // Un ordine ha dei campi e una lista di piatti
         // Inizio creando una lista di documenti di tipo piatto
         // Aggiungo i campi importanti per ogni piatto nell'ordine
-        List<Document> dishes = new ArrayList<>();
-        for(DishDTO item: order.getItems())
+        List<Document> dishesList = new ArrayList<>();
+        for(DishDTO item: order.getDishes())
         {
-            dishes.add(new Document("_id", new ObjectId())
-                    .append("name", item.getName())
-                    .append("price", item.getPrice())
-                    .append("quantity", item.getQuantity())
-                    .append("currency", item.getCurrency().replace(" ","")));
+            dishesList.add(new Document("_id", new ObjectId())
+                        .append("name", item.getName())
+                        .append("price", item.getPrice())
+                        .append("currency", item.getCurrency().replace(" ",""))
+                        .append("quantity", item.getQuantity()));
         }
 
         // A questo punto creo il documento dell ordine
         Document toInsert = new Document("_id", new ObjectId()).
                 append("user", order.getUser()).
                 append("restaurant", order.getRestaurant()).
+                append("restaurantId", order.getRestaurantId()).
                 append("paymentMethod", order.getPaymentMethod()).
                 append("paymentNumber", order.getPaymentNumber()).
                 append("address", order.getAddress()).
                 append("zipcode", order.getZipcode()).
                 append("total", order.getTotal()).
                 append("status", order.getStatus()).
-                append("dish", dishes);
+                append("dishes", dishesList);
 
-        collectionOrd.insertOne(toInsert);
-        collectionRest.updateOne(eq("name", order.getRestaurant()),
-                            Updates.addToSet("orders", toInsert));
+        collectionOrders.insertOne(toInsert);
+
+//        L'ordine da inserire sotto il ristorante ha alcuni campi in meno
+//        I piatti non devono avere price e currency
+//        L ordine non deve avere restaurant, restaurantId e status
+        for(Document i : dishesList){
+            i.remove("price");
+            i.remove("currency");
+        }
+        toInsert.remove("restaurant");
+        toInsert.remove("restaurantId");
+        toInsert.remove("status");
+
+        toInsert.remove("dishes");
+
+        toInsert.append("dishes", dishesList);
+
+        collectionRestaurants.updateOne(
+                eq("_id", new ObjectId(order.getRestaurantId())),
+                Updates.addToSet("orders", toInsert));
     }
 }

@@ -3,6 +3,7 @@ package it.unipi.lsmsd.neo4food.dao.mongo;
 import com.mongodb.client.*;
 
 import com.mongodb.ConnectionString;
+import com.mongodb.client.model.Filters;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
@@ -12,6 +13,7 @@ import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.constants.Constants;
 import jdk.nashorn.internal.runtime.ListAdapter;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -19,9 +21,11 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 
-public class  RestaurantsMongoDAO extends BaseMongo{
+public class  RestaurantsMongoDAO extends BaseMongo
+{
 
-    public ListDTO<RestaurantDTO> getRestaurants(int page, String zipcode){
+    public ListDTO<RestaurantDTO> getRestaurants(int page, String zipcode, String filter)
+    {
         ListDTO<RestaurantDTO> toReturn = new ListDTO<RestaurantDTO>();
         List<RestaurantDTO> tempList = new ArrayList<RestaurantDTO>();
 
@@ -29,11 +33,22 @@ public class  RestaurantsMongoDAO extends BaseMongo{
 //------------------------
         int offset = page * Constants.PAGE_SIZE;
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
+        Bson query = new Document();
+        if(filter.equals("") || filter == null){
+//          Query senza category
+            query = Filters.eq("zip_code", zipcode);
+        }else{
+//          Query con category
+            query = Filters.and(
+                    Filters.eq("zip_code", zipcode),
+                    Filters.regex("category",".*"+filter+".*"));
+        }
 
-        try(MongoCursor cursor = collection.find(eq("zip_code", zipcode)).limit(Constants.PAGE_SIZE).skip(offset).iterator();
-        ){
+        try(MongoCursor cursor = collection.find(query).limit(Constants.PAGE_SIZE).skip(offset).iterator();)
+        {
             while (cursor.hasNext()){
                 Document res = (Document) cursor.next();
+
                 String id = res.get("_id").toString();
                 String name = res.get("name").toString();
                 String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available";
@@ -72,12 +87,14 @@ public RestaurantDTO getRestaurantOwner(String eml, String password){
 //            One restaurantOwner found!
         String id = res.get("_id").toString();
         String name = res.get("name").toString();
+        Float rating = res.get("rating") != null ? Float.parseFloat(res.get("rating").toString()): 0;
         String address = res.get("full_address").toString();
         String email = res.get("email").toString();
 
         RestaurantDTO e = new RestaurantDTO();
         e.setId(id);
         e.setName(name);
+        e.setRating(rating);
         e.setEmail(email);
         e.setAddress(address);
 
@@ -110,9 +127,7 @@ public RestaurantDTO getRestaurantOwner(String eml, String password){
             {
 //              Itero il risultato
                 Document res = (Document) cursor.next();
-                System.out.println("Restaurant ID from call: " + rid);
                 String id = res.get("_id") != null ? res.get("_id").toString() : "ID not available";
-                System.out.println("Rstaurant Id from MongoDB: " + id) ;
                 String name = res.get("name") != null ? res.get("name").toString() : "Name not available" ;
                 String range = res.get("price_range") != null ? res.get("price_range").toString() : "Price not available" ;
                 String address = res.get("full_address") != null ? res.get("full_address").toString() : "Address not available" ;
@@ -130,6 +145,7 @@ public RestaurantDTO getRestaurantOwner(String eml, String password){
 //              Per ogni piatto nel documento, genera un DishDTO
                 if(dishDocuments != null)
                 {
+
                     for (Document i : dishDocuments)
                     {
                         DishDTO tempDish = new DishDTO();
@@ -155,13 +171,20 @@ public RestaurantDTO getRestaurantOwner(String eml, String password){
 
                         tempOrder.setId(i.get("_id").toString());
                         tempOrder.setUser(i.get("user").toString());
-                        tempOrder.setRestaurant(i.get("restaurant").toString());
+                        if(i.get("restaurant") != null)
+                        {
+                            tempOrder.setRestaurant(i.get("restaurant").toString());
+                            tempOrder.setRestaurantId(i.get("restaurantId").toString());
+                        }
                         tempOrder.setPaymentMethod(i.get("paymentMethod").toString());
                         tempOrder.setPaymentNumber(i.get("paymentNumber").toString());
                         tempOrder.setAddress(i.get("address").toString());
                         tempOrder.setZipcode(i.get("zipcode").toString());
-                        if(Boolean.parseBoolean(i.get("status").toString()))
-                            tempOrder.setSent();
+                        if(i.get("status") != null){
+                            if(Boolean.parseBoolean(i.get("status").toString())) {
+                                tempOrder.setSent();
+                            }
+                        }
                         tempOrder.setTotal(Double.parseDouble(i.get("total").toString()));
 
 //                      Ogni ordine puo contenere una lista di piatti
@@ -169,20 +192,25 @@ public RestaurantDTO getRestaurantOwner(String eml, String password){
                         List<Document> dishOrderDocuments = i.get("dishes") != null ? (ArrayList<Document>) i.get("dishes") : null;
 
 //                      Per ogni ordine ci sono DishDTO
-                        for (Document j : dishOrderDocuments)
-                        {
-                            DishDTO tempSubdish = new DishDTO();
+                        if(dishOrderDocuments != null) {
+                            System.out.println(dishOrderDocuments);
+                            for (Document j : dishOrderDocuments) {
 
-                            tempSubdish.setId(j.get("_id").toString());
-                            tempSubdish.setName(j.get("name").toString());
-                            tempSubdish.setPrice(Double.parseDouble(j.get("price").toString()));
-                            tempSubdish.setCurrency(j.get("currency").toString());
-                            tempSubdish.setQuantity(Integer.parseInt(j.get("quantity").toString()));
+                                DishDTO tempSubdish = new DishDTO();
 
-                            tempDishSublist.add(tempSubdish);
+                                tempSubdish.setId(j.get("_id").toString());
+                                tempSubdish.setName(j.get("name").toString());
+                                if(j.get("price") != null){
+                                    tempSubdish.setPrice(Double.parseDouble(j.get("price").toString()));
+                                    tempSubdish.setCurrency(j.get("currency").toString());
+                                }
+                                tempSubdish.setQuantity(Integer.parseInt(j.get("quantity").toString()));
+
+                                tempDishSublist.add(tempSubdish);
+                            }
+                        tempOrder.setDishes(tempDishSublist);
                         }
 
-                        tempOrder.setDishes(tempDishSublist);
                         tempOrdersList.add(tempOrder);
                     }
                 }

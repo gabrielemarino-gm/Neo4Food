@@ -193,7 +193,7 @@
     <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
         <%--            List of available dishes--%>
 <%
-        for(DishDTO i: list.getList())
+        for(DishDTO i: dishList)
         {
             String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString();
 %>

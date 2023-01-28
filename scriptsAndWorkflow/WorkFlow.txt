@@ -71,8 +71,6 @@ RESTAURANT - (  _id,
                                                        currency
                                                        dishes[]       ------->     DISH - (  _id,
                                                    )                                         name,
-                                                                                             price,
-                                                                                             currency,
                                                                                              quantity
                                                                                            )
 

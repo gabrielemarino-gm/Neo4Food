@@ -19,7 +19,7 @@ public class LoginUtente extends HttpServlet
     {
         String actionType = (String) request.getParameter("action");
         String targetJSP = "WEB-INF/jsp/ricerca.jsp";
-//        Se actionType e' null la richiesta viene da header.jsp
+//        Se actionType == null la richiesta viene da header.jsp
 
         if (actionType == null)
         {
@@ -56,7 +56,8 @@ public class LoginUtente extends HttpServlet
 //      Se actionType vale "Signup" la richiesta e' un signup
         else if ("signup".equals(actionType))
         {
-            UserMongoDAO users = new UserMongoDAO();
+            UserMongoDAO mongoUserAgent = new UserMongoDAO();
+
             String username = (String) request.getParameter("username");
             String email = (String) request.getParameter("email");
             String firstname = (String) request.getParameter("firstname");
@@ -67,14 +68,15 @@ public class LoginUtente extends HttpServlet
             String address = (String) request.getParameter("address");
             User user = new User("0",email,username,password,firstname,lastname,phonenumber,address,zipcode);
 
-            if (!users.userExists(username ,email))
+            if (!mongoUserAgent.userExists(username ,email))
             {
 //              Can create new user
-                users.registerUser(user);
-                UserDTO registered = users.getUserLogin(user.getEmail(), user.getPassword());
+                mongoUserAgent.registerUser(user);
+                UserDTO registered = mongoUserAgent.getUserLogin(user.getEmail(), user.getPassword());
                 HttpSession session = request.getSession();
                 session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
                 session.setAttribute("username", registered.getUsername());
+
             }
             else
             {
@@ -102,8 +104,8 @@ public class LoginUtente extends HttpServlet
     {
         String email = (String) request.getParameter("email");
         String password = (String) request.getParameter("password");
-        RestaurantsMongoDAO users = new RestaurantsMongoDAO();
-        RestaurantDTO result = users.getRestaurantOwner(email, password);
+        RestaurantsMongoDAO mongoRestAgent = new RestaurantsMongoDAO();
+        RestaurantDTO result = mongoRestAgent.getRestaurantOwner(email, password);
 //                  Ristorante trovato
         if (!result.getId().equals("0"))
         {
@@ -124,8 +126,8 @@ public class LoginUtente extends HttpServlet
     {
         String email = (String) request.getParameter("email");
         String password = (String) request.getParameter("password");
-        UserMongoDAO users = new UserMongoDAO();
-        UserDTO result = users.getUserLogin(email, password);
+        UserMongoDAO mongoUserAgent = new UserMongoDAO();
+        UserDTO result = mongoUserAgent.getUserLogin(email, password);
 
 //      Utente trovato
         if (!result.getId().equals("0"))

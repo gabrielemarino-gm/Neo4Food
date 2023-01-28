@@ -11,6 +11,7 @@ public class OrderDTO
     private String id;
     private String user;
     private String restaurant;
+    private String restaurantId;
     private String paymentMethod;
     private String paymentNumber;
     private String address;
@@ -23,6 +24,7 @@ public class OrderDTO
     public void setId(String id){this.id = id;}
     public void setUser(String user) {this.user = user;}
     public void setRestaurant(String restaurant) {this.restaurant = restaurant;}
+    public void setRestaurantId(String restaurantId) {this.restaurantId = restaurantId;}
     public void setPaymentMethod(String paymentMethod) {this.paymentMethod = paymentMethod;}
     public void setPaymentNumber(String paymentNumber) {this.paymentNumber = paymentNumber;}
     public void setAddress(String address) {this.address = address;}
@@ -33,15 +35,16 @@ public class OrderDTO
 //    -------------------------------------
     public String getId() {return id;}
     public String getUser() {return user;}
+    public String getRestaurant() {return restaurant;}
+    public String getRestaurantId() {return restaurantId;}
     public String getPaymentMethod() {return paymentMethod;}
     public String getPaymentNumber() {return paymentNumber;}
-    public String getRestaurant() {return restaurant;}
     public String getAddress() {return address;}
     public String getZipcode() {return zipcode;}
 //    -------------------------------------
     public boolean getStatus(){return isSent;}
     public double getTotal() {return total;}
-    public List<DishDTO> getItems() {return dishes;}
+    public List<DishDTO> getDishes() {return dishes;}
 //    -------------------------------------
     @Override
     public String toString() {

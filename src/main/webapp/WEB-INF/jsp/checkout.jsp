@@ -53,14 +53,14 @@
                 <div>Card number: <input id="pn" required type="text" value="<%= order.getPaymentNumber() != null ? order.getPaymentNumber() : "" %>" placeholder="Payment number"></div>
                 <div>
 <%--                    List of dish here--%>
-                    <% List<DishDTO> list = order.getItems();
+                    <% List<DishDTO> list = order.getDishes();
                     for(DishDTO item: list){%>
                     <div>
                         <div><%= item.getName() %> x <%= item.getQuantity() %></div>
                     </div>
                     <%}%>
                 </div>
-                <div>Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getItems().get(0).getCurrency() %></div>
+                <div>Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getDishes().get(0).getCurrency() %></div>
                 <button onclick="send()">Confirm order</button>
             </div>
         </form>

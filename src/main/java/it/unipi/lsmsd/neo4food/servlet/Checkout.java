@@ -53,8 +53,10 @@ public class Checkout extends HttpServlet
 
             UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
             OrderDTO order = new OrderDTO();
+            order.setUser(user.getUsername());
             order.setTotal(total);
             order.setRestaurant(restaurant);
+            order.setRestaurantId(rid);
             order.setAddress(user.getAddress());
             order.setZipcode(user.getZipcode());
             order.setDishes(dishes);

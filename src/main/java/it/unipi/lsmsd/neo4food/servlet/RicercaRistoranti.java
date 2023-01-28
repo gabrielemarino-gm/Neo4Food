@@ -25,10 +25,12 @@ public class RicercaRistoranti extends HttpServlet
         {
             int page = Integer.parseInt(request.getParameter("page"));
             String zipcode = (String) request.getParameter("zipcode");
+            String filter = (String) request.getParameter("filter");
             RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
-            ListDTO<RestaurantDTO> list = restaurants.getRestaurants(page, zipcode);
+            ListDTO<RestaurantDTO> list = restaurants.getRestaurants(page, zipcode, filter);
             request.setAttribute("listDTO", list);
             request.setAttribute("zipcode", zipcode);
+            request.setAttribute("filter", filter);
             request.setAttribute("page", page);
         }
 
