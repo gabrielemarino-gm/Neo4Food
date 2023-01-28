@@ -144,7 +144,11 @@ public class UserMongoDAO extends BaseMongo{
                 append("status", order.getStatus()).
                 append("dishes", dishesList);
 
-        collectionOrders.insertOne(toInsert);
+        try{
+            collectionOrders.insertOne(toInsert);
+        }catch(MongoException e){
+            System.err.println(e);
+        }
 
 //        L'ordine da inserire sotto il ristorante ha alcuni campi in meno
 //        I piatti non devono avere price e currency
@@ -156,13 +160,17 @@ public class UserMongoDAO extends BaseMongo{
         toInsert.remove("restaurant");
         toInsert.remove("restaurantId");
         toInsert.remove("status");
-
         toInsert.remove("dishes");
 
         toInsert.append("dishes", dishesList);
 
-        collectionRestaurants.updateOne(
-                eq("_id", new ObjectId(order.getRestaurantId())),
-                Updates.addToSet("orders", toInsert));
+        try{
+            collectionRestaurants.updateOne(
+                    eq("_id", new ObjectId(order.getRestaurantId())),
+                    Updates.addToSet("orders", toInsert));
+        }catch(MongoException e){
+            System.err.println(e);
+        }
+
     }
 }
