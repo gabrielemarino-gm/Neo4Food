@@ -26,136 +26,114 @@
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
 
-        var permanent = "";
         var contaPiatti = 0;
 
-        function addItem(id, name, price, currency)
+        let totalDishId = '#totalDiv';
+        let totalCostId = '#moneyDiv';
+        let confirmDiv = '#orderDiv';
+
+        function addItem(id)
         {
-            // {    GESTIONE RICHIESTA SERVER
-            data = {
-                action: "add",
-                objectId: id,
-                objectName: name,
-                objectPrice: price,
-                objectCurrency: currency,
-                transferObj: permanent,
-            };
-            $.post("<c:url value="/checkout"/>", data, function (result){
-                permanent = result;
-                //    ---Gestione aggiunta prodotto---
-                // {    GESTIONE FRONTEND
+            let removeButtonId = "#remove" + id;
+            let dishQuantityId = "#quantity" + id;
+            let dishCostId = "#cost" + id;
+            let currencyId = "#currency" + id;
 
-                // Rendo vidibile il div che contiene il resoconto dell'ordine
-                if (contaPiatti == 0)
-                {
-                    $("#orderDiv").show();
-                }
+            //    ---Gestione aggiunta prodotto---
+            // {    GESTIONE FRONTEND
 
-                // Rendo visibile il bottone meno
-                let currentId = "#remove" + id;
-                $(currentId).show();
+            // Rendo vidibile il div che contiene il resoconto dell'ordine
+            // Se il div era invisibile, lo rendo visibile
+            if (contaPiatti == 0)
+            {
+                $(confirmDiv).show();
+            }
 
-                // Aggiungo la quantita' di piatti ordinati
-                contaPiatti++;
-                $("#totalDiv").text(contaPiatti);
+            // Rendo visibile il bottone meno
+            $(removeButtonId).show();
 
-                // Aggiungo il totale della spesa
-                console.log($("#moneyDiv").text());
-                let moneyStr = $("#moneyDiv").text();
-                let money = parseFloat(moneyStr);
-                money = money + parseFloat(price);
-                $("#moneyDiv").text(money.toFixed(2) + " " + currency);
+            // Aumento la quantita' totale di piatti ordinati
+            contaPiatti++;
+            $(totalDishId).text(contaPiatti);
 
-                // Rendo vidibile il div del piatto che indica la quantita ordinata
-                currentId = "#countDiv" + id;
-                $(currentId).show();
+            // Aggiungo il prezzo del piatto al totale della spesa
+            // Prendo total corrente
+            let totalCost = parseFloat($(totalCostId).text());
+            // Prendo prezzo piatto
+            let price = parseFloat($(dishCostId).val());
 
-                // Prendo il count corrente
-                let countStr = $(currentId).text();
-                let count = parseInt(countStr);
+            // Il nome del div della quantita e somma totale si potrebbero mettere globali anziche scriverli ogni volta
+            totalCost = totalCost + price;
+            // Aggiorno il testo del totale
+            $(totalCostId).text(totalCost.toFixed(2) + " " + $(currencyId).text());
 
-                count++;
-                console.log("Count + = " + count)
-                // Aggiungo dentro il Div della quantita
-                $(currentId).text(count);
-                // }
-                //    --------------------------------
-            }).fail(function (xhr, status, error){
-                alert(xhr+"\n"+status+"\n"+error);
-            });
+            // Rendo vidibile il div del piatto che indica la quantita' ordinata
+            $(dishQuantityId).attr("type", "text");
+
+
+            // Prendo il count corrente
+            let count = parseInt($(dishQuantityId).val());
+            count++;
+            // Aggiungo dentro il Div della quantita
+            $(dishQuantityId).val(count)
             // }
+            //    --------------------------------
         }
 
-        function removeItem(id, name, price, currency)
+        function removeItem(id)
         {
+            //    ---Gestione rimozione prodotto---
+            // {    GESTIONE FRONTEND
 
-            // {    GESTIONE RICHIESTA SERVER
-            data = {
-                action: "remove",
-                objectId: id,
-                transferObj: permanent,
-            };
-            $.post("<c:url value="/checkout"/>", data, function (result){
-                permanent = result;
-                //    ---Gestione rimozione prodotto---
-                // {    GESTIONE FRONTEND
+            // Rimuovo la quantita' di piatti ordinati
+            contaPiatti--;
+            $(totalDishId).text(contaPiatti);
 
-                // Aggiungo la quantita' di piatti ordinati
-                contaPiatti--;
-                $("#totalDiv").text(contaPiatti);
+            let dishCostId = "#cost" + id;
+            let dishQuantityId = '#quantity' + id;
+            let dishCurrencyId = '#currency' + id;
+            let removeButtonId = '#remove' + id;
 
-                // Aggiungo il totale della spesa
-                let moneyStr = $("#moneyDiv").text();
-                let money = parseFloat(moneyStr);
-                money = money - parseFloat(price);
-                console.log("Price "+parseFloat(price));
-                console.log("Money "+money);
-                $("#moneyDiv").text(money.toFixed(2) + " " + currency);
+            // Rimuovo il totale della spesa
+            let price = parseFloat($(dishCostId).val())
 
-                // Rendo vidibile il div del piatto che indica la quantita ordinata
-                currentId = "#countDiv" + id;
+            let totalCost = parseFloat($(totalCostId).text());
+            totalCost = totalCost - price;
 
-                // Prendo il count corrente
-                let countStr = $(currentId).text();
-                let count = parseInt(countStr);
-                count--;
-                console.log("Count - = " + count)
-                // Se è zero nascondo la quantita, altrimenti aggiorno il valore
-                if (count == 0) {
-                    currentId = "#countDiv" + id;
-                    $(currentId).text(count);
-                    $(currentId).hide();
-                    currentId = "#remove" + id;
-                    $(currentId).hide();
+            let currency = $(dishCurrencyId).text();
+            $(totalCostId).text(totalCost.toFixed(2) + " " + currency);
 
-                } else {
-                    $(currentId).text(count);
-                }
 
-                // Rendo invisibile il div che contiene il resoconto dell'ordine
-                if (contaPiatti == 0)
-                {
-                    $("#orderDiv").hide();
-                    // Rendo invisibile tutti i bottoni meno
-                    $(".buttonMeno").hide();
-                }
-                // }
-                //    ---------------------------------
-            }).fail(function (xhr, status, error){
-                alert(xhr+"\n"+status+"\n"+error);
-            });
+            // Prendo il count corrente
+            let count = parseInt($(dishQuantityId).val());
+            count--;
+            $(dishQuantityId).val(count);
+
+            // Se è zero nascondo la quantita, altrimenti aggiorno il valore
+            if (count == 0)
+            {
+                $(dishQuantityId).attr("type","hidden");
+                // type -> hidden
+                $(removeButtonId).hide();
+            }
+
+            // Rendo invisibile il div che contiene il resoconto dell'ordine
+            if (contaPiatti == 0)
+            {
+                $("#orderDiv").hide();
+                // Rendo invisibile tutti i bottoni meno
+                $(".buttonMeno").hide();
+            }
             // }
+            //    ---------------------------------
         }
 
-        function set(){
-            $('#final').val(permanent);
-        }
     </script>
 </head>
 <body>
 <%
     RestaurantDTO details = (RestaurantDTO) request.getAttribute("restaurantDTO");
-    ListDTO<DishDTO> list = details.getDishes();
+    List<DishDTO> dishList = details.getDishes();
 %>
 <%--                Header con login o nomeutente--%>
 <%@include file="template/header.jsp"%>
@@ -185,7 +163,6 @@
             {
         %>
         <img class="h-5" src="img/half_star.png" alt="star">
-
         <%
                 nStar = rateInt+1;
             }
@@ -199,7 +176,7 @@
 
         <div class="ml-auto flex flex-wrap">
             <%
-                String money = details.getPricerange();
+                String money = details.getPriceRange();
                 String[] splits = money.split("");
                 for (nStar=0; nStar<splits.length; nStar++)
                 {
@@ -213,55 +190,62 @@
 </div>
 
 <div class="flex flex-wrap justify-center">
-    <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
-        <%--            List of available dishes--%>
-        <% for(DishDTO i: list.getList())
-        {
-            String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString(); %>
-        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
 
-            <div class="text-xl font-bold"><%= i.getName()%></div>
-            <div class="h-3"></div>
-            <div class="text-left"><%= i.getDescription()%></div>
-            <div class="h-10"></div>
-            <div class="absolute bottom-3 left-4 font-bold"><%= price %> <%= i.getCurrency() %></div>
-            <div>
-                <button style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
-                    <img class="h-6" src="img/meno.png" alt="meno">
+    <form id="ordini" method="post" action="<c:url value="/checkout"/>">
+        <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
+            <%--            List of available dishes--%>
+<%          for(DishDTO i: dishList)
+            {
+                String price = i.getPrice() == 0.0 ? "-.-": i.getPrice().toString();
+%>
+                <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 ml-3 relative shadow-md">
+
+                    <div class="text-xl font-bold"><%= i.getName()%></div>
+                    <input type="hidden" name="dishName" value="<%= i.getName() %>"/>
+                    <div class="h-3"></div>
+                    <div class="text-left"><%= i.getDescription()%></div>
+                    <div class="h-10"></div>
+                    <div class="absolute bottom-3 left-4 font-bold"><%= price %>
+                        <a id="currency<%= i.getId() %>"><%= i.getCurrency() %></a>
+                        <input type="hidden" name="dishCurrency" value="<%= i.getCurrency() %>"/>
+                    </div>
+                    <input id="cost<%= i.getId() %>" type="hidden" name="dishCost" value="<%= price %>"/>
+                    <div>
+                        <button type="button" style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>')">
+                            <img class="h-6" src="img/meno.png" alt="meno">
+                        </button>
+                        <input name="dishQuantity" class="w-6 bg-transparent absolute bottom-3 left-64" type="hidden" id="quantity<%=i.getId()%>" value="0">
+<%                      if (i.getPrice() != 0.0 && isLogged)
+                        {
+%>
+                            <button type="button" class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>')">
+                                <img class="h-6" src="img/plus.png" alt="plus">
+                            </button>
+<%                      }
+%>
+                    </div>
+                </div>
+<%          }
+%>
+
+            <div id="orderDiv" style="display: none;" class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col text-center">
+                <button type="submit">
+                    <input type="hidden" name="restaurant" value="<%= details.getName() %>">
+                    <input type="hidden" name="rid" value="<%= details.getId() %>">
+                    <input type="hidden" name="action" value="checkout">
+
+                    <div class="flex flex-wrap px-5 py-2 justify-center">
+                        <div class="tempOrder mr-2">Take: </div>
+                        <div class="tempOrder mr-2" id="totalDiv"></div>
+                        <div class="tempOrder mr-2">for</div>
+                        <div class="tempOrder mr-2" id="moneyDiv">0</div>
+                        <div>Checkout</div>
+                    </div>
+
                 </button>
-                <div class="absolute bottom-3 right-14" style="display: none;" id="countDiv<%=i.getId()%>">0</div>
-                <%if (i.getPrice() != 0.0 && isLogged)
-                {%>
-                    <button class="absolute bottom-3 right-4" onclick="addItem('<%= i.getId() %>','<%= i.getName().replaceAll("'","\\\\'") %>','<%= i.getPrice() %>','<%= i.getCurrency() %>')">
-                        <img class="h-6" src="img/plus.png" alt="plus">
-                    </button>
-                <%}%>
             </div>
         </div>
-        <%  } %>
-    </div>
-
-
-    <div id="orderDiv" style="display: none;" class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col">
-        <form id="ordini" method="post" action="<c:url value="/checkout"/>">
-        <button type="submit" onclick="set()">
-            <input id="final" type="hidden" name="incremental" value="">
-            <input type="hidden" name="restaurant" value="<%= details.getName() %>">
-            <input type="hidden" name="rid" value="<%= details.getId() %>">
-            <input type="hidden" name="action" value="checkout">
-
-            <div class="flex flex-wrap px-5 py-2 justify-center">
-                <div class="tempOrder mr-2">Take: </div>
-                <div class="tempOrder mr-2" id="totalDiv"></div>
-                <div class="tempOrder mr-2">for</div>
-                <div class="tempOrder mr-2" id="moneyDiv">0</div>
-                <div>Checkout</div>
-            </div>
-
-        </button>
-        </form>
-    </div>
-
+    </form>
 </div>
 <%@include file="template/footer.jsp"%>
 </body>

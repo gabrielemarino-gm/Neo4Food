@@ -3,6 +3,7 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.google.gson.Gson" %>
+<%@ page import="com.sun.org.apache.xpath.internal.operations.Or" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>

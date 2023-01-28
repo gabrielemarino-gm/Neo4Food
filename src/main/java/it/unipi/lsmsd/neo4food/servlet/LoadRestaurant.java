@@ -17,7 +17,8 @@ public class LoadRestaurant extends HttpServlet
 
         String res = request.getParameter("rid");
         String actionType = request.getParameter("action");
-        if("details".equals(actionType)) {
+        if("details".equals(actionType))
+        {
             RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
             RestaurantDTO ret = restaurants.getRestaurantDetails(res);
             request.setAttribute("restaurantDTO", ret);

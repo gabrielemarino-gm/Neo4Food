@@ -12,7 +12,6 @@ public class PersonalPage extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/personal.jsp";
 
-
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

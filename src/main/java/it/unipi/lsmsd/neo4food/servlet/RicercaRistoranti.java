@@ -17,9 +17,12 @@ public class RicercaRistoranti extends HttpServlet
         String targetJSP = "WEB-INF/jsp/lista.jsp";
         String actionType = (String) request.getParameter("action");
 
-        if (actionType == null){
+        if (actionType == null)
+        {
             targetJSP = "WEB-INF/jsp/ricerca.jsp";
-        } else if ("search".equals(actionType)) {
+        }
+        else if ("search".equals(actionType))
+        {
             int page = Integer.parseInt(request.getParameter("page"));
             String zipcode = (String) request.getParameter("zipcode");
             RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();

@@ -17,56 +17,52 @@ import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 
 @WebServlet("/checkout")
-public class Checkout extends HttpServlet {
-    protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+public class Checkout extends HttpServlet
+{
+    protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    {
         String targetJSP = "WEB-INF/jsp/checkout.jsp";
         String actionType = request.getParameter("action");
 
         if ("checkout".equals(actionType)) {
-//            TODO
-            String persistent = request.getParameter("incremental");
-            OrderDTO order = new Gson().fromJson(persistent, OrderDTO.class);
-            UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
+            String[] names = request.getParameterValues("dishName");
+            String[] prices = request.getParameterValues("dishCost");
+            String[] quantities = request.getParameterValues("dishQuantity");
+            String[] currencies = request.getParameterValues("dishCurrency");
+            String restaurant = request.getParameter("restaurant");
+            String rid = request.getParameter("rid");
 
-            order.setUser(user.getUsername());
+            double total = 0;
+            List<DishDTO> dishes = new ArrayList<DishDTO>();
+
+            for(int i = 0; i< names.length; i++)
+            {
+                if (Integer.parseInt(quantities[i]) > 0)
+                {
+//                  Creo un piatto
+                    DishDTO dishDTO = new DishDTO();
+                    dishDTO.setName(names[i]);
+                    dishDTO.setPrice(Double.parseDouble(prices[i]));
+                    dishDTO.setCurrency(currencies[i]);
+                    dishDTO.setQuantity(Integer.parseInt(quantities[i]));
+
+                    dishes.add(dishDTO);
+                    total += Double.parseDouble(prices[i]) * Integer.parseInt(quantities[i]);
+                }
+            }
+
+            UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
+            OrderDTO order = new OrderDTO();
+            order.setTotal(total);
+            order.setRestaurant(restaurant);
             order.setAddress(user.getAddress());
             order.setZipcode(user.getZipcode());
-            order.setRestaurant(request.getParameter("restaurant"));
+            order.setDishes(dishes);
 
             request.setAttribute("order", order);
-        } else if ("add".equals(actionType)) {
-
-            String persistent = request.getParameter("transferObj");
-            String id = request.getParameter("objectId");
-            String name = request.getParameter("objectName");
-            Double price = Double.parseDouble(request.getParameter("objectPrice"));
-            String currency = request.getParameter("objectCurrency");
-
-            OrderDTO order = persistent.equals("") ?
-                    new OrderDTO() :
-                    new Gson().fromJson(persistent, OrderDTO.class);
-
-            order.addItem(new DishDTO(id, name, price, currency));
-
-            response.getWriter().print(new Gson().toJson(order));
-            response.getWriter().flush();
-            return;
-        } else if ("remove".equals(actionType)) {
-            String persistent = request.getParameter("transferObj");
-            String id = request.getParameter("objectId");
-
-            OrderDTO order = persistent.equals("") ?
-                    new OrderDTO() :
-                    new Gson().fromJson(persistent, OrderDTO.class);
-
-            order.removeItem(id);
-
-            response.getWriter().print(new Gson().toJson(order));
-            response.getWriter().flush();
-            return;
-
-        } else if ("confirm".equals(actionType)) {
-
+        }
+        else if ("confirm".equals(actionType))
+        {
             String obj = request.getParameter("incremental");
             System.out.println(obj);
 
@@ -79,9 +75,11 @@ public class Checkout extends HttpServlet {
 
 //            response.getWriter().print("Success");
 //            response.getWriter().flush();
+            targetJSP = "WEB-INF/jsp/ricerca.jsp";
             return;
         }
 
+        // Risposta al JSP ??
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

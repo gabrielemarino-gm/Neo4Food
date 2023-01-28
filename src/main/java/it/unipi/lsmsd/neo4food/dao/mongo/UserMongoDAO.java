@@ -24,10 +24,11 @@ public class UserMongoDAO extends BaseMongo{
 
         //LOGIN - Email, Password
         //CREDENTIALS - Username, Email
-    public Boolean userExists(String usr, String eml){
+    public Boolean userExists(String usr, String eml)
+    {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
-        try(MongoCursor cursor = collection.find(or(eq("email", eml),eq("username",usr))).limit(1).iterator();
-        ){
+        try(MongoCursor cursor = collection.find(or(eq("email", eml),eq("username",usr))).limit(1).iterator();)
+        {
             if (cursor.hasNext()) {
                 return true;
             }
@@ -35,14 +36,17 @@ public class UserMongoDAO extends BaseMongo{
         return false;
     }
 
-    public UserDTO getUserLogin(String eml, String psw){
+    public UserDTO getUserLogin(String eml, String psw)
+    {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
+        UserDTO userDTO = new UserDTO();
 
-        try(MongoCursor cursor = collection.find(and(eq("email", eml),eq("password",psw))).limit(1).iterator();
-        ){
-            if (cursor.hasNext()) {
+        try(MongoCursor cursor = collection.find(and(eq("email", eml),eq("password",psw))).limit(1).iterator();)
+        {
+            if (cursor.hasNext())
+            {
                 Document res = (Document) cursor.next();
-//            One user found
+//              One user found
 
                 String id = res.get("_id").toString();
                 String username = res.get("username").toString();
@@ -52,18 +56,41 @@ public class UserMongoDAO extends BaseMongo{
                 String phoneNumber = res.get("phonenumber").toString();
                 String address = res.get("address").toString();
                 String zipcode = res.get("zipcode").toString();
-                return new UserDTO(id, username, firstName, lastName, email, phoneNumber, address, zipcode);
+
+                userDTO.setId(id);
+                userDTO.setUsername(username);
+                userDTO.setFirstName(firstName);
+                userDTO.setLastName(lastName);
+                userDTO.setEmail(email);
+                userDTO.setPhoneNumber(phoneNumber);
+                userDTO.setAddress(address);
+                userDTO.setZipcode(zipcode);
+
+                return userDTO;
             }
-//            No match
-            return new UserDTO("0", "", "","","","","","");
+
+//          No match
+            userDTO.setId("0");
+            return userDTO;
         }
+        catch (MongoException mongoException)
+        {
+            System.err.println("Mongo Exception: " + mongoException.getMessage());
+        }
+
+//      No match
+        userDTO.setId("0");
+        return userDTO;
     }
 
-    public void registerUser(User user){
+    public void registerUser(User user)
+    {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
 
-        try{
-            InsertOneResult result = collection.insertOne(new Document()
+        try
+        {
+            InsertOneResult result = collection.insertOne(
+                    new Document()
                     .append("_id", new ObjectId())
                     .append("firstname", user.getFirstName())
                     .append("lastname", user.getLastName())
@@ -72,30 +99,37 @@ public class UserMongoDAO extends BaseMongo{
                     .append("phonenumber" ,user.getPhoneNumber())
                     .append("address", user.getAddress())
                     .append("zipcode", user.getZipcode())
-                    .append("password", user.getPassword()));
+                    .append("password", user.getPassword())
+            );
 
-        }catch (MongoException e){
-            System.err.println(e);
+        }
+        catch (MongoException mongoException)
+        {
+            System.err.println("Mongo Exception: " + mongoException.getMessage());
         }
     }
 
-    public void insertOrder(OrderDTO order){
-        MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
-        MongoCollection<Document> collection1 = getDatabase().getCollection("Orders");
+    public void insertOrder(OrderDTO order)
+    {
+        // Devo aggiungere sia in Ordini che in Ristoranti
+        MongoCollection<Document> collectionRest = getDatabase().getCollection("Restaurants");
+        MongoCollection<Document> collectionOrd = getDatabase().getCollection("Orders");
 
-//        Devo aggiungere un ordine
-//        Un ordine ha dei campi e una lista di piatti
-//        Inizio creando una lista di documenti di tipo piatto
-//        Aggiungo i campi importanti per ogni piatto nell'ordine
+        // Devo aggiungere un ordine
+        // Un ordine ha dei campi e una lista di piatti
+        // Inizio creando una lista di documenti di tipo piatto
+        // Aggiungo i campi importanti per ogni piatto nell'ordine
         List<Document> dishes = new ArrayList<>();
-        for(DishDTO item: order.getItems()){
+        for(DishDTO item: order.getItems())
+        {
             dishes.add(new Document("_id", new ObjectId())
                     .append("name", item.getName())
                     .append("price", item.getPrice())
                     .append("quantity", item.getQuantity())
                     .append("currency", item.getCurrency().replace(" ","")));
         }
-//        A questo punto creo il documento dell ordine
+
+        // A questo punto creo il documento dell ordine
         Document toInsert = new Document("_id", new ObjectId()).
                 append("user", order.getUser()).
                 append("restaurant", order.getRestaurant()).
@@ -107,8 +141,8 @@ public class UserMongoDAO extends BaseMongo{
                 append("status", order.getStatus()).
                 append("dish", dishes);
 
-        collection1.insertOne(toInsert);
-        collection.updateOne(eq("name", order.getRestaurant()),
+        collectionOrd.insertOne(toInsert);
+        collectionRest.updateOne(eq("name", order.getRestaurant()),
                             Updates.addToSet("orders", toInsert));
     }
 }

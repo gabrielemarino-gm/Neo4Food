@@ -5,8 +5,9 @@ import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import java.util.List;
 import java.util.ArrayList;
 
-public class OrderDTO {
-//        Li setto solo al momento del checkout
+public class OrderDTO
+{
+//    -------------------------------------
     private String id;
     private String user;
     private String restaurant;
@@ -14,100 +15,47 @@ public class OrderDTO {
     private String paymentNumber;
     private String address;
     private String zipcode;
-//        ---------------------------------------
+//    -------------------------------------
     private double total;
     private boolean isSent;
-    private List<DishDTO> items;
-
-    public OrderDTO(String i, String u, String r, String pm, String pn, String a, String z, double t, Boolean s,List<DishDTO> items){
-        id = i;
-        user = u;
-        restaurant = r;
-        paymentMethod = pm;
-        paymentNumber = pn;
-        address = a;
-        zipcode = z;
-        isSent = s;
-        total = t;
-        this.items = items;
-    }
-
-    public OrderDTO(){
-        total = 0;
-        isSent = false;
-        items = new ArrayList<DishDTO>();
-    }
-
-    public void setRestaurant(String restaurant) {this.restaurant = restaurant;}
+    private List<DishDTO> dishes;
+//    -------------------------------------
+    public void setId(String id){this.id = id;}
     public void setUser(String user) {this.user = user;}
+    public void setRestaurant(String restaurant) {this.restaurant = restaurant;}
     public void setPaymentMethod(String paymentMethod) {this.paymentMethod = paymentMethod;}
     public void setPaymentNumber(String paymentNumber) {this.paymentNumber = paymentNumber;}
     public void setAddress(String address) {this.address = address;}
     public void setZipcode(String zipcode) {this.zipcode = zipcode;}
-
     public void setSent() {isSent = true;}
     public void setTotal(double total) {this.total = total;}
-    public void setItems(List<DishDTO> items) {this.items = items;}
-//    ---------------
-    private double addToTotal(double q){return (total+=q);}
-    private double removeFromTotal(double q){return (total-=q);}
-
-    private DishDTO getDish(String id){
-        for(DishDTO i: items){
-            if(id.equals(i.getId())) {
-                return i;
-            }
-        }
-        return null;
-    }
-    public int addItem(DishDTO newDish){
-        DishDTO e = getDish(newDish.getId());
-        if(e != null){
-//            Elemento gia presente, devo incrementare
-            items.get(items.indexOf(e)).incQuantity();
-        } else {
-//            Elemento assente, devo inserirne uno nuovo
-            items.add(newDish);
-        }
-        addToTotal(newDish.getPrice());
-        return 1;
-    }
-    public int removeItem(String id){
-        DishDTO e = getDish(id);
-        if(e == null){
-//            Piatto non presente nell ordine
-            return 0;
-        }else{
-//            Piatto presente, decremento
-            removeFromTotal(e.getPrice());
-            if(items.get(items.indexOf(e)).decQuantity() == 0){
-                items.remove(e);
-            }
-        }
-        return 1;
-    }
-
+    public void setDishes(List<DishDTO> items) {this.dishes = items;}
+//    -------------------------------------
+    public String getId() {return id;}
     public String getUser() {return user;}
+    public String getPaymentMethod() {return paymentMethod;}
+    public String getPaymentNumber() {return paymentNumber;}
     public String getRestaurant() {return restaurant;}
     public String getAddress() {return address;}
     public String getZipcode() {return zipcode;}
-    public String getPaymentMethod() {return paymentMethod;}
-    public String getPaymentNumber() {return paymentNumber;}
-    public List<DishDTO> getItems() {return items;}
+//    -------------------------------------
     public boolean getStatus(){return isSent;}
     public double getTotal() {return total;}
-
+    public List<DishDTO> getItems() {return dishes;}
+//    -------------------------------------
     @Override
     public String toString() {
         return "OrderDTO{" +
-                "user='" + user + '\'' +
+                "id='" + id + '\'' +
+                ", user='" + user + '\'' +
                 ", restaurant='" + restaurant + '\'' +
                 ", paymentMethod='" + paymentMethod + '\'' +
                 ", paymentNumber='" + paymentNumber + '\'' +
                 ", address='" + address + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", total=" + total +
-                ", items=" + items +
+                ", isSent=" + isSent +
+                ", items=" + dishes +
                 '}';
     }
 }
