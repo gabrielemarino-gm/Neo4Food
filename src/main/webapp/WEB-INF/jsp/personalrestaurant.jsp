@@ -12,7 +12,7 @@
     <title>Personal Restaurant</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/Neo4Food_war_exploded/dist/output.css" rel="stylesheet" />
+    <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
 </head>
 <body>
 
@@ -63,33 +63,32 @@
         </div>
     </div>
 
-    <div class="flex flex-wrap justify-center">
+    <div class="flex flex-wrap justify-center my-24">
 <%
             if (ordini != null)
             {
                 for(OrderDTO order: ordini)
                 {
 %>
-                    <div>
-                        <%= order.getUser() %>
-                        <%= order.getAddress() %>, <%= order.getZipcode() %>
-                        <%= order.getTotal()%>
-                        <div>
+                    <div class="bg-principale rounded-md px-4 py-4 w-5/6 mt-5 shadow-md">
+                        <div>Customer Username:&nbsp&nbsp<%= order.getUser() %> </div>
+                        <div>Customer Address:&nbsp&nbsp<%= order.getAddress() %>, <%= order.getZipcode() %> </div>
+                        <div>Total:&nbsp&nbsp<%= order.getTotal()%>&nbspUSD</div>
+                        <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
 <%                          for(DishDTO dish: order.getDishes())
                             {
 %>
-                                <%= dish.getName() %>
-                                <%= dish.getQuantity() %>
+                                <div class="font-bold"><%= dish.getQuantity() %>&nbsp &nbsp &nbsp &nbsp<%= dish.getName() %></div>
 <%                          }
 %>
                         </div>
+                        <form method="post" action="<c:url value="/checkout"/>">
+                            <input type="hidden" name="action" value="confirm">
+                            <input type="hidden" name="oid" value="<%= order.getId() %>">
+                            <button class="float-right mt-5 border-2 rounded-xl px-3 hover:bg-button" type="submit"> Confirm </button>
+                        </form>
                      </div>
 
-                    <form method="post" action="<c:url value="/checkout"/>">
-                        <input name="action" value="confirm">
-                        <input name="oid" value="<%= order.getId() %>">
-                        <button type="submit"> Confirm </button>
-                    </form>
 <%               }
             }
 %>

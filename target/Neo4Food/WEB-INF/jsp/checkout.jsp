@@ -46,9 +46,9 @@
         <form class="relative mx-auto w-5/6">
             <h1 class="font-bold text-2xl mt-5 text-center">Order Recap</h1>
             <div class="bg-principale rounded-xl shadow-md px-5 py-5 mt-5">
-                <div class="mt-2">Customer: <%= order.getUser() %></div>
-                <div class="mt-2">Restaurant: <%= order.getRestaurant() %></div>
-                <div class="mt-2">Address: <%= order.getAddress() %>, <%= order.getZipcode()%></div>
+                <div class="mt-2">Customer:&nbsp<%= order.getUser() %></div>
+                <div class="mt-2">Restaurant:&nbsp<%= order.getRestaurant() %></div>
+                <div class="mt-2">Address: &nbsp<%= order.getAddress() %>, <%= order.getZipcode()%></div>
                 <div class="mt-2">Payment method: <input class="rounded-lg px-3 ml-2" id="pm" required type="text" value="<%= order.getPaymentMethod() != null ? order.getPaymentMethod() : "" %>" placeholder="Payment method"></div>
                 <div class="mt-2">Card number: <input class="rounded-lg px-3 ml-2" id="pn" required type="text" value="<%= order.getPaymentNumber() != null ? order.getPaymentNumber() : "" %>" placeholder="Payment number"></div>
                 <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">

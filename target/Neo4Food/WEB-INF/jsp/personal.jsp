@@ -67,6 +67,16 @@
                         <%= userInfo.getZipcode() %>
                     </div>
                 </div>
+                <div class="border-gray-300 text-gray-600 flex justify-between border-t py-3 px-2">
+                    <div class="flex justify-between text-sm">
+                        <div class="font-bold">Payment method:&nbsp</div>
+                        <%= userInfo.getPaymentMethod() %>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <div class="font-bold">Payment number:&nbsp</div>
+                        <%= userInfo.getPaymentNumber() %>
+                    </div>
+                </div>
             </div>
         </div>
         <footer class="fixed bottom-0 w-full">
