@@ -219,6 +219,7 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getMoreDetails, bo
             }
         }
         order.setTotal(document.get("total") != null ? Double.parseDouble(document.get("total").toString()) : null);
+        order.setCurrency(document.get("currency") != null ? document.get("currency").toString() : "Currency not available");
 
         List<Document> dishDocuments = document.get("dishes") != null ? (ArrayList<Document>) document.get("dishes") : null;
         List<DishDTO> tempDishes = new ArrayList<DishDTO>();
