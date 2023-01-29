@@ -636,6 +636,11 @@ video {
   margin-bottom: -1.5rem;
 }
 
+.my-7 {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
 .mt-14 {
   margin-top: 3.5rem;
 }
@@ -670,10 +675,6 @@ video {
 
 .mt-auto {
   margin-top: auto;
-}
-
-.mt-1 {
-  margin-top: 0.25rem;
 }
 
 .block {
@@ -732,8 +733,16 @@ video {
   height: 7rem;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
 .h-12 {
   height: 3rem;
+}
+
+.h-4 {
+  height: 1rem;
 }
 
 .w-1\/3 {
