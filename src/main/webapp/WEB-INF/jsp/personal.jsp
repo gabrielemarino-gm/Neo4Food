@@ -11,11 +11,6 @@
                 <title>Personal Page</title>
                 <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
 
-
-            <link href="/Neo4Food_war_exploded/dist/output.css" rel="stylesheet" />
-
-            <style type="text/css" id="operaUserStyle"></style>
-            <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
         </head>
 
         <body>

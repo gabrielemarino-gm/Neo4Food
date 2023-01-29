@@ -17,7 +17,7 @@
         String requestMessage = (String) request.getAttribute("message");
 %>
         <div class="-top-6 overflow-hidden h-96 z-50">
-            <img class="w-full" src="img/sfondo.png" alt="imgFood">
+            <img class="w-full shadow-md" src="img/sfondo.png" alt="imgFood">
         </div>
         <section class="mx-auto -my-6 text-center">
 <%
@@ -31,7 +31,7 @@
                 <div class="h-3 w-96"></div>
                 <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
                 <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
-                    <input required class="rounded-xl px-3" type="text" name="zipcode" placeholder="ZIP Code">
+                    <input required class="rounded-xl px-3 shadow-md" type="text" name="zipcode" placeholder="ZIP Code">
                     <input type="hidden" name="page" value= "0">
                     <input type="hidden" name="filter" value=""/>
                     <input type="hidden" name="action" value="search">
