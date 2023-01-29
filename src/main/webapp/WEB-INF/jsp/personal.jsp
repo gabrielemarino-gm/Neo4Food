@@ -54,7 +54,7 @@
     </div>
 
     <div class="relative m-3 flex justify-center -my-20">
-        <form id="changeStuff" action=""<c:url value="/personal"/>"">
+        <form id="changeStuff" action="<c:url value="/personal"/>">
             <input type="hidden" name="action" value="change">
             <input type="hidden" name="uid" value="<%= userInfo.getId()%>">
             <div class="w-3/6 rounded-lg bg-principale text-center shadow-lg">
