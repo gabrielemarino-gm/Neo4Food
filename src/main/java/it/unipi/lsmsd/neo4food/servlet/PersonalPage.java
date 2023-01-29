@@ -26,9 +26,15 @@ public class PersonalPage extends HttpServlet
             String zipcode = request.getParameter("zipcode");
             String newPaymentmethod = request.getParameter("pmethod");
             String newPaymentnumber = request.getParameter("pnumber");
-
     //          -------
 
+                System.out.println(newFirstname);
+                System.out.println(newLastname);
+                System.out.println(newPhone);
+                System.out.println(address);
+                System.out.println(zipcode);
+                System.out.println(newPaymentmethod);
+                System.out.println(newPaymentnumber);
 
             }
         }

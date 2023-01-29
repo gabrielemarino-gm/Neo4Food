@@ -1,10 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
-<%@ page import="com.sun.org.apache.xpath.internal.operations.Bool" %>
-<%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">

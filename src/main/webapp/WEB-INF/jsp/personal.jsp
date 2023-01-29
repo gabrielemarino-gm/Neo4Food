@@ -2,7 +2,6 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.UserDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,7 +16,7 @@
     <%
         UserDTO userInfo = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
     %>
-
+        <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
         <script type="text/javascript">
             let originalFirstName = "<%= userInfo.getFirstName() %>";
             let originalLastName = "<%= userInfo.getLastName() %>";
@@ -26,14 +25,28 @@
             let originalZipcode = "<%= userInfo.getZipcode() %>";
             let originalPMethod = "<%= userInfo.getPaymentMethod() %>";
             let originalPNumber = "<%= userInfo.getPaymentNumber() %>";
-            let confirm = true;
+
+            let confirm = false;
+
             //Click pulsante modifica/conferma
             function modifyOrConfirm(){
 
                 //Abilito i campi, il pulsante conferma e il pulsante revertChanges
                 if(!confirm){
-                    confirm = false;
+                    confirm = true;
+                    $('#changeConfirm').text("Confirm");
+                    $('#undo').show();
+                //    Cambiare stile bottone
 
+                //    ----------------------
+                //    Attivo tutte le box
+                    $('.boxette').each(function (){
+                       $(this).prop("disabled", false);
+                    });
+                //    Cambia stile box
+
+                //    ----------------------
+                //    Rendo visibile bottone di revert
                 }
                 else
                 //Invio il form di modifica
@@ -43,7 +56,27 @@
             }
 
             function revertChanges(){
-                confirm = true;
+                confirm = false;
+                $('#undo').hide();
+                //Rendo di nuovo invisibile il bottone di revert
+                $('#changeConfirm').text("Change");
+            //    Cambia stile bottone
+
+            //    --------------------
+            //    Cambia stile boxette
+
+            //    --------------------
+                $('#fname').val(originalFirstName);
+                $('#lname').val(originalLastName);
+                $('#phone').val(originalPhone);
+                $('#address').val(originalAddress);
+                $('#zipcode').val(originalZipcode);
+                $('#pmethod').val(originalPMethod);
+                $('#pnumber').val(originalPNumber);
+
+                $('.boxette').each(function (){
+                    $(this).prop("disabled", true);
+                });
 
             }
 
@@ -54,19 +87,19 @@
     </div>
 
     <div class="relative m-3 flex justify-center -my-20">
-        <form id="changeStuff" action="<c:url value="/personal"/>">
+        <form id="changeStuff" method="post" action="<c:url value="/personal"/>">
             <input type="hidden" name="action" value="change">
-            <input type="hidden" name="uid" value="<%= userInfo.getId()%>">
+            <input type="hidden" name="uid" value="<%= userInfo.getId() %>">
             <div class="w-3/6 rounded-lg bg-principale text-center shadow-lg">
                 <div class="border-gray-300 rounded-t-lg border-b bg-button py-3 px-6 font-bold">My Account <%= userInfo.getUsername() %></div>
                 <div class="border-gray-300 text-gray-600 flex justify-between border-t py-3 px-2">
                     <div class=" text-sm flex justify-between">
                         <div class="font-bold">First Name:&nbsp</div>
-                        <input required disabled class="boxes" name="fname" value="<%= userInfo.getFirstName() %>">
+                        <input required disabled class="boxette" id="fname" name="fname" value="<%= userInfo.getFirstName() %>">
                     </div>
                     <div class="flex justify-between text-sm">
                         <div class="font-bold">Last Name:&nbsp</div>
-                        <input required disabled class="boxes" name="lname" value="<%= userInfo.getLastName() %>">
+                        <input required disabled class="boxette" id="lname" name="lname" value="<%= userInfo.getLastName() %>">
                     </div>
                 </div>
                 <div class="border-gray-300 text-gray-600 flex justify-between border-t py-3 px-2">
@@ -76,32 +109,32 @@
                     </div>
                     <div class="flex justify-between text-sm">
                         <div class="font-bold">Phone:&nbsp</div>
-                        <input required disabled class="boxes" name="phone" value="<%= userInfo.getPhoneNumber() %>">
+                        <input required disabled class="boxette" id="phone" name="phone" value="<%= userInfo.getPhoneNumber() %>">
                     </div>
                 </div>
                 <div class="border-gray-300 text-gray-600 flex justify-between border-t py-3 px-2">
                     <div class="flex justify-between text-sm">
                         <div class="font-bold">Address:&nbsp</div>
-                        <input required disabled class="boxes" name="address" value="<%= userInfo.getAddress() %>">
+                        <input required disabled class="boxette" id="address" name="address" value="<%= userInfo.getAddress() %>">
                     </div>
                     <div class="flex justify-between text-sm">
                         <div class="font-bold">Zipcode:&nbsp</div>
-                        <input required disabled class="boxes" name="zipcode" value="<%= userInfo.getZipcode() %>">
+                        <input required disabled class="boxette" id="zipcode" name="zipcode" value="<%= userInfo.getZipcode() %>">
                     </div>
                 </div>
                 <div class="border-gray-300 text-gray-600 flex justify-between border-t py-3 px-2">
                         <div class="flex justify-between text-sm">
                             <div class="font-bold">Payment method:&nbsp</div>
-                            <input disabled class="boxes" name="pmethod" value="<%= userInfo.getPaymentMethod() %>">
+                            <input disabled class="boxette" id="pmethod" name="pmethod" value="<%= userInfo.getPaymentMethod() %>">
                         </div>
                         <div class="flex justify-between text-sm">
                             <div class="font-bold">Payment number:&nbsp</div>
-                            <input disabled class="boxes" name="pnumber" value=""><%= userInfo.getPaymentNumber() %>
+                            <input disabled class="boxette" id="pnumber" name="pnumber" value="<%= userInfo.getPaymentNumber() %>">
                         </div>
                     </div>
             </div>
-            <button id="changeConfirm" type="button" onclick="modifyOrConfirm()">Change infos</button>
-            <button id="undo" type="button" onclick="revertChanges()">Revert</button>
+            <button id="changeConfirm" type="button" onclick="modifyOrConfirm()">Change</button>
+            <button style="display: none" id="undo" type="button" onclick="revertChanges()">Revert</button>
         </form>
     </div>
     <%@include file="template/footer.jsp"%>

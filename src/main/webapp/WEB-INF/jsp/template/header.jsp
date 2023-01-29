@@ -1,14 +1,16 @@
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
 <%
     String userid = null;
     String username = null;
     String restaurantname = null;
     Boolean isLogged = false;
     Boolean isRestaurant = false;
-
-    if (session != null && session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
+    
+    if (session != null)
+        if(session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
         isLogged = true;
         if (session.getAttribute("username") != null){
             username = (String) session.getAttribute("username");
