@@ -138,6 +138,8 @@ public class UserMongoDAO extends BaseMongo{
                 append("restaurantId", order.getRestaurantId()).
                 append("paymentMethod", order.getPaymentMethod()).
                 append("paymentNumber", order.getPaymentNumber()).
+                append("creationDate", order.getCreationDate()).
+                append("deliveryDate", order.getDeliveryDate()).
                 append("address", order.getAddress()).
                 append("zipcode", order.getZipcode()).
                 append("total", order.getTotal()).
@@ -159,6 +161,7 @@ public class UserMongoDAO extends BaseMongo{
         }
         toInsert.remove("restaurant");
         toInsert.remove("restaurantId");
+        toInsert.remove("deliveryDate");
         toInsert.remove("status");
         toInsert.remove("dishes");
 

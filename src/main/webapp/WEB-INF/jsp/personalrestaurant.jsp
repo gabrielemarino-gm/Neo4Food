@@ -18,9 +18,8 @@
 
 <%
     RestaurantDTO details = (RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
-    List<OrderDTO> ordini = new RestaurantsMongoDAO().getRestaurantDetails(details.getId()).getOrders();
+    List<OrderDTO> ordini = new RestaurantsMongoDAO().getRestaurantDetails(details.getId(),false,false,true).getOrders();
     System.out.println("Ordini: " + ordini);
-    System.out.println("Dettagli: " + details);
 %>
 
     <%@include file="template/header.jsp"%>
@@ -68,7 +67,6 @@
 <%
             if (ordini != null)
             {
-                System.out.println("ORDER NOT NULL");
                 for(OrderDTO order: ordini)
                 {
 %>

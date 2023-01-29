@@ -2,6 +2,7 @@ package it.unipi.lsmsd.neo4food.dto;
 
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -17,6 +18,8 @@ public class OrderDTO
     private String address;
     private String zipcode;
 //    -------------------------------------
+    private Date creationDate;
+    private Date deliveryDate;
     private double total;
     private boolean isSent;
     private List<DishDTO> dishes;
@@ -29,6 +32,10 @@ public class OrderDTO
     public void setPaymentNumber(String paymentNumber) {this.paymentNumber = paymentNumber;}
     public void setAddress(String address) {this.address = address;}
     public void setZipcode(String zipcode) {this.zipcode = zipcode;}
+//    -------------------------------------
+
+    public void setCreationDate(Date date){this.creationDate = date;}
+    public void setDeliveryDate(Date date){this.deliveryDate = date;}
     public void setSent() {isSent = true;}
     public void setTotal(double total) {this.total = total;}
     public void setDishes(List<DishDTO> items) {this.dishes = items;}
@@ -42,6 +49,8 @@ public class OrderDTO
     public String getAddress() {return address;}
     public String getZipcode() {return zipcode;}
 //    -------------------------------------
+    public Date getCreationDate(){return creationDate;}
+    public Date getDeliveryDate(){return deliveryDate;}
     public boolean getStatus(){return isSent;}
     public double getTotal() {return total;}
     public List<DishDTO> getDishes() {return dishes;}
@@ -52,13 +61,16 @@ public class OrderDTO
                 "id='" + id + '\'' +
                 ", user='" + user + '\'' +
                 ", restaurant='" + restaurant + '\'' +
+                ", restaurantId='" + restaurantId + '\'' +
                 ", paymentMethod='" + paymentMethod + '\'' +
                 ", paymentNumber='" + paymentNumber + '\'' +
                 ", address='" + address + '\'' +
                 ", zipcode='" + zipcode + '\'' +
+                ", creationDate=" + creationDate +
+                ", deliveryDate=" + deliveryDate +
                 ", total=" + total +
                 ", isSent=" + isSent +
-                ", items=" + dishes +
+                ", dishes=" + dishes +
                 '}';
     }
 }

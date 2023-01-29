@@ -22,24 +22,27 @@
         <header class="bg-principale px-5 h-12 font-bold text-1xs">
             <a href="<c:url value="/ricerca"/>"><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
 
-        <%-- Se ce un nomeutente lo stampo--%>
-        <%  if (isLogged && !isRestaurant)
-            {
-        %>
-                <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
-                    <a href="<c:url value="/personal"/>"><%= username %></a>
-                </button>
+        <%-- Se sono loggato mostro pulsante di logout--%>
+<%          if (isLogged)
+            {%>
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </button>
-        <%  }
-            else if(isLogged && isRestaurant)
-            {
-        %>
+<%              if(!isRestaurant)
+                {%>
+<%--                Se non sono ristorante voglio andare alla pagina personale utente--%>
+                    <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+                        <a href="<c:url value="/personal"/>"><%= username %></a>
+                    </button>
+<%              }
+                else
+                {%>
+<%--                Se sono ristorante voglio andare alla pagina personale del ristorante--%>
+                    <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+                        <a href="<c:url value="/personalrestaurant"/>"><%= restaurantname %></a>
+                    </button>
+<%              }%>
         <%-- Altrimenti metto link alla pagina di login--%>
-                <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
-                    <a href="<c:url value="/personalrestaurant"/>"><%= restaurantname %></a>
-                </button>
         <%  }
             else
             {

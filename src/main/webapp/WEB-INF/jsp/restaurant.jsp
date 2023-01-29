@@ -127,7 +127,14 @@
             // }
             //    ---------------------------------
         }
+        function submitForm(){
 
+            $('.inputboxQty').each(function (){
+                $(this).prop("disabled", false);
+            });
+
+            document.getElementById("ordini").submit();
+        }
     </script>
 </head>
 <body>
@@ -144,7 +151,10 @@
 <div class="relative mx-auto w-2/3 rounded-lg bg-principale text-center py-3 -my-11 shadow-md px-5">
     <%--        Restaurant detailed infos--%>
     <div class="text-3xl font-bold"><%= details.getName() %></div>
-    <div class="h-5"></div>
+    <div class=""><%= details.getAddress() %></div>
+    <div class=""><%= details.getEmail() %></div>
+
+        <div class="h-5"></div>
     <div class="flex flex-wrap">
 <%
         Float rate = details.getRating();
@@ -214,7 +224,7 @@
                         <button type="button" style="display: none;" class="buttonMeno absolute bottom-3 right-20" id="remove<%=i.getId()%>" onclick="removeItem('<%= i.getId() %>')">
                             <img class="h-6" src="img/meno.png" alt="meno">
                         </button>
-                        <input name="dishQuantity" class="w-6 bg-principale absolute bottom-3 left-64" type="hidden" id="quantity<%=i.getId()%>" value="0">
+                        <input type="hidden" id="quantity<%=i.getId()%>" disabled name="dishQuantity" class="inputboxQty w-6 bg-transparent absolute bottom-3 left-64" value="0"/>
 <%                      if (i.getPrice() != 0.0 && isLogged)
                         {
 %>
@@ -229,7 +239,7 @@
 %>
 
             <div id="orderDiv" style="display: none;" class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col text-center">
-                <button type="submit">
+                <button type="button" onclick="submitForm()">
                     <input type="hidden" name="restaurant" value="<%= details.getName() %>">
                     <input type="hidden" name="rid" value="<%= details.getId() %>">
                     <input type="hidden" name="action" value="checkout">

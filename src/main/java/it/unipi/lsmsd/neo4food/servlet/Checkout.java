@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
@@ -37,7 +38,7 @@ public class Checkout extends HttpServlet
 
             for(int i = 0; i< names.length; i++)
             {
-                if (Integer.parseInt(quantities[i]) > 0)
+                if(Integer.parseInt(quantities[i]) > 0)
                 {
 //                  Creo un piatto
                     DishDTO dishDTO = new DishDTO();
@@ -66,18 +67,14 @@ public class Checkout extends HttpServlet
         else if ("confirm".equals(actionType))
         {
             String obj = request.getParameter("incremental");
-            System.out.println(obj);
 
             OrderDTO order = new Gson().fromJson(obj, OrderDTO.class);
 
             order.setPaymentMethod(request.getParameter("pm"));
             order.setPaymentNumber(request.getParameter("pn"));
+            order.setCreationDate(new Date());
 
             new UserMongoDAO().insertOrder(order);
-
-//            response.getWriter().print("Success");
-//            response.getWriter().flush();
-            targetJSP = "WEB-INF/jsp/ricerca.jsp";
             return;
         }
 

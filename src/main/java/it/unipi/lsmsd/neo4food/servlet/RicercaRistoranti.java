@@ -27,7 +27,8 @@ public class RicercaRistoranti extends HttpServlet
             String zipcode = (String) request.getParameter("zipcode");
             String filter = (String) request.getParameter("filter");
             RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
-            ListDTO<RestaurantDTO> list = restaurants.getRestaurants(page, zipcode, filter);
+//
+            ListDTO<RestaurantDTO> list = restaurants.getRestaurantsForSearchPage(page, zipcode, filter);
             request.setAttribute("listDTO", list);
             request.setAttribute("zipcode", zipcode);
             request.setAttribute("filter", filter);

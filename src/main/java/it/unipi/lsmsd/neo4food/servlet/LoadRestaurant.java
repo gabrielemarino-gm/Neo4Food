@@ -20,7 +20,7 @@ public class LoadRestaurant extends HttpServlet
         if("details".equals(actionType))
         {
             RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
-            RestaurantDTO ret = restaurants.getRestaurantDetails(res);
+            RestaurantDTO ret = restaurants.getRestaurantDetails(res,true,true,false);
             request.setAttribute("restaurantDTO", ret);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);

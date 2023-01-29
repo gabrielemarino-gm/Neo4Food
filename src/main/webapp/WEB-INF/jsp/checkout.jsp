@@ -61,7 +61,7 @@
                     <div class="mt-2 ml-88">Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getDishes().get(0).getCurrency() %></div>
                 </div>
                 <div class="h-10"></div>
-                <button class="absolute bottom-3 right-4 border-2 rounded-xl px-3 hover:bg-button" onclick="send()">Confirm order</button>
+                <button type="button" class="absolute bottom-3 right-4 border-2 rounded-xl px-3 hover:bg-button" onclick="send()">Confirm order</button>
             </div>
         </form>
     </div>

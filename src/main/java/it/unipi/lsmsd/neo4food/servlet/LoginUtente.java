@@ -105,8 +105,8 @@ public class LoginUtente extends HttpServlet
         String email = (String) request.getParameter("email");
         String password = (String) request.getParameter("password");
         RestaurantsMongoDAO mongoRestAgent = new RestaurantsMongoDAO();
-        RestaurantDTO result = mongoRestAgent.getRestaurantOwner(email, password);
-//                  Ristorante trovato
+        RestaurantDTO result = mongoRestAgent.getRestaurantLogin(email, password);
+//      Ristorante trovato
         if (!result.getId().equals("0"))
         {
             HttpSession session = request.getSession();
