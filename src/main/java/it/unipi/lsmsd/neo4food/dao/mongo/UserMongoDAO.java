@@ -48,23 +48,16 @@ public class UserMongoDAO extends BaseMongo{
                 Document res = (Document) cursor.next();
 //              One user found
 
-                String id = res.get("_id").toString();
-                String username = res.get("username").toString();
-                String firstName = res.get("firstname").toString();
-                String lastName = res.get("lastname").toString();
-                String email = res.get("email").toString();
-                String phoneNumber = res.get("phonenumber").toString();
-                String address = res.get("address").toString();
-                String zipcode = res.get("zipcode").toString();
-
-                userDTO.setId(id);
-                userDTO.setUsername(username);
-                userDTO.setFirstName(firstName);
-                userDTO.setLastName(lastName);
-                userDTO.setEmail(email);
-                userDTO.setPhoneNumber(phoneNumber);
-                userDTO.setAddress(address);
-                userDTO.setZipcode(zipcode);
+                userDTO.setId(res.get("_id") != null ? res.get("_id").toString() : "ID not available");
+                userDTO.setUsername(res.get("username") != null ? res.get("username").toString() : "Username not available");
+                userDTO.setFirstName(res.get("firstname") != null ? res.get("firstname").toString() : "Firstname not available");
+                userDTO.setLastName(res.get("lastname") != null ? res.get("lastname").toString() : "Lastname not available");
+                userDTO.setEmail(res.get("email") != null ? res.get("email").toString() : "EMail not available");
+                userDTO.setPhoneNumber(res.get("phonenumber") != null ? res.get("phonenumber").toString() : "Phone number not available");
+                userDTO.setAddress(res.get("address") != null ? res.get("address").toString() : "Address not available");
+                userDTO.setZipcode(res.get("zipcode") != null ? res.get("zipcode").toString() : "Zipcode not available");
+                userDTO.setPaymentMethod(res.get("paymentMethod") != null ? res.get("paymentMethod").toString() : "");
+                userDTO.setPaymentNumber(res.get("paymentNumber") != null ? res.get("paymentNumber").toString() : "");
 
                 return userDTO;
             }

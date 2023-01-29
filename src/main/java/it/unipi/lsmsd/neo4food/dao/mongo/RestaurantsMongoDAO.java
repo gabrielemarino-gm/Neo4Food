@@ -181,6 +181,7 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getMoreDetails, bo
     private void unpackOneDish(Document document, DishDTO dish){
         dish.setId(document.get("_id") != null ? document.get("_id").toString() : "ID not available");
         dish.setName(document.get("name") != null ? document.get("name").toString() : "Name not available");
+        dish.setQuantity(document.get("quantity") != null ? Integer.parseInt(document.get("quantity").toString()) : 0);
         dish.setDescription(document.get("description") != null ? document.get("description").toString() : "Description not available");
         if(document.get("price") != null){
             dish.setPrice(Double.parseDouble(document.get("price").toString()));
