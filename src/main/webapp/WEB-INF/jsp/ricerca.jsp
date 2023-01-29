@@ -11,18 +11,22 @@
     </head>
     <body>
         
-<%--                Header con login o nomeutente--%>
-            <%@include file="template/header.jsp"%>
-        <%
-            String requestMessage = (String) request.getAttribute("message");
-        %>
+<%--   Header con login o nomeutente--%>
+        <%@include file="template/header.jsp"%>
+<%
+        String requestMessage = (String) request.getAttribute("message");
+%>
         <div class="-top-6 overflow-hidden h-96 z-50">
             <img class="w-full" src="img/sfondo.png" alt="imgFood">
         </div>
         <section class="mx-auto -my-6 text-center">
-            <% if (requestMessage != null) { %>
+<%
+        if (requestMessage != null)
+        {
+%>
             <div role="alert"><%= requestMessage %></div>
-            <% } %>
+<%      }
+%>
             <div class="relative mx-auto h-28 w-1/3 rounded-xl bg-principale shadow-md">
                 <div class="h-3 w-96"></div>
                 <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
