@@ -26,16 +26,25 @@ public class Checkout extends HttpServlet
         String actionType = request.getParameter("action");
 
         if ("checkout".equals(actionType)) {
+//            Creo nuovo ordine
+            OrderDTO order = new OrderDTO();
+            UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
+
+            order.setUser(user.getUsername());
+            order.setAddress(user.getAddress());
+            order.setZipcode(user.getZipcode());
+            order.setRestaurant(request.getParameter("restaurant"));
+            order.setRestaurantId(request.getParameter("rid"));
+
             String[] names = request.getParameterValues("dishName");
             String[] prices = request.getParameterValues("dishCost");
             String[] quantities = request.getParameterValues("dishQuantity");
             String[] currencies = request.getParameterValues("dishCurrency");
-            String restaurant = request.getParameter("restaurant");
-            String rid = request.getParameter("rid");
 
             double total = 0;
-            List<DishDTO> dishes = new ArrayList<DishDTO>();
+            String currency = "";
 
+            List<DishDTO> dishes = new ArrayList<DishDTO>();
             for(int i = 0; i< names.length; i++)
             {
                 if(Integer.parseInt(quantities[i]) > 0)
@@ -47,23 +56,20 @@ public class Checkout extends HttpServlet
                     dishDTO.setCurrency(currencies[i]);
                     dishDTO.setQuantity(Integer.parseInt(quantities[i]));
 
+//                    Assegno all'ordine la currency del primo piatto
+                    if(currency.equals("") && !currencies[i].equals("")){ order.setCurrency(currencies[i]); }
                     dishes.add(dishDTO);
                     total += Double.parseDouble(prices[i]) * Integer.parseInt(quantities[i]);
                 }
             }
 
-            UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
-            OrderDTO order = new OrderDTO();
-            order.setUser(user.getUsername());
-            order.setTotal(total);
-            order.setRestaurant(restaurant);
-            order.setRestaurantId(rid);
-            order.setAddress(user.getAddress());
-            order.setZipcode(user.getZipcode());
+//            Setto piatti e totale
             order.setDishes(dishes);
+            order.setTotal(total);
 
             request.setAttribute("order", order);
         }
+//        Completo l'ordine con gli ultimi dati e lo inserisco nel database
         else if ("confirm".equals(actionType))
         {
             String obj = request.getParameter("incremental");

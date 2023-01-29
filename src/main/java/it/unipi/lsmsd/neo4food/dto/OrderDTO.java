@@ -21,6 +21,7 @@ public class OrderDTO
     private Date creationDate;
     private Date deliveryDate;
     private double total;
+    private String currency;
     private boolean isSent;
     private List<DishDTO> dishes;
 //    -------------------------------------
@@ -38,6 +39,7 @@ public class OrderDTO
     public void setDeliveryDate(Date date){this.deliveryDate = date;}
     public void setSent() {isSent = true;}
     public void setTotal(double total) {this.total = total;}
+    public void setCurrency(String currency) {this.currency = currency;}
     public void setDishes(List<DishDTO> items) {this.dishes = items;}
 //    -------------------------------------
     public String getId() {return id;}
@@ -53,6 +55,7 @@ public class OrderDTO
     public Date getDeliveryDate(){return deliveryDate;}
     public boolean getStatus(){return isSent;}
     public double getTotal() {return total;}
+    public String getCurrency() {return currency;}
     public List<DishDTO> getDishes() {return dishes;}
 //    -------------------------------------
     @Override
@@ -69,6 +72,7 @@ public class OrderDTO
                 ", creationDate=" + creationDate +
                 ", deliveryDate=" + deliveryDate +
                 ", total=" + total +
+                ", currency='" + currency + '\'' +
                 ", isSent=" + isSent +
                 ", dishes=" + dishes +
                 '}';

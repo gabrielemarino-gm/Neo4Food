@@ -115,6 +115,7 @@ public class UserMongoDAO extends BaseMongo{
         // Inizio creando una lista di documenti di tipo piatto
         // Aggiungo i campi importanti per ogni piatto nell'ordine
         List<Document> dishesList = new ArrayList<>();
+
         for(DishDTO item: order.getDishes())
         {
             dishesList.add(new Document("_id", new ObjectId())
@@ -122,6 +123,7 @@ public class UserMongoDAO extends BaseMongo{
                         .append("price", item.getPrice())
                         .append("currency", item.getCurrency().replace(" ",""))
                         .append("quantity", item.getQuantity()));
+
         }
 
         // A questo punto creo il documento dell ordine
@@ -136,6 +138,7 @@ public class UserMongoDAO extends BaseMongo{
                 append("address", order.getAddress()).
                 append("zipcode", order.getZipcode()).
                 append("total", order.getTotal()).
+                append("currency", order.getCurrency()).
                 append("status", order.getStatus()).
                 append("dishes", dishesList);
 
@@ -152,6 +155,7 @@ public class UserMongoDAO extends BaseMongo{
             i.remove("price");
             i.remove("currency");
         }
+
         toInsert.remove("restaurant");
         toInsert.remove("restaurantId");
         toInsert.remove("deliveryDate");
