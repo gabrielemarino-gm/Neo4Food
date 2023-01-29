@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/Neo4Food_war_exploded/dist/output.css" rel="stylesheet" />
-
+    <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
         function hideshow(){
@@ -37,7 +37,7 @@
                 <% if(request.getAttribute("message") != null){ %>
                 <div> <%= request.getAttribute("message").toString() %></div>
                 <%}%></div>
-            <form id="formL" method="post" action="/Neo4Food_war_exploded/login" class="pt-7">
+            <form id="formL" method="post" action="<c:url value="/login"/>" class="pt-7">
                 <input required="" class="h-9 w-52 rounded-lg px-3  shadow-xl" type="email" name="email" placeholder="E-Mail" />
                 <input required="" class="my-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="password" name="password" placeholder="Password" />
                 <input type="hidden" name="action" value="login" id="actionType"/>
@@ -59,7 +59,7 @@
 
         <div id="signupForm" style="display:none;" class="mx-auto h-auto w-96 rounded-lg bg-principale py-7 shadow-2xl">
             <div class="border-gray-300 rounded-t-lg border-b-2 bg-button p-1 -my-7"><h3 class="py-5 text-3xl font-bold">SignUp</h3></div>
-            <form method="post" action="/Neo4Food_war_exploded/login">
+            <form method="post" action="<c:url value="/login"/>">
                 <input required="" class="mt-14 h-9 w-52 rounded-lg px-3" type="text" name="username" placeholder="Username" />
                 <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="email" name="email" placeholder="E-Mail" />
                 <input required="" class="mt-4 h-9 w-52 rounded-lg px-3 shadow-xl" type="text" name="firstname" placeholder="First name" />

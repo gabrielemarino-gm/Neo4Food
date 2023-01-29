@@ -1,44 +1,31 @@
 package it.unipi.lsmsd.neo4food.dto;
 
-public class DishDTO
-{
+public class DishDTO {
+//    -------------------------------------
     private String id;
     private String name;
-    private Float price;
+    private Double price;
     private int quantity;
     private String currency;
     private String description;
-    private String ownerid;
-
-    public DishDTO(String i, String n, Float p, String cu, String d, String o)
-    {
-        id = i;
-        name = n;
-        quantity = 0;
-        price = p;
-        currency = cu;
-        description = d;
-        ownerid = o;
-    }
-
-    public DishDTO(String i, String n, Float p, String c){
-        id = i;
-        name = n;
-        price = p;
-        currency = c;
-        quantity = 1;
-    }
-
-    public int incQuantity(){return ++quantity;}
-    public int decQuantity(){return --quantity;}
-
-
+    private String restaurantid;
+//    -------------------------------------
+    public void setId(String id){this.id = id;}
+    public void setName(String name){this.name = name;}
+    public void setPrice(Double price){this.price =price;}
+    public void setQuantity(int quantity){this.quantity =quantity;}
+    public void setCurrency(String currency){this.currency =currency;}
+    public void setDescription(String description){this.description = description;}
+    public void setRestaurantId(String restaurantid){this.restaurantid = restaurantid;}
+//    -------------------------------------
     public String getId() {return id;}
     public String getName() {return name;}
-    public Float getPrice() {return price;}
+    public Double getPrice() {return price;}
+    public int getQuantity() {return quantity;}
     public String getCurrency() {return currency;}
     public String getDescription() {return description;}
-
+    public String getRestaurantId() {return restaurantid;}
+//    -------------------------------------
     @Override
     public String toString() {
         return "DishDTO{" +
@@ -48,7 +35,7 @@ public class DishDTO
                 ", quantity=" + quantity +
                 ", currency='" + currency + '\'' +
                 ", description='" + description + '\'' +
-                ", ownerid='" + ownerid + '\'' +
+                ", restaurantid='" + restaurantid + '\'' +
                 '}';
     }
 }

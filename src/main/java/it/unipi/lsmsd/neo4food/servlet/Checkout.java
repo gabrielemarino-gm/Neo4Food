@@ -8,11 +8,14 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import it.unipi.lsmsd.neo4food.constants.Constants;
+import it.unipi.lsmsd.neo4food.dao.mongo.UserMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.OrderDTO;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
-import it.unipi.lsmsd.neo4food.model.Order;
+import it.unipi.lsmsd.neo4food.dto.UserDTO;
 
 @WebServlet("/checkout")
 public class Checkout extends HttpServlet
@@ -22,56 +25,75 @@ public class Checkout extends HttpServlet
         String targetJSP = "WEB-INF/jsp/checkout.jsp";
         String actionType = request.getParameter("action");
 
-        if("checkout".equals(actionType)){
-//            TODO
+        if ("checkout".equals(actionType)) {
+//            Creo nuovo ordine
+            OrderDTO order = new OrderDTO();
+            UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
 
+            order.setUser(user.getUsername());
+            order.setAddress(user.getAddress());
+            order.setZipcode(user.getZipcode());
+            order.setRestaurant(request.getParameter("restaurant"));
+            order.setRestaurantId(request.getParameter("rid"));
+
+            String[] names = request.getParameterValues("dishName");
+            String[] prices = request.getParameterValues("dishCost");
+            String[] quantities = request.getParameterValues("dishQuantity");
+            String[] currencies = request.getParameterValues("dishCurrency");
+
+            double total = 0;
+            String currency = "";
+
+            List<DishDTO> dishes = new ArrayList<DishDTO>();
+            for(int i = 0; i< names.length; i++)
+            {
+                if(Integer.parseInt(quantities[i]) > 0)
+                {
+//                  Creo un piatto
+                    DishDTO dishDTO = new DishDTO();
+                    dishDTO.setName(names[i]);
+                    dishDTO.setPrice(Double.parseDouble(prices[i]));
+                    dishDTO.setCurrency(currencies[i]);
+                    dishDTO.setQuantity(Integer.parseInt(quantities[i]));
+
+//                    Assegno all'ordine la currency del primo piatto
+                    if(currency.equals("") && !currencies[i].equals("")){ order.setCurrency(currencies[i]); }
+                    dishes.add(dishDTO);
+                    total += Double.parseDouble(prices[i]) * Integer.parseInt(quantities[i]);
+                }
+            }
+
+//            Setto piatti e totale
+            order.setDishes(dishes);
+            order.setTotal(total);
+
+            request.setAttribute("order", order);
         }
-        else if("add".equals(actionType)){
+//        Completo l'ordine con gli ultimi dati e lo inserisco nel database
+        else if ("confirm".equals(actionType))
+        {
+            String obj = request.getParameter("incremental");
 
-            String persistent = request.getParameter("transferObj");
-            String id = request.getParameter("objectId");
-            String name = request.getParameter("objectName");
-            Float price = Float.parseFloat(request.getParameter("objectPrice"));
-            String currency = request.getParameter("objectCurrency");
+            OrderDTO order = new Gson().fromJson(obj, OrderDTO.class);
 
-            OrderDTO order = persistent.equals("") ?
-                    new OrderDTO() :
-                    new Gson().fromJson(persistent, OrderDTO.class);
+            order.setPaymentMethod(request.getParameter("pm"));
+            order.setPaymentNumber(request.getParameter("pn"));
+            order.setCreationDate(new Date());
 
-            order.addItem(new DishDTO(id,name,price,currency));
-
-            System.out.println(order);
-
-            response.getWriter().print(new Gson().toJson(order));
-            response.getWriter().flush();
-            return;
-        }else if("remove".equals(actionType)){
-            String persistent = request.getParameter("transferObj");
-            String id = request.getParameter("objectId");
-
-            OrderDTO order = persistent.equals("") ?
-                    new OrderDTO() :
-                    new Gson().fromJson(persistent, OrderDTO.class);
-
-            order.removeItem(id);
-
-            System.out.println(order);
-
-            response.getWriter().print(new Gson().toJson(order));
-            response.getWriter().flush();
+            new UserMongoDAO().insertOrder(order);
             return;
         }
 
+        // Risposta al JSP ??
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
-        doRequest(request,response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        doRequest(request, response);
     }
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
-        doRequest(request,response);
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        doRequest(request, response);
     }
 }

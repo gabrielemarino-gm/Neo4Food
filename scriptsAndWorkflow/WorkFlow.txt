@@ -29,3 +29,82 @@ RIGUARDO AI SERVLET:
 > Parameter - Sono campi read only impostati da chi invia il pacchetto richiesta
 > Attribute - Sono campi sia read che write, usati per mandare info nel frontend tra una pagina e laltra
 > Session - Campo persistente delle richieste, contiene cose riguardande alla sessione tra host e server
+
+---------------------
+Cosa fare?
+1)  Cambiare checkout
+2)  Fix Conferma Ordine
+3)  Fare personalrestaurant.jsp
+4)  Fix Css Login, e in generale
+5)  Permettere la Modifica dei dati User
+ --- > DA FARE SU MONGODB < ---
+1) Fix nomi dei ristoranti (spazi e "&amp;"--->"&")
+2) Cambiare nome in mongoDB al campo "dish[]" ---> "dishes[]" in Restaurants e Orders
+3) In restaurants dividere il prezzo in price e currency
+4) Aggiungere i vettori vuoti orders[] ai ristoranti
+5) Aggiungere i campi paymentMethod e paymentNumber agli utenti
+6) Rendere i ristoranti di Roma con gli stessi campi degli altri ristorati
+
+---CAMPI COLLECTIONS MONGODB---
+
+RESTAURANT - (  _id,
+                position,
+                nome,
+                category,
+                price_range,
+                full_address,
+                zip_code,
+                lat,
+                lon,
+                dish[],   ------------------------------------------>    DISH - (  _id,
+                email,                                                             category,
+                password,                                                          name,
+                pendingOrders[]  ------>  ORDER - (    _id,                        description,
+                                                       user,                       price,
+                                                                                   currency
+                                                       paymentMethod             )
+                                                       paymentNumber
+                                                       address
+                                                       zipcode
+                                                       total
+                                                       status
+                                                       currency
+                                                       dishes[]       ------->     DISH - (  _id,
+                                                   )                                         name,
+                                                                                             quantity
+                                                                                           )
+
+#######################################################################################################################
+
+UTENTE - (   _id,
+             firstname,
+             lastname,
+             username,
+             email,
+             phonenumber,
+             address,
+             zipcode,
+             password,
+             paymentMethod,
+             paymentNumber
+          )
+
+########################################################################################################################
+
+ORDINI - ( _id,
+           user,
+           restaurant,
+           restaurantId,
+           paymentMethod,
+           paymentNumber,
+           address,
+           zipcode,
+           total,
+           status,
+           dishes[]    --------->     DISH - (  _id,
+         )                                      name,
+                                                price,
+                                                currency,
+                                                quantity
+                                              )
+

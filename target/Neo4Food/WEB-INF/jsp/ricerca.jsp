@@ -11,37 +11,35 @@
     </head>
     <body>
         
-<%--                Header con login o nomeutente--%>
-            <%@include file="template/header.jsp"%>
-            <%
-                String requestMessage = (String) request.getAttribute("message");
-            %>
-            <div class="-top-6 overflow-hidden h-96 z-50">
-                <img class="w-full" src="img/sfondo.png" alt="imgFood">
+<%--   Header con login o nomeutente--%>
+        <%@include file="template/header.jsp"%>
+<%
+        String requestMessage = (String) request.getAttribute("message");
+%>
+        <div class="-top-6 overflow-hidden h-96 z-50">
+            <img class="w-full shadow-md" src="img/sfondo.png" alt="imgFood">
+        </div>
+        <section class="mx-auto -my-6 text-center">
+<%
+        if (requestMessage != null)
+        {
+%>
+            <div role="alert"><%= requestMessage %></div>
+<%      }
+%>
+            <div class="relative mx-auto h-28 w-1/3 rounded-xl bg-principale shadow-md">
+                <div class="h-3 w-96"></div>
+                <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
+                <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
+                    <input required class="rounded-xl px-3 shadow-md" type="text" name="zipcode" placeholder="ZIP Code">
+                    <input type="hidden" name="page" value= "0">
+                    <input type="hidden" name="filter" value=""/>
+                    <input type="hidden" name="action" value="search">
+                    <button class="w-20 rounded-xl border-2 hover:bg-button" type="submit">Search</button>
+                </form>
             </div>
-            <section class="mx-auto -my-6 text-center">
-                <% if (requestMessage != null) { %>
-                <div role="alert"><%= requestMessage %></div>
-                <% } %>
-                <div class="relative mx-auto h-28 w-1/3 rounded-xl bg-principale shadow-md">
-                    <div class="h-3 w-96"></div>
-                    <h2 class="text-xl top-10 text-center">Search for a Restaurant</h2>
-                    <form class="my-4" method="post" action="<c:url value="/ricerca"/>">
-                        <input required class="rounded-xl px-3" type="text" name="zipcode" placeholder="ZIP Code">
-                        <input type="hidden" name="page" value= 0>
-                        <input type="hidden" name="action" value="search">
-                        <button class="w-20 rounded-xl border-2 hover:bg-button" type="submit">Search</button>
-                    </form>
-                </div>
-            </section>
+        </section>
 
-        <footer class="fixed bottom-0 w-full">
-            <div class="bg-principale text-xs h-16">
-                <p class="my-6 px-3 float-left">Neo4Food Italy S.r.l. - P.IVA 12345678910</p>
-                <img class="my-5 h-7 px-6 float-right" src="https://brand.mastercard.com/content/dam/mccom/brandcenter/Logos/securecode.png" alt="mastercard">
-                <img class="my-5 h-7 px-3 float-right" src="https://loghi-famosi.com/wp-content/uploads/2020/05/Visa-Logo.png" alt="visa">
-                <img class="my-3 h-10 px-3 float-right" src="https://loghi-famosi.com/wp-content/uploads/2020/04/PayPal-Logo.png" alt="paypal">
-            </div>
-        </footer>
+        <%@include file="template/footer.jsp"%>
     </body>
 </html>

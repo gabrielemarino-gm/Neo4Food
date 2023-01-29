@@ -11,6 +11,7 @@ public class RestaurantPage extends HttpServlet{
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "WEB-INF/jsp/personalrestaurant.jsp";
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }
