@@ -7,7 +7,8 @@ module.exports = {
         colors: {
             'principale': '#FFF4EA',
             'test_col' : '#7C2714',
-            'button' : '#FFE8D3'
+            'button' : '#FFE8D3',
+            'white': '#ffffff'
         },
         extend: {},
         spacing: {
@@ -46,6 +47,7 @@ module.exports = {
             64: '16rem',
             72: '18rem',
             80: '20rem',
+            88: '23rem',
             96: '24rem',
             'h-filtro':'70rem',
             'w-filtro':'30rem',

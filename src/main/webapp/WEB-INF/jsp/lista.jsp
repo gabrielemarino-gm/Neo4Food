@@ -39,7 +39,7 @@
                 <div role="alert"><%= requestMessage %></div>
 <%          } %>
 
-            <div class="px-3 mx-auto my-7 text-center font-bold">
+            <div class="px-3 mx-auto my-7 text-center font-bold text-xl">
                 <h2>Results for <%= zipcode %></h2>
             </div>
 
@@ -92,9 +92,40 @@
                             <form method="post" action="<c:url value="/restaurant"/>">
                                 <input type="hidden" name="rid" value= "<%= item.getId() %>" >
                                 <input type="hidden" name="action" value="details">
-                                <button class="w-full px-5 py-3 rounded-lg bg-principale shadow-md hover:bg-button" type="submit">
+                                <button class="h-20 w-full px-5 py-3 rounded-lg bg-principale shadow-md hover:bg-button" type="submit">
                                     <h2 class="float-left"><%= item.getName() %></h2>
-                                    <a class="float-right"><%= item.getRating() %></a>
+
+                                    <div class="flex flex-wrap float-right">
+<%
+                                        Float rate = item.getRating();
+                                        int rateInt = rate.intValue();
+                                        int nStar=0;
+                                        for (; nStar<rateInt; nStar++)
+                                        {
+%>
+                                            <img class="h-5" src="img/star.png" alt="star">
+<%
+                                        }
+
+                                        rate = rate*10;
+                                        nStar = rateInt;
+                                        if (rate%10 > 5)
+                                        {
+%>
+                                            <img class="h-5" src="img/half_star.png" alt="star">
+<%
+                                            nStar = rateInt+1;
+                                        }
+
+                                        for (; nStar<5; nStar++)
+                                        {
+%>
+                                            <img class="h-5" src="img/empty_star.png" alt="star">
+<%
+                                        }
+%>
+                                    </div>
+
                                 </button>
                             </form>
                             <div class="h-3"></div>

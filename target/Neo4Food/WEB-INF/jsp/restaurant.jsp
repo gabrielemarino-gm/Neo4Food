@@ -146,45 +146,46 @@
     <div class="text-3xl font-bold"><%= details.getName() %></div>
     <div class="h-5"></div>
     <div class="flex flex-wrap">
-        <%
-            Float rate = details.getRating();
-            int rateInt = rate.intValue();
-            int nStar=0;
-            for (; nStar<rateInt; nStar++)
-            {
-        %>
-        <img class="h-5" src="img/star.png" alt="star">
-        <%
-            }
+<%
+        Float rate = details.getRating();
+        int rateInt = rate.intValue();
+        int nStar=0;
+        for (; nStar<rateInt; nStar++)
+        {
+%>
+            <img class="h-5" src="img/star.png" alt="star">
+<%
+        }
 
-            rate = rate*10;
-            nStar = rateInt;
-            if (rate%10 > 5)
-            {
-        %>
-        <img class="h-5" src="img/half_star.png" alt="star">
-        <%
-                nStar = rateInt+1;
-            }
-            for (; nStar<5; nStar++)
-            {
-        %>
-        <img class="h-5" src="img/empty_star.png" alt="star">
-        <%
-            }
-        %>
+        rate = rate*10;
+        nStar = rateInt;
+        if (rate%10 > 5)
+        {
+%>
+            <img class="h-5" src="img/half_star.png" alt="star">
+<%
+            nStar = rateInt+1;
+        }
+
+        for (; nStar<5; nStar++)
+        {
+%>
+            <img class="h-5" src="img/empty_star.png" alt="star">
+<%
+        }
+%>
 
         <div class="ml-auto flex flex-wrap">
-            <%
-                String money = details.getPriceRange();
-                String[] splits = money.split("");
-                for (nStar=0; nStar<splits.length; nStar++)
-                {
-            %>
-            <img class="h-5" src="img/money.png" alt="star">
-            <%
-                }
-            %>
+<%
+            String money = details.getPriceRange();
+            String[] splits = money.split("");
+            for (nStar=0; nStar<splits.length; nStar++)
+            {
+%>
+                <img class="h-5" src="img/money.png" alt="star">
+<%
+            }
+%>
         </div>
     </div>
 </div>

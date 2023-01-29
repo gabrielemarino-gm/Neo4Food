@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/Neo4Food_war_exploded/dist/output.css" rel="stylesheet" />
+    <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
         function hideshow(){

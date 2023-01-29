@@ -43,25 +43,25 @@
     </script>
     <%@include file="template/header.jsp"%>
     <div>
-        <form>
-            <h1>Order recap</h1>
-            <div>
-                <div>Customer: <%= order.getUser() %></div>
-                <div>Restaurant: <%= order.getRestaurant() %></div>
-                <div>Address: <%= order.getAddress() %>, <%= order.getZipcode()%></div>
-                <div>Payment method: <input id="pm" required type="text" value="<%= order.getPaymentMethod() != null ? order.getPaymentMethod() : "" %>" placeholder="Payment method"></div>
-                <div>Card number: <input id="pn" required type="text" value="<%= order.getPaymentNumber() != null ? order.getPaymentNumber() : "" %>" placeholder="Payment number"></div>
-                <div>
+        <form class="relative mx-auto w-5/6">
+            <h1 class="font-bold text-2xl mt-5 text-center">Order Recap</h1>
+            <div class="bg-principale rounded-xl shadow-md px-5 py-5 mt-5">
+                <div class="mt-2">Customer: <%= order.getUser() %></div>
+                <div class="mt-2">Restaurant: <%= order.getRestaurant() %></div>
+                <div class="mt-2">Address: <%= order.getAddress() %>, <%= order.getZipcode()%></div>
+                <div class="mt-2">Payment method: <input class="rounded-lg px-3 ml-2" id="pm" required type="text" value="<%= order.getPaymentMethod() != null ? order.getPaymentMethod() : "" %>" placeholder="Payment method"></div>
+                <div class="mt-2">Card number: <input class="rounded-lg px-3 ml-2" id="pn" required type="text" value="<%= order.getPaymentNumber() != null ? order.getPaymentNumber() : "" %>" placeholder="Payment number"></div>
+                <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
+                    <div class="font-bold">Dishes:</div>
 <%--                    List of dish here--%>
                     <% List<DishDTO> list = order.getDishes();
                     for(DishDTO item: list){%>
-                    <div>
-                        <div><%= item.getName() %> x <%= item.getQuantity() %></div>
-                    </div>
+                        <div class="mt-3 ml-5"><%= item.getName() %> x <%= item.getQuantity() %></div>
                     <%}%>
+                    <div class="mt-2 ml-88">Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getDishes().get(0).getCurrency() %></div>
                 </div>
-                <div>Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getDishes().get(0).getCurrency() %></div>
-                <button onclick="send()">Confirm order</button>
+                <div class="h-10"></div>
+                <button class="absolute bottom-3 right-4 border-2 rounded-xl px-3 hover:bg-button" onclick="send()">Confirm order</button>
             </div>
         </form>
     </div>
