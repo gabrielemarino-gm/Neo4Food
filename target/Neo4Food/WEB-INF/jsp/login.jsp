@@ -72,7 +72,7 @@
 
                 <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" type="submit">Signup</button>
             </form>
-            <button class="my-3 w-52 rounded-lg border-2" onclick="hideshow()">SignIn</button>
+            <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" onclick="hideshow()">SignIn</button>
         </div>
     </div>
 </section>

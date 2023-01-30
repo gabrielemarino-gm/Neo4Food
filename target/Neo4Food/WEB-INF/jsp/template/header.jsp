@@ -8,7 +8,7 @@
     String restaurantname = null;
     Boolean isLogged = false;
     Boolean isRestaurant = false;
-    if(session == null) {System.out.println("Ah bho");}
+    
     if (session != null)
         if(session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
         isLogged = true;

@@ -19,7 +19,6 @@
 <%
     RestaurantDTO details = (RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
     List<OrderDTO> ordini = new RestaurantsMongoDAO().getRestaurantDetails(details.getId(),false,false,true).getOrders();
-    System.out.println("Ordini: " + ordini);
 %>
 
     <%@include file="template/header.jsp"%>
@@ -85,7 +84,7 @@
                         <form method="post" action="<c:url value="/checkout"/>">
                             <input type="hidden" name="action" value="confirm">
                             <input type="hidden" name="oid" value="<%= order.getId() %>">
-                            <button class="float-right mt-5 border-2 rounded-xl px-3 hover:bg-button" type="submit"> Confirm </button>
+                            <button class="float-right mt-5 border-2 rounded-xl px-3 hover:bg-button" type="submit"> Delivered </button>
                         </form>
                      </div>
 
