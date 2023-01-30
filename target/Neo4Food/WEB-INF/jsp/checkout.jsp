@@ -1,10 +1,11 @@
-<%@ page import="it.unipi.lsmsd.neo4food.dto.OrderDTO" %>
-<%@ page import="java.text.DecimalFormat" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.OrderDTO" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.UserDTO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,7 @@
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <%
         OrderDTO order = (OrderDTO) request.getAttribute("order");
+        UserDTO user = (UserDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
     %>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     </head>
@@ -48,8 +50,8 @@
                 <div class="mt-2">Customer:&nbsp<%= order.getUser() %></div>
                 <div class="mt-2">Restaurant:&nbsp<%= order.getRestaurant() %></div>
                 <div class="mt-2">Address: &nbsp<%= order.getAddress() %>, <%= order.getZipcode()%></div>
-                <div class="mt-2">Payment method: <input class="rounded-lg px-3 ml-2" id="pm" required type="text" value="<%= order.getPaymentMethod() != null ? order.getPaymentMethod() : "" %>" placeholder="Payment method"></div>
-                <div class="mt-2">Card number: <input class="rounded-lg px-3 ml-2" id="pn" required type="text" value="<%= order.getPaymentNumber() != null ? order.getPaymentNumber() : "" %>" placeholder="Payment number"></div>
+                <div class="mt-2">Payment method: <input class="rounded-lg px-3 ml-2" id="pm" required type="text" value="<%= (user.getPaymentMethod() != null || !user.getPaymentMethod().equals("")) ? user.getPaymentMethod() : "" %>" placeholder="Payment method"></div>
+                <div class="mt-2">Card number: <input class="rounded-lg px-3 ml-2" id="pn" required type="text" value="<%= (user.getPaymentNumber() != null || !user.getPaymentNumber().equals("")) ? user.getPaymentNumber() : "" %>" placeholder="Payment number"></div>
                 <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
                     <div class="font-bold">Dishes:</div>
 <%--                    List of dish here--%>

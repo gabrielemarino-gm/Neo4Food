@@ -35,16 +35,4 @@ public abstract class RegisteredUser {
     public String getZipcode() {return zipcode;}
     public Boolean getRestaurant() {return isRestaurant;}
 //-----------
-    @Override
-    public String toString() {
-        return "RegisteredUser{" +
-                "id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", zipcode='" + zipcode + '\'' +
-                ", isRestaurant=" + isRestaurant +
-                '}';
-    }
 }

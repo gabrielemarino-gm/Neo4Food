@@ -1,11 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.OrderDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dao.mongo.RestaurantMongoDAO" %>
 
 <html>
 <head>
@@ -18,7 +17,7 @@
 
 <%
     RestaurantDTO details = (RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
-    List<OrderDTO> ordini = new RestaurantsMongoDAO().getRestaurantDetails(details.getId(),false,false,true).getOrders();
+    List<OrderDTO> ordini = new RestaurantMongoDAO().getRestaurantDetails(details.getId(),false,false,true).getOrders();
 %>
 
     <%@include file="template/header.jsp"%>
@@ -56,8 +55,12 @@
                 <img class="h-5" src="img/empty_star.png" alt="star">
 <%          }
 %>
-
-            <a class="ml-5" href="">View reviews</a>
+<%--            TODO SERVLET E PAGINA PER VEDERE LE REVIEWS--%>
+<%--            TODO SERVLET E PAGINA PER VEDERE LE REVIEWS--%>
+<%--            TODO SERVLET E PAGINA PER VEDERE LE REVIEWS--%>
+            <form method="post" action="">
+            <button class="ml-5">View reviews</button>
+            </form>
 
         </div>
     </div>
@@ -82,8 +85,9 @@
 %>
                         </div>
                         <form method="post" action="<c:url value="/checkout"/>">
-                            <input type="hidden" name="action" value="confirm">
+                            <input type="hidden" name="action" value="send">
                             <input type="hidden" name="oid" value="<%= order.getId() %>">
+                            <input type="hidden" name="rid" value="<%= details.getId() %>">
                             <button class="float-right mt-5 border-2 rounded-xl px-3 hover:bg-button" type="submit"> Delivered </button>
                         </form>
                      </div>

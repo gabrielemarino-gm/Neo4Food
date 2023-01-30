@@ -1,10 +1,7 @@
 package it.unipi.lsmsd.neo4food.dto;
 
-import it.unipi.lsmsd.neo4food.dto.DishDTO;
-
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 public class OrderDTO
 {

@@ -2,6 +2,7 @@ package it.unipi.lsmsd.neo4food.dao.mongo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.*;
 
@@ -39,11 +40,14 @@ public abstract class BaseMongo {
         clientConnection = MongoClients.create(url);
         clientDatabase = clientConnection.getDatabase(DATABASE);
 //        --------------
-//        ConnectionString uri = new ConnectionString(String.format(URL_FORMAT,NODE01,PORT01,NODE02,PORT02,NODE03,PORT03));
-//        MongoClientSettings mcs = MongoClientSettings.builder()
-//                .applyConnectionString(uri)
-//                .writeConcern(WriteConcern.W1).build();
-//        clientConnection = MongoClients.create(mcs);
+        ConnectionString uri = new ConnectionString(String.format(URL_FORMAT,NODE01,PORT01,NODE02,PORT02,NODE03,PORT03));
+        MongoClientSettings mcs = MongoClientSettings.builder()
+                .applyConnectionString(uri)
+                .readPreference(ReadPreference.primaryPreferred())
+                .writeConcern(WriteConcern.W2)
+                .build();
+
+        clientConnection = MongoClients.create(mcs);
 //        --------------
         return clientDatabase;
     }

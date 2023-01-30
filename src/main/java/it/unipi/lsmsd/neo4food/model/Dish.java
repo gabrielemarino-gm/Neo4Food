@@ -23,15 +23,4 @@ public class Dish {
     public String getCurrency() {return currency;}
     public String getDescription() {return description;}
 
-    @Override
-    public String toString() {
-        return "Dish{" +
-                "id='" + id +
-                ", name='" + name +
-                ", cost=" + cost +
-                ", currency='" + currency +
-                ", description='" + description +
-                ", ownerid='" + ownerid +
-                '}';
-    }
 }

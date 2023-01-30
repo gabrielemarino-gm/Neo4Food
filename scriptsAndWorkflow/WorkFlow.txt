@@ -38,7 +38,7 @@ Cosa fare?
 4)  Fix Css Login, e in generale
 5)  Permettere la Modifica dei dati User
  --- > DA FARE SU MONGODB < ---
-1) Fix nomi dei ristoranti (spazi e "&amp;"--->"&")
+1) Fix nomi dei ristoranti ("&amp;"--->"&")
 2) Cambiare nome in mongoDB al campo "dish[]" ---> "dishes[]" in Restaurants e Orders
 3) In restaurants dividere il prezzo in price e currency
 4) Aggiungere i vettori vuoti orders[] ai ristoranti
@@ -67,9 +67,9 @@ RESTAURANT - (  _id,
                                                        address
                                                        zipcode
                                                        total
-                                                       status
+                                                       
                                                        currency
-                                                       dishes[]       ------->     DISH - (  _id,
+                                                       dishes[]       ------->     DISH - (  
                                                    )                                         name,
                                                                                              quantity
                                                                                            )
@@ -101,10 +101,9 @@ ORDINI - ( _id,
            zipcode,
            total,
            status,
-           dishes[]    --------->     DISH - (  _id,
+           dishes[]    --------->     DISH - (
          )                                      name,
                                                 price,
                                                 currency,
                                                 quantity
                                               )
-

@@ -1,8 +1,5 @@
 package it.unipi.lsmsd.neo4food.dto;
 
-import it.unipi.lsmsd.neo4food.dto.DishDTO;
-
-import java.lang.management.ThreadInfo;
 import java.util.List;
 
 public class RestaurantDTO {

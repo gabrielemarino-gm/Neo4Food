@@ -7,23 +7,26 @@ public class User extends RegisteredUser{
     private String username;
     private String firstName;
     private String lastName;
+    private String paymentMethod;
+    private String paymentNumber;
 
-    private List<Order> orders;
-
-    public User(String i, String e, String u, String p, String fn, String ln, String pn, String a, String z){
-        super(i, p, e, pn, a, z, false);
-        username = u;
-        firstName = fn;
-        lastName = ln;
+    public User(String id, String email, String uname,
+                String psw, String fname, String lname,
+                String phone, String addr, String zip,
+                String pmethod, String pnumber){
+        super(id, psw, email, phone, addr, zip, false);
+        username = uname;
+        firstName = fname;
+        lastName = lname;
+        paymentMethod = pmethod;
+        paymentNumber = pnumber;
     }
 
     public void setUsername(String username) {this.username = username;}
-    public void setFirstName(String firstName) {this.firstName = firstName;}
-    public void setLastName(String lastName) {this.lastName = lastName;}
-    public void setOrders(List<Order> orders) {this.orders = orders;}
 
     public String getUsername() {return username;}
     public String getFirstName() {return firstName;}
     public String getLastName() {return lastName;}
-    public List<Order> getOrders() {return orders;}
+    public String getPaymentMethod() {return paymentMethod;}
+    public String getPaymentNumber() {return paymentNumber;}
 }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.UserDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -90,11 +90,15 @@
     <div class="relative w-auto flex justify-center -my-20">
         <form id="changeStuff" method="post" action="<c:url value="/personal"/>">
             <input type="hidden" name="action" value="change">
+            <input type="hidden" name="actor" value="user">
             <input type="hidden" name="uid" value="<%= userInfo.getId() %>">
             <div class="rounded-lg bg-principale text-center shadow-lg">
 
                 <div class="border-gray-300 rounded-t-lg border-b bg-button py-3 px-6 font-bold">
-                    My Account <%= userInfo.getUsername() %>
+                    My Account <%= userInfo.getUsername() %><br>
+                    <% if(request.getAttribute("message") != null){  %>
+                    <%= (String) request.getAttribute("message") %>
+                    <% } %>
                 </div>
 
                 <div class="border-gray-300 text-gray-600 flex flex-wrap border-t py-3 px-2">

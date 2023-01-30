@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
 <%@ page import="java.util.List" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>

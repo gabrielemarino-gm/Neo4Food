@@ -7,12 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
-import it.unipi.lsmsd.neo4food.dao.mongo.UserMongoDAO;
+import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.OrderDTO;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
@@ -25,8 +24,8 @@ public class Checkout extends HttpServlet
         String targetJSP = "WEB-INF/jsp/checkout.jsp";
         String actionType = request.getParameter("action");
 
+//          Creo nuovo ordine
         if ("checkout".equals(actionType)) {
-//            Creo nuovo ordine
             OrderDTO order = new OrderDTO();
             UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
 
@@ -80,11 +79,19 @@ public class Checkout extends HttpServlet
             order.setPaymentNumber(request.getParameter("pn"));
             order.setCreationDate(new Date());
 
-            new UserMongoDAO().insertOrder(order);
+            ServiceProvider.getOrderService().insertOrder(order);
             return;
         }
+        else if ("send".equals(actionType))
+        {
+            String orderid = request.getParameter("oid");
+            String restarantid = request.getParameter("rid");
 
-        // Risposta al JSP ??
+            boolean result = ServiceProvider.getOrderService().sendOrder(orderid, restarantid);
+
+
+        }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

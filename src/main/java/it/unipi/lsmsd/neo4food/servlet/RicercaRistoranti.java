@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import it.unipi.lsmsd.neo4food.dao.mongo.RestaurantsMongoDAO;
+import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
@@ -26,9 +26,8 @@ public class RicercaRistoranti extends HttpServlet
             int page = Integer.parseInt(request.getParameter("page"));
             String zipcode = (String) request.getParameter("zipcode");
             String filter = (String) request.getParameter("filter");
-            RestaurantsMongoDAO restaurants = new RestaurantsMongoDAO();
 //
-            ListDTO<RestaurantDTO> list = restaurants.getRestaurantsForSearchPage(page, zipcode, filter);
+            ListDTO<RestaurantDTO> list = ServiceProvider.getRestaurantService().getRestaurantsForSearchPage(page, zipcode, filter);
             request.setAttribute("listDTO", list);
             request.setAttribute("zipcode", zipcode);
             request.setAttribute("filter", filter);

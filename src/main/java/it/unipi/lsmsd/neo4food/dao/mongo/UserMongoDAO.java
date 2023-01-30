@@ -5,25 +5,22 @@ import com.mongodb.client.*;
 
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
-import it.unipi.lsmsd.neo4food.dto.DishDTO;
-import it.unipi.lsmsd.neo4food.dto.OrderDTO;
+import com.mongodb.client.result.UpdateResult;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-
-import javax.print.Doc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 
-public class UserMongoDAO extends BaseMongo{
+public class UserMongoDAO extends BaseMongo {
 
-        //LOGIN - Email, Password
-        //CREDENTIALS - Username, Email
+    //>>>>>>>>>>>>>OK<<<<<<<<<<<<<
+
+    //LOGIN - Email, Password
+    //CREDENTIALS - Username, Email
     public Boolean userExists(String usr, String eml)
     {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
@@ -35,7 +32,7 @@ public class UserMongoDAO extends BaseMongo{
         }
         return false;
     }
-
+//>>>>>>>>>>>>>OK<<<<<<<<<<<<<
     public UserDTO getUserLogin(String eml, String psw)
     {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
@@ -61,7 +58,6 @@ public class UserMongoDAO extends BaseMongo{
 
                 return userDTO;
             }
-
 //          No match
             userDTO.setId("0");
             return userDTO;
@@ -76,6 +72,7 @@ public class UserMongoDAO extends BaseMongo{
         return userDTO;
     }
 
+//>>>>>>>>>>>>>OK<<<<<<<<<<<<<
     public void registerUser(User user)
     {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
@@ -93,8 +90,9 @@ public class UserMongoDAO extends BaseMongo{
                     .append("address", user.getAddress())
                     .append("zipcode", user.getZipcode())
                     .append("password", user.getPassword())
-                    .append("paymentMethod", "")
-                    .append("paymentNumber", "")
+//                   Non inserite in fase di registrazione, aggiunte dopo all occorrenza
+                    .append("paymentMethod", user.getPaymentMethod())
+                    .append("paymentNumber", user.getPaymentNumber())
             );
 
         }
@@ -104,73 +102,32 @@ public class UserMongoDAO extends BaseMongo{
         }
     }
 
-    public void insertOrder(OrderDTO order)
-    {
-        // Devo aggiungere sia in Ordini che in Ristoranti
-        MongoCollection<Document> collectionOrders = getDatabase().getCollection("Orders");
-        MongoCollection<Document> collectionRestaurants = getDatabase().getCollection("Restaurants");
+    public boolean updateUser(User user){
 
-        // Devo aggiungere un ordine
-        // Un ordine ha dei campi e una lista di piatti
-        // Inizio creando una lista di documenti di tipo piatto
-        // Aggiungo i campi importanti per ogni piatto nell'ordine
-        List<Document> dishesList = new ArrayList<>();
-
-        for(DishDTO item: order.getDishes())
-        {
-            dishesList.add(new Document("_id", new ObjectId())
-                        .append("name", item.getName())
-                        .append("price", item.getPrice())
-                        .append("currency", item.getCurrency().replace(" ",""))
-                        .append("quantity", item.getQuantity()));
-
-        }
-
-        // A questo punto creo il documento dell ordine
-        Document toInsert = new Document("_id", new ObjectId()).
-                append("user", order.getUser()).
-                append("restaurant", order.getRestaurant()).
-                append("restaurantId", order.getRestaurantId()).
-                append("paymentMethod", order.getPaymentMethod()).
-                append("paymentNumber", order.getPaymentNumber()).
-                append("creationDate", order.getCreationDate()).
-                append("deliveryDate", order.getDeliveryDate()).
-                append("address", order.getAddress()).
-                append("zipcode", order.getZipcode()).
-                append("total", order.getTotal()).
-                append("currency", order.getCurrency()).
-                append("status", order.getStatus()).
-                append("dishes", dishesList);
+        Document query = new Document("_id", new ObjectId(user.getId()));
+        Bson updates = Updates.combine(
+                Updates.set("firstname", user.getFirstName()),
+                Updates.set("lastname", user.getLastName()),
+                Updates.set("phonenumber", user.getPhoneNumber()),
+                Updates.set("address", user.getAddress()),
+                Updates.set("zipcode", user.getZipcode()),
+                Updates.set("paymentMethod", user.getPaymentMethod()),
+                Updates.set("paymentNumber", user.getPaymentNumber())
+                );
 
         try{
-            collectionOrders.insertOne(toInsert);
-        }catch(MongoException e){
+            UpdateResult result = getDatabase().
+                                    getCollection("Users").
+                                    updateOne(query,updates);
+
+            if(result.getModifiedCount() == 1){
+                return true;
+            }
+
+        }catch (MongoException e){
             System.err.println(e);
+            return false;
         }
-
-//        L'ordine da inserire sotto il ristorante ha alcuni campi in meno
-//        I piatti non devono avere price e currency
-//        L ordine non deve avere restaurant, restaurantId e status
-        for(Document i : dishesList){
-            i.remove("price");
-            i.remove("currency");
-        }
-
-        toInsert.remove("restaurant");
-        toInsert.remove("restaurantId");
-        toInsert.remove("deliveryDate");
-        toInsert.remove("status");
-        toInsert.remove("dishes");
-
-        toInsert.append("dishes", dishesList);
-
-        try{
-            collectionRestaurants.updateOne(
-                    eq("_id", new ObjectId(order.getRestaurantId())),
-                    Updates.addToSet("orders", toInsert));
-        }catch(MongoException e){
-            System.err.println(e);
-        }
-
+        return false;
     }
 }
