@@ -21,12 +21,12 @@ public class Admin extends HttpServlet
         String targetJSP = "/WEB-INF/jsp/admin.jsp";
         String token = request.getParameter("token");
 //        Controllo token
-        if(isTokenValid(token)){
+        if(ServiceProvider.getAdminService().isTokenValid(token)){
 //            Login come admin
 
         }else{
 //            Invalid request
-            
+            targetJSP = "/WEB-INF/jsp/invalid.jsp";
         }
 
 
