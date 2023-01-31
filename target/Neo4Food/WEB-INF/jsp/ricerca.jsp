@@ -17,7 +17,7 @@
         String requestMessage = (String) request.getAttribute("message");
 %>
         <div class="-top-6 overflow-hidden h-96 z-50">
-            <img class="w-full shadow-md" src="img/sfondo.png" alt="imgFood">
+            <img class="w-full shadow-md" src="img/sfondo.jpg" alt="imgFood">
         </div>
         <section class="mx-auto -my-6 text-center">
 <%

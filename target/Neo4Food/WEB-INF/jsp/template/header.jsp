@@ -42,7 +42,7 @@
                     <input type="hidden" name="actor" value="<%= isRestaurant ? "restaurant" : "user" %>">
                     <input type="hidden" name="action" value="orders">
                     <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
-                        <a>Orders</a>
+                        <a>Order history</a>
                     </button>
                 </form>
 <%              if(!isRestaurant)
