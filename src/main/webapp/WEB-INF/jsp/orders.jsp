@@ -2,7 +2,6 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.OrderDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
-<%@ page import="java.util.List" %>
 
 <html>
 <head>

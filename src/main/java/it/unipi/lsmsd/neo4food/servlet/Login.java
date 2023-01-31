@@ -16,7 +16,7 @@ public class Login extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String actionType = (String) request.getParameter("action");
+        String actionType = request.getParameter("action");
         String targetJSP = "WEB-INF/jsp/ricerca.jsp";
 //        Se actionType == null la richiesta viene da header.jsp
 
@@ -55,14 +55,14 @@ public class Login extends HttpServlet
 //      Se actionType vale "Signup" la richiesta e' un signup
         else if ("signup".equals(actionType))
         {
-            String username = (String) request.getParameter("username");
-            String email = (String) request.getParameter("email");
-            String firstname = (String) request.getParameter("firstname");
-            String lastname = (String) request.getParameter("lastname");
-            String phonenumber = (String) request.getParameter("phonenumber");
-            String zipcode = (String) request.getParameter("zipcode");
-            String password = (String) request.getParameter("password");
-            String address = (String) request.getParameter("address");
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String firstname = request.getParameter("firstname");
+            String lastname = request.getParameter("lastname");
+            String phonenumber = request.getParameter("phonenumber");
+            String zipcode = request.getParameter("zipcode");
+            String password = request.getParameter("password");
+            String address = request.getParameter("address");
             User user = new User("0",email,username,password,firstname,lastname,phonenumber,address,zipcode,"","");
 
             if (!ServiceProvider.getUserService().userExists(username ,email))
@@ -99,8 +99,8 @@ public class Login extends HttpServlet
 
     private Boolean loginAsRestaurant(HttpServletRequest request, HttpServletResponse response)
     {
-        String email = (String) request.getParameter("email");
-        String password = (String) request.getParameter("password");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
         RestaurantDTO result = ServiceProvider.getRestaurantService().getRestaurantLogin(email, password);
 //      Ristorante trovato
         if (!result.getId().equals("0"))
@@ -120,8 +120,8 @@ public class Login extends HttpServlet
 
     private Boolean loginAsUser(HttpServletRequest request, HttpServletResponse response)
     {
-        String email = (String) request.getParameter("email");
-        String password = (String) request.getParameter("password");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
         UserDTO result = ServiceProvider.getUserService().getUserLogin(email, password);
 
 //      Utente trovato

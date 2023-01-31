@@ -43,7 +43,7 @@ public class RestaurantMongoDAO extends BaseMongo {
                     Filters.regex("category",".*"+filter+".*"));
         }
 
-        try(MongoCursor cursor = collection.find(query).limit(Constants.PAGE_SIZE).skip(offset).iterator();)
+        try(MongoCursor cursor = collection.find(query).limit(Constants.PAGE_SIZE).skip(offset).iterator())
         {
             while (cursor.hasNext()){
                 Document res = (Document) cursor.next();
@@ -77,7 +77,7 @@ public RestaurantDTO getRestaurantLogin(String eml, String password){
                     eq("email", eml),
                     eq("password",password)
             )
-        ).limit(1).iterator();
+        ).limit(1).iterator()
     )
 //            INIZIO BLOCCO TRY
     {
@@ -122,7 +122,7 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getMoreDetails, bo
 
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
 
-        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).limit(1).iterator();)
+        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).limit(1).iterator())
         {
 //          Per ogni documento trovato su MongoDB:
             while (cursor.hasNext())

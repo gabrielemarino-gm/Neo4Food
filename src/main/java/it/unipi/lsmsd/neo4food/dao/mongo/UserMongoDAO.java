@@ -24,7 +24,7 @@ public class UserMongoDAO extends BaseMongo {
     public Boolean userExists(String usr, String eml)
     {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
-        try(MongoCursor cursor = collection.find(or(eq("email", eml),eq("username",usr))).limit(1).iterator();)
+        try(MongoCursor cursor = collection.find(or(eq("email", eml),eq("username",usr))).limit(1).iterator())
         {
             if (cursor.hasNext()) {
                 return true;
@@ -38,7 +38,7 @@ public class UserMongoDAO extends BaseMongo {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
         UserDTO userDTO = new UserDTO();
 
-        try(MongoCursor cursor = collection.find(and(eq("email", eml),eq("password",psw))).limit(1).iterator();)
+        try(MongoCursor cursor = collection.find(and(eq("email", eml),eq("password",psw))).limit(1).iterator())
         {
             if (cursor.hasNext())
             {

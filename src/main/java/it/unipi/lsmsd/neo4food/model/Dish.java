@@ -1,12 +1,12 @@
 package it.unipi.lsmsd.neo4food.model;
 
 public class Dish {
-    private String id;
-    private String name;
-    private Float cost;
-    private String currency;
-    private String description;
-    private String ownerid;
+    private final String id;
+    private final String name;
+    private final Float cost;
+    private final String currency;
+    private final String description;
+    private final String ownerid;
 
     public Dish(String i, String n, Float c, String cu, String d, String o){
         id = i;
