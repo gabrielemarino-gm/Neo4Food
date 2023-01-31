@@ -18,14 +18,14 @@
 </head><!--/head-->
 
 <body>
-<div class="container text-center my-12">
+<div class="container text-center my-16">
   <div class="flex justify-center">
     <a href="<c:url value="/ricerca"/>"><img src="<c:url value="/img/404.png"/>" alt="" /></a>
   </div>
   <div class="my-5">
     <h1><b>OPPS!</b> We Couldn’t Find this Page</h1>
     <p>Uh... So it looks like you brock something. The page you are looking for has up and Vanished.</p>
-    <h2><a href="<c:url value="/ricerca"/>">Bring me back Shopping</a></h2>
+    <h2><a href="<c:url value="/ricerca"/>">Bring me back to Neo4Food</a></h2>
   </div>
 </div>
 
