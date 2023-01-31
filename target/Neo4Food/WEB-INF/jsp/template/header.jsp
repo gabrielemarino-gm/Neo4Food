@@ -21,7 +21,7 @@
     }
     %>
 
-    <header class="bg-principale px-5 h-12 font-bold text-1xs">
+    <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
 <%--        Il pulsante del logo ti manda a ricerca solo se non si e' ristorante--%>
             <% if(!isRestaurant){ %>
             <a href="<c:url value="/ricerca"/>"><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>

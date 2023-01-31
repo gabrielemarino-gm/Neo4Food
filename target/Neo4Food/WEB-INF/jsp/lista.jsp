@@ -126,7 +126,7 @@
                                 <button class="h-20 w-full px-5 py-3 rounded-lg bg-principale shadow-md hover:bg-button" type="submit">
                                     <h2 class="float-left"><%= item.getName() %></h2>
 
-                                    <div class="flex flex-wrap float-right">
+                                    <div class="flex flex-wrap float-right hover:bg-button">
 <%
                                         Float rate = item.getRating();
                                         int rateInt = rate.intValue();

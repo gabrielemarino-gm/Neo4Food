@@ -94,11 +94,8 @@
             <input type="hidden" name="uid" value="<%= userInfo.getId() %>">
             <div class="rounded-lg bg-principale text-center shadow-lg">
 
-                <div class="border-gray-300 rounded-t-lg border-b bg-button py-3 px-6 font-bold">
+                <div class="border-gray-300 rounded-t-lg bg-button py-3 px-6 font-bold">
                     My Account <%= userInfo.getUsername() %><br>
-                    <% if(request.getAttribute("message") != null){  %>
-                    <%= (String) request.getAttribute("message") %>
-                    <% } %>
                 </div>
 
                 <div class="border-gray-300 text-gray-600 flex flex-wrap border-t py-3 px-2">
@@ -147,10 +144,32 @@
 
                 <button class="relative bottom-2 float-right ml-2 mt-4 w-24 rounded-lg border-2 hover:bg-button" type="button" onclick="modifyOrConfirm()">Change</button>
                 <button  class="relative bottom-2 float-right mt-4 w-24 rounded-lg border-2 hover:bg-button" style="display: none" id="undo" type="button" onclick="revertChanges()">Revert</button>
+
+
             </div>
+<%              if(request.getAttribute("message") != null)
+                {
+                    if (request.getAttribute("message").equals("Updated successfully"))
+                    {
+%>
+                        <div class="text-center my-2 ml-20" style="color: green;">
+                            <%= (String) request.getAttribute("message") %>
+                        </div>
+<%                  }
+                    else
+                    {
+%>
+                        <div class="text-center my-2 ml-20" style="color: red;">
+                            <%= (String) request.getAttribute("message") %>
+                        </div>
+<%                  }
+                }
+%>
+
         </form>
 
     </div>
+    <div class="h-20"></div>
     <%@include file="template/footer.jsp"%>
     </body>
 </html>
