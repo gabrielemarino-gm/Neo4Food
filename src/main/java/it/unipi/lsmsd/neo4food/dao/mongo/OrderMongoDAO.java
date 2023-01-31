@@ -18,7 +18,8 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackOneOrder;
 
-public class OrderMongoDAO extends BaseMongo{
+public class OrderMongoDAO extends BaseMongo
+{
 
     public void insertOrder(OrderDTO order)
     {
@@ -59,16 +60,20 @@ public class OrderMongoDAO extends BaseMongo{
                 append("dishes", dishesList);
 
 //        Nella collection Orders sono inseriti con i dati completi
-        try{
+        try
+        {
             collectionOrders.insertOne(toInsert);
-        }catch(MongoException e){
+        }
+        catch(MongoException e)
+        {
             System.err.println(e);
         }
 
 //        L'ordine da inserire sotto il ristorante ha alcuni campi in meno
 //        I piatti non devono avere price e currency
 //        L ordine non deve avere restaurant, restaurantId e status
-        for(Document i : dishesList){
+        for(Document i : dishesList)
+        {
             i.remove("price");
             i.remove("currency");
         }
@@ -81,11 +86,15 @@ public class OrderMongoDAO extends BaseMongo{
 //      Nella collection del ristorante vengo inseriti solo con i dati necessari al ristoratore
         toInsert.append("dishes", dishesList);
 
-        try{
+        try
+        {
             collectionRestaurants.updateOne(
                     eq("_id", new ObjectId(order.getRestaurantId())),
-                    Updates.addToSet("orders", toInsert));
-        }catch(MongoException e){
+                    Updates.addToSet("orders", toInsert)
+            );
+        }
+        catch(MongoException e)
+        {
             System.err.println(e);
         }
 
@@ -97,25 +106,32 @@ public class OrderMongoDAO extends BaseMongo{
         return false;
     }
 
-    public ListDTO<OrderDTO> getOrders(String actorid, boolean isRestaurant){
+    public ListDTO<OrderDTO> getOrders(String actorid, boolean isRestaurant)
+    {
         ListDTO<OrderDTO> toReturn = new ListDTO<OrderDTO>();
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
         Bson query = new Document();
 
-        if(isRestaurant){
+        if(isRestaurant)
+        {
             query = Filters.eq("restaurantId", actorid);
-        }else{
+        }
+        else
+        {
             query = Filters.eq("user", actorid);
         }
 
         try(MongoCursor cursor = collection.find(query).limit(20).iterator();)
         {
-            if(!cursor.hasNext()){
-                return null;
+            if(!cursor.hasNext())
+            {
+                return toReturn;
             }
+
             List<OrderDTO> tempOrderList = new ArrayList<OrderDTO>();
             int count = 0;
-            while (cursor.hasNext()){
+            while (cursor.hasNext())
+            {
                 Document res = (Document) cursor.next();
 
                 OrderDTO tempOrder = new OrderDTO();
@@ -128,7 +144,9 @@ public class OrderMongoDAO extends BaseMongo{
 
             toReturn.setList(tempOrderList);
             toReturn.setItemCount(count);
-        }catch(MongoException e){
+        }
+        catch(MongoException e)
+        {
             System.err.println(e);
         }
 

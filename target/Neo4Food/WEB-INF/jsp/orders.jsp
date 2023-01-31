@@ -31,8 +31,8 @@
             {
     %>
     <div class="bg-principale rounded-md px-4 py-4 w-5/6 mt-5 shadow-md">
-        <div>Customer Username:&nbsp&nbsp<%= order.getUser() %> </div>
-        <div>Customer Address:&nbsp&nbsp<%= order.getAddress() %>, <%= order.getZipcode() %> </div>
+        <div>Customer username:&nbsp&nbsp<%= order.getUser() %> </div>
+        <div>Customer address:&nbsp&nbsp<%= order.getAddress() %>, <%= order.getZipcode() %> </div>
         <div>Total:&nbsp&nbsp<%= order.getTotal()%>&nbspUSD</div>
         <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
             <% for(DishDTO dish: order.getDishes())
