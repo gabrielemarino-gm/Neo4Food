@@ -36,8 +36,8 @@ public class Utilities {
         dish.setQuantity(document.get("quantity") != null ? Integer.parseInt(document.get("quantity").toString()) : 0);
         dish.setDescription(document.get("description") != null ? document.get("description").toString() : "Description not available");
         if(document.get("price") != null){
-            dish.setPrice(Double.parseDouble(document.get("price").toString()));
-            dish.setCurrency(document.get("currency").toString());
+            dish.setPrice(Double.parseDouble(document.get("price") != null? document.get("price").toString() : "0.0"));
+            dish.setCurrency(document.get("currency") != null ? document.get("currency").toString() : "");
         }
     }
     //    ________________________

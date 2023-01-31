@@ -41,7 +41,7 @@
                             <div>Customer username:&nbsp&nbsp<%= order.getUser() %> </div>
                             <div>Customer address:&nbsp&nbsp<%= order.getAddress() %>, <%= order.getZipcode() %> </div>
                             <div>Date of Creation:&nbsp&nbsp<%= formatter.format(order.getCreationDate())%></div>
-                            <div>Total:&nbsp&nbsp<%= Math.round(order.getTotal() * 100.0) / 100.0%>&nbspUSD</div>
+                            <div>Total:&nbsp&nbsp<%= Math.round(order.getTotal() * 100.0) / 100.0%>&nbsp<%= order.getCurrency() %>></div>
                             <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
 <%
                                 for(DishDTO dish: order.getDishes())
@@ -61,7 +61,7 @@
                             <div>Restaurant:&nbsp&nbsp<%= order.getRestaurant() %> </div>
                             <div>Date of Creation:&nbsp&nbsp<%= formatter.format(order.getCreationDate())%></div>
                             <div>Date of Delivery:&nbsp&nbsp<%= (order.getDeliveryDate()!=null)? formatter.format(order.getDeliveryDate()):"Not delivered yet"%></div>
-                            <div>Total:&nbsp&nbsp<%= Math.round(order.getTotal() * 100.0) / 100.0%>&nbspUSD</div>
+                            <div>Total:&nbsp&nbsp<%= Math.round(order.getTotal() * 100.0) / 100.0%>&nbsp<%= order.getCurrency() %>></div>
                             <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
 <%
                                     for(DishDTO dish: order.getDishes())

@@ -43,7 +43,7 @@
                 <input type="hidden" name="action" value="login" id="actionType"/>
                 </br>
                 <button class="my-3 w-36 rounded-lg border-2 shadow-xl hover:bg-button" type="submit" id="loginButton">Login</button>
-                <button class="my-3 w-36 rounded-lg border-2 shadow-xl" onclick="hideshow()">SignUp</button>
+                <button type="button" class="my-3 w-36 rounded-lg border-2 shadow-xl" onclick="hideshow()">SignUp</button>
                 <div class="flex justify-center">
                     <div class="form-check border-2 w-52 rounded-lg shadow-xl my-3">
 
@@ -72,7 +72,7 @@
 
                 <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" type="submit">Signup</button>
             </form>
-            <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" onclick="hideshow()">SignIn</button>
+            <button class="mt-4 w-52 rounded-lg border-2 hover:bg-button" type="submit" onclick="hideshow()">SignIn</button>
         </div>
     </div>
 </section>

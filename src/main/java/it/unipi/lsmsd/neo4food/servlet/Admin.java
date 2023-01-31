@@ -26,7 +26,8 @@ public class Admin extends HttpServlet
 
         }else{
 //            Invalid request
-            targetJSP = "/WEB-INF/jsp/invalid.jsp";
+            targetJSP = "/WEB-INF/jsp/error/404.jsp";
+
         }
 
 
