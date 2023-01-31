@@ -168,8 +168,7 @@ public class OrderMongoDAO extends BaseMongo
 
         try(MongoCursor cursor = collection.find(query).sort(ascending("creationDate")).limit(20).iterator())
         {
-            if(!cursor.hasNext())
-            {
+            if(!cursor.hasNext()){
                 return toReturn;
             }
 
