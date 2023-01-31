@@ -12,7 +12,6 @@ OSSERVAZIONI IMPORTANTI:
  - Tutte le pabine in WEB-INF/template sono appunto template che visualizzano i dati raccolti dai servlet nel package it.unipi.controller
  ---- DAO sono le classi usate nel back-end e nel trasferimento con i DBMS
  ---- DTO sono le classi usate esclusivamente per far interagire front-end e back-end
- -------- Da capire come vengono popolate le classi DTO
 
 DETTAGLI:
 
@@ -32,18 +31,23 @@ RIGUARDO AI SERVLET:
 
 ---------------------
 Cosa fare?
-1)  Cambiare checkout
-2)  Fix Conferma Ordine
-3)  Fare personalrestaurant.jsp
-4)  Fix Css Login, e in generale
-5)  Permettere la Modifica dei dati User
+Campi con alcuni not exists
+  - score
+  - price_range
+
  --- > DA FARE SU MONGODB < ---
-1) Fix nomi dei ristoranti ("&amp;"--->"&")
-2) Cambiare nome in mongoDB al campo "dish[]" ---> "dishes[]" in Restaurants e Orders
-3) In restaurants dividere il prezzo in price e currency
-4) Aggiungere i vettori vuoti orders[] ai ristoranti
-5) Aggiungere i campi paymentMethod e paymentNumber agli utenti
-6) Rendere i ristoranti di Roma con gli stessi campi degli altri ristorati
+1) Funzione admin: se clicca il tasto, calcola il prezzo medio dei piatti nei ristoranti e aggiorna "price_range"
+2) Funzione admin: se clicca il tasto, calcola il miglior ristorante per zip_code e aggiorna "position"
+3) Funzione admin: se clicca il tasto, calcola lo score da neo4j e aggiorna lo score medio del ristorante su mongoDB
+
+ --- > DA FARE SU JAVA < ---
+1) Pagina commenti
+2) Pagina admin per mettere le analytics in seguito
+2) Pagina aggiunta piatti (Ristorante)
+3) Pagina cerca e lista amici
+4) Bottoni follow/unfollow
+5) Sistema raccomandazioni (Neo4J)
+
 
 ---CAMPI COLLECTIONS MONGODB---
 

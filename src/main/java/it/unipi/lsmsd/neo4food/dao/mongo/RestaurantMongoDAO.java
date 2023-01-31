@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackDishes;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackOrders;
 
@@ -43,7 +44,7 @@ public class RestaurantMongoDAO extends BaseMongo {
                     Filters.regex("category",".*"+filter+".*"));
         }
 
-        try(MongoCursor cursor = collection.find(query).limit(Constants.PAGE_SIZE).skip(offset).iterator())
+        try(MongoCursor cursor = collection.find(query).sort(ascending("position")).limit(Constants.PAGE_SIZE).skip(offset).iterator())
         {
             while (cursor.hasNext()){
                 Document res = (Document) cursor.next();

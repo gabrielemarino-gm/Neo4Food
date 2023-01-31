@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Page</title>
+    <title>Restaurant</title>
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <style>
         .tempOrder
