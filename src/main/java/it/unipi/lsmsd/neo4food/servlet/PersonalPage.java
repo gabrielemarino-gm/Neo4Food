@@ -1,6 +1,7 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.OrderDTO;
@@ -8,6 +9,7 @@ import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
 
 import java.io.*;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -29,8 +31,9 @@ public class PersonalPage extends HttpServlet
             }
             else if(actor.equals("restaurant"))
             {
-                targetJSP = "WEB-INF/jsp/personalrestaurant.jsp";
-                restaurantRequest(request, response);
+                String target = restaurantRequest(request, response);
+                targetJSP = target != null ? target : "WEB-INF/jsp/personalrestaurant.jsp";
+
             }
         }
 
@@ -108,8 +111,31 @@ public class PersonalPage extends HttpServlet
         return null;
     }
 
-    private void restaurantRequest(HttpServletRequest request, HttpServletResponse response){
+    private String restaurantRequest(HttpServletRequest request, HttpServletResponse response){
         String actionType = request.getParameter("action");
 
+        if(actionType.equals("personal")){
+            String rid = ((RestaurantDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+
+            List<OrderDTO> lista = ServiceProvider.getRestaurantService()
+                    .getRestaurantDetails(rid,false,false,true)
+                    .getOrders();
+            request.setAttribute("orderList", lista);
+            return "WEB-INF/jsp/personalrestaurant.jsp";
+
+        }else if (actionType.equals("orders")){
+            String rid = request.getParameter("aid");
+
+            ListDTO<OrderDTO> orders = ServiceProvider.getOrderService()
+                    .getOrders(rid, true);
+
+            request.setAttribute("orders", orders);
+
+            return "WEB-INF/jsp/orders.jsp";
+
+        }else {
+
+            return null;
+        }
     }
 }

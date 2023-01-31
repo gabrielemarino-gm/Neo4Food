@@ -1,10 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.OrderDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dao.mongo.RestaurantMongoDAO" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.*" %>
 
 <html>
 <head>
@@ -17,7 +14,7 @@
 
 <%
     RestaurantDTO details = (RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
-    List<OrderDTO> ordini = new RestaurantMongoDAO().getRestaurantDetails(details.getId(),false,false,true).getOrders();
+    List<OrderDTO> ordini = (List<OrderDTO>) request.getAttribute("orderList");
 %>
 
     <%@include file="template/header.jsp"%>
@@ -28,6 +25,10 @@
     <div class="relative mx-auto w-2/3 rounded-lg bg-principale text-center py-3 -my-11 shadow-md px-5">
         <%--        Restaurant detailed infos--%>
         <div class="text-3xl font-bold"><%= details.getName() %></div>
+            <% if(request.getAttribute("message") != null)
+            {%>
+            <div><%= request.getAttribute("message").toString() %></div>
+            <% }  %>
         <div class="h-5"></div>
         <div class="flex flex-wrap">
 <%
@@ -86,7 +87,9 @@
                         </div>
                         <form method="post" action="<c:url value="/checkout"/>">
                             <input type="hidden" name="action" value="send">
+<%--                            Id ordine per aggiornare ordine nella collection Orders--%>
                             <input type="hidden" name="oid" value="<%= order.getId() %>">
+<%--                            Id ristorante per toglierlo dalla sua lista--%>
                             <input type="hidden" name="rid" value="<%= details.getId() %>">
                             <button class="float-right mt-5 border-2 rounded-xl px-3 hover:bg-button" type="submit"> Delivered </button>
                         </form>
