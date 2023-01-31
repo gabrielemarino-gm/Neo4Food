@@ -84,11 +84,22 @@ public class Checkout extends HttpServlet
         }
         else if ("send".equals(actionType))
         {
+//            Invio conferma ordine
             String orderid = request.getParameter("oid");
             String restarantid = request.getParameter("rid");
+//            ------
 
             boolean result = ServiceProvider.getOrderService().sendOrder(orderid, restarantid);
-
+            if(!result){
+                request.setAttribute("message", "An error occurred while confirming the order");
+            }
+//            ------
+//            Ricarico pagina del ristorante prendendo la lista aggiornata
+            targetJSP = "/WEB-INF/jsp/personalrestaurant.jsp";
+            List<OrderDTO> lista = ServiceProvider.getRestaurantService()
+                    .getRestaurantDetails(restarantid,false,false,true)
+                    .getOrders();
+            request.setAttribute("orderList", lista);
 
         }
 

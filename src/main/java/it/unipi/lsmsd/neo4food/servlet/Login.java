@@ -1,12 +1,14 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
+import it.unipi.lsmsd.neo4food.dto.OrderDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 import java.io.*;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -40,6 +42,13 @@ public class Login extends HttpServlet
                 {
 //                  Se non e' fallita lo mando alla pagina ristorante
                     targetJSP = "WEB-INF/jsp/personalrestaurant.jsp";
+                    String rid = ((RestaurantDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+
+                    List<OrderDTO> lista = ServiceProvider.getRestaurantService()
+                                            .getRestaurantDetails(rid,false,false,true)
+                                            .getOrders();
+                    request.setAttribute("orderList", lista);
+
                 }
             }
 //          Login come utente

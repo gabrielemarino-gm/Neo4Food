@@ -119,6 +119,7 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getMoreDetails, bo
     {
 //      Variabile che devo restituire
         RestaurantDTO toReturn = new RestaurantDTO();
+//      TODO - Gestire proiezioni a seconda dei valori booleani presi in input
 
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
 

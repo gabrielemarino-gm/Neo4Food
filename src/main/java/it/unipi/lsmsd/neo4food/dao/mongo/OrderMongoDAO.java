@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.OrderDTO;
@@ -12,10 +13,13 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackOneOrder;
 
 public class OrderMongoDAO extends BaseMongo
@@ -101,11 +105,52 @@ public class OrderMongoDAO extends BaseMongo
     }
 
     public boolean sendOrder(String orderid, String restaurantid){
+//        Aggiorno ordine globale
+            MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+            UpdateResult result;
+
+            Document query = new Document().append("_id", new ObjectId(orderid));
+            Bson update = Updates.combine(
+                                Updates.set("deliveryDate", new Date())
+                            );
+
+            try {
+                result = collection.updateOne(query, update);
+                if (result.getModifiedCount() != 1){
+//                    ROLLBACK
 
 
-        return false;
+                    return false;
+                }
+            }catch (MongoException e){
+                System.err.println(e);
+            }
+//------------------------------------------------------------------------
+//        Rimuovo ordine dal ristorante
+            MongoCollection<Document> collection1 = getDatabase().getCollection("Restaurants");
+            UpdateResult result1;
+
+            Document query1 = new Document()
+                        .append("_id", new ObjectId(restaurantid));
+
+            Bson update1 = Updates.combine(
+                                Updates.pull("orders", new Document("_id", new ObjectId(orderid)))
+                            );
+
+            try {
+                result1 = collection1.updateOne(query1, update1);
+                if (result1.getModifiedCount() != 1){
+//                    ROLLBACK
+
+                    return false;
+                }
+            }catch (MongoException e){
+                System.err.println(e);
+            }
+
+        return true;
     }
-
+//---------------------
     public ListDTO<OrderDTO> getOrders(String actorid, boolean isRestaurant)
     {
         ListDTO<OrderDTO> toReturn = new ListDTO<OrderDTO>();
@@ -121,7 +166,7 @@ public class OrderMongoDAO extends BaseMongo
             query = Filters.eq("user", actorid);
         }
 
-        try(MongoCursor cursor = collection.find(query).limit(20).iterator())
+        try(MongoCursor cursor = collection.find(query).sort(ascending("creationDate")).limit(20).iterator())
         {
             if(!cursor.hasNext())
             {
@@ -149,7 +194,6 @@ public class OrderMongoDAO extends BaseMongo
         {
             System.err.println(e);
         }
-
 
         return toReturn;
     }
