@@ -11,7 +11,7 @@ public class Testing extends HttpServlet
 
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String targetJSP = "WEB-INF/jsp/testing.jsp";
+        String targetJSP = "WEB-INF/jsp/error/404.jsp";
         String actionType = request.getParameter("action");
 
         if(request.getParameter("action") != null)

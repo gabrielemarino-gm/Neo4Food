@@ -513,6 +513,40 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 .fixed {
   position: fixed;
 }
@@ -531,6 +565,10 @@ video {
 
 .right-4 {
   right: 1rem;
+}
+
+.right-10 {
+  right: 2.5rem;
 }
 
 .bottom-2 {
@@ -555,10 +593,6 @@ video {
 
 .top-10 {
   top: 2.5rem;
-}
-
-.right-10 {
-  right: 2.5rem;
 }
 
 .z-40 {
@@ -617,14 +651,19 @@ video {
   margin-bottom: -1.75rem;
 }
 
-.my-24 {
-  margin-top: 6rem;
-  margin-bottom: 6rem;
+.my-12 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .-my-11 {
   margin-top: -2.75rem;
   margin-bottom: -2.75rem;
+}
+
+.my-24 {
+  margin-top: 6rem;
+  margin-bottom: 6rem;
 }
 
 .my-16 {
@@ -642,19 +681,9 @@ video {
   margin-bottom: 1.5rem;
 }
 
-.my-12 {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
-
-.my-14 {
-  margin-top: 3.5rem;
-  margin-bottom: 3.5rem;
-}
-
-.my-10 {
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .mt-5 {
@@ -727,6 +756,10 @@ video {
 
 .mt-auto {
   margin-top: auto;
+}
+
+.ml-20 {
+  margin-left: 5rem;
 }
 
 .block {
@@ -1027,11 +1060,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
 }
 
 .font-bold {

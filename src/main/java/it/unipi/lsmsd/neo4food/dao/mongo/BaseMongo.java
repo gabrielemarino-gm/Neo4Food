@@ -39,7 +39,7 @@ public abstract class BaseMongo {
         String url = String.format(URL_FORMAT, USERNAME, PASSWORD, ADDRESS, PORT);
         clientConnection = MongoClients.create(url);
         clientDatabase = clientConnection.getDatabase(DATABASE);
-//        --------------
+//      --------------
         ConnectionString uri = new ConnectionString(String.format(URL_FORMAT,NODE01,PORT01,NODE02,PORT02,NODE03,PORT03));
         MongoClientSettings mcs = MongoClientSettings.builder()
                 .applyConnectionString(uri)
@@ -48,7 +48,7 @@ public abstract class BaseMongo {
                 .build();
 
         clientConnection = MongoClients.create(mcs);
-//        --------------
+//      --------------
         return clientDatabase;
     }
 
