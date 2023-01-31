@@ -108,7 +108,7 @@ public class OrderMongoDAO extends BaseMongo{
             query = Filters.eq("user", actorid);
         }
 
-        try(MongoCursor cursor = collection.find(query).limit(20).iterator();)
+        try(MongoCursor cursor = collection.find(query).limit(20).iterator())
         {
             if(!cursor.hasNext()){
                 return null;

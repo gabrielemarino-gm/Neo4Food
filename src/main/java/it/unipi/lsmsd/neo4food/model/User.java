@@ -5,10 +5,10 @@ import java.util.List;
 
 public class User extends RegisteredUser{
     private String username;
-    private String firstName;
-    private String lastName;
-    private String paymentMethod;
-    private String paymentNumber;
+    private final String firstName;
+    private final String lastName;
+    private final String paymentMethod;
+    private final String paymentNumber;
 
     public User(String id, String email, String uname,
                 String psw, String fname, String lname,

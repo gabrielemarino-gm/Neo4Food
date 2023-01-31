@@ -22,7 +22,7 @@ public abstract class BaseMongo {
 
     private static final String DATABASE = "neo4food";
 
-    private static String URL_FORMAT = "mongodb://%s:%s@%s:%d";
+    private static final String URL_FORMAT = "mongodb://%s:%s@%s:%d";
 //    private static String URL_FORMAT = "mongodb://%s:%s,%s:%s,%s:%s";
 
     private static MongoClient clientConnection = null;

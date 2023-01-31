@@ -15,7 +15,7 @@ public class RicercaRistoranti extends HttpServlet
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "WEB-INF/jsp/lista.jsp";
-        String actionType = (String) request.getParameter("action");
+        String actionType = request.getParameter("action");
 
         if (actionType == null)
         {
@@ -24,8 +24,8 @@ public class RicercaRistoranti extends HttpServlet
         else if ("search".equals(actionType))
         {
             int page = Integer.parseInt(request.getParameter("page"));
-            String zipcode = (String) request.getParameter("zipcode");
-            String filter = (String) request.getParameter("filter");
+            String zipcode = request.getParameter("zipcode");
+            String filter = request.getParameter("filter");
 //
             ListDTO<RestaurantDTO> list = ServiceProvider.getRestaurantService().getRestaurantsForSearchPage(page, zipcode, filter);
             request.setAttribute("listDTO", list);
