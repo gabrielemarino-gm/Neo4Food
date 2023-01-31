@@ -49,9 +49,9 @@
                         <h2>Try our filter:</h2>
                     </div>
                     <div class="flex flex-wrap">
-<%                      for(String x : Constants.RESTAURANTS_CATEGORIES)
-                        {
-                            if (x.equals(filter))
+
+<!--                    FILTRI -->
+<%                          if ("".equals(filter))
                             {
 %>
                                 <div class="text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-test_col shadow-md">
@@ -59,28 +59,59 @@
                                         <input type="hidden" name="page" value="0"/>
                                         <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
                                         <input type="hidden" name="action" value="search"/>
-                                        <input type="hidden" name="filter" value="<%= x %>"/>
-                                        <button class="cliccato" type="submit"><%= x %></button>
+                                        <input type="hidden" name="filter" value=""/>
+                                        <button class="cliccato" type="submit">Reset</button>
                                     </form>
                                 </div>
 <%                          }
                             else
                             {
 %>
-                                <div id="button<%= x %>" class="filters text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-principale shadow-md hover:bg-button">
+                                <div id="button" class="filters text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-principale shadow-md hover:bg-button">
                                     <form>
                                         <input type="hidden" name="page" value="0"/>
                                         <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
                                         <input type="hidden" name="action" value="search"/>
-                                        <input type="hidden" name="filter" value="<%= x %>"/>
-                                        <button  type="submit"><%= x %></button>
+                                        <input type="hidden" name="filter" value=""/>
+                                        <button  type="submit">Reset</button>
                                     </form>
                                 </div>
 <%                          }
 %>
-                            <div class="h-3"></div>
-<%                      }
-%>                  </div>
+
+<%                          for(String x : Constants.RESTAURANTS_CATEGORIES)
+                            {
+                                if (x.equals(filter))
+                                {
+%>
+                                    <div class="text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-test_col shadow-md">
+                                        <form>
+                                            <input type="hidden" name="page" value="0"/>
+                                            <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
+                                            <input type="hidden" name="action" value="search"/>
+                                            <input type="hidden" name="filter" value="<%= x %>"/>
+                                            <button class="cliccato" type="submit"><%= x %></button>
+                                        </form>
+                                    </div>
+<%                              }
+                                else
+                                {
+%>
+                                    <div id="button<%= x %>" class="filters text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-principale shadow-md hover:bg-button">
+                                        <form>
+                                            <input type="hidden" name="page" value="0"/>
+                                            <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
+                                            <input type="hidden" name="action" value="search"/>
+                                            <input type="hidden" name="filter" value="<%= x %>"/>
+                                            <button  type="submit"><%= x %></button>
+                                        </form>
+                                    </div>
+<%                              }
+%>
+                                <div class="h-3"></div>
+<%                        }
+%>
+                    </div>
                 </div>
 
                 <div class="px-4 w-2/3 position-relative">
