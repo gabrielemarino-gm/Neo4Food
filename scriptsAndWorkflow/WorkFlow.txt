@@ -139,3 +139,23 @@ ORDINI - ( _id,
 
 
 
+
+
+Cosiderazioni
+
+1)  Composizione del nodo Restaurant
+        - _id
+        - Name
+        - Zip_code
+        - AVG(rate)
+
+2)  I nodi Users vengono aggiunti quando un utente vota/recensisce un ristorante
+
+3)  Consigliati
+        - Schermare i ristoranti per zip_code della ricerca
+        - Andare a guardare i ristoranti, in quel zip_code, che gli amici hanno recensito (bene?)
+        - Se non trovo nessun ristorante, prendo i supernodi in quel zip_code
+
+4)  Coordinare i vari database e mettere dati più "realistici"
+
+5)  Demonde che aggiurna i valori fra MongoDB e Neo4J
