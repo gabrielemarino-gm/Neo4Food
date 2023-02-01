@@ -27,4 +27,19 @@ public class Comment {
     public int getVote() {return vote;}
 //  OTHER LOGIC
 
+    Comment(User author, Restaurant target, String text, int vote){
+        this.author = author;
+        this.target = target;
+        this.vote = (vote > 5) ? 5 : Math.max(vote, 0);
+        this.text = (text != null || !text.equals("")) ? text : "";
+    }
+
+    public void deleteComment(){
+
+    }
+
+    public void modifyComment(){
+
+    }
+
 }
