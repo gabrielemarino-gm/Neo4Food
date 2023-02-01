@@ -110,7 +110,8 @@ public class OrderMongoDAO extends BaseMongo
 
             Document query = new Document().append("_id", new ObjectId(orderid));
             Bson update = Updates.combine(
-                                Updates.set("deliveryDate", new Date())
+                                Updates.set("deliveryDate", new Date()),
+                                Updates.set("status", true)
                             );
 
             try {
