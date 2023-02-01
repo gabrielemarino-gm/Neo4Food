@@ -135,7 +135,9 @@
     </script>
 </head>
 <body>
+<%--Lista presa da RestaurantDTO--%>
 <%
+
     RestaurantDTO details = (RestaurantDTO) request.getAttribute("restaurantDTO");
     List<DishDTO> dishList = details.getDishes();
 %>

@@ -68,7 +68,7 @@ public class Utilities {
         order.setUser(document.get("user") != null ? document.get("user").toString(): "User not available");
         order.setRestaurant(document.get("restaurant") != null ? document.get("restaurant").toString() : "Restaurant not available");
         order.setCreationDate(document.getDate("creationDate") != null ? document.getDate("creationDate") : null);
-        order.setDeliveryDate(document.getDate("deliveryDate") != null ? document.getDate("creationDate") : null);
+        order.setDeliveryDate(document.getDate("deliveryDate") != null ? document.getDate("deliveryDate") : null);
         order.setRestaurantId(document.get("restaurantId") != null ? document.get("restaurantId").toString() : "RestaurantID not available");
         order.setPaymentMethod(document.get("paymentMethod") != null ? document.get("paymentMethod").toString() : "Payment method not available");
         order.setPaymentNumber(document.get("paymentNumber") != null ? document.get("paymentNumber").toString() : "Payment number not available");

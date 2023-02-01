@@ -25,7 +25,7 @@ public abstract class BaseMongo {
     private static final Integer PORT03 = 27019;
     private static final String DATABASE = "Neo4Food";
 
-    private static String URL_FORMAT = "mongodb://%s:%s,%s:%s,%s:%s";
+    private static final String URL_FORMAT = "mongodb://%s:%s,%s:%s,%s:%s";
 
     private static MongoClient clientConnection = null;
     private static MongoDatabase clientDatabase = null;

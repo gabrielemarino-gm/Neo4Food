@@ -13,13 +13,12 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackOneOrder;
 
 public class OrderMongoDAO extends BaseMongo
@@ -166,7 +165,7 @@ public class OrderMongoDAO extends BaseMongo
             query = Filters.eq("user", actorid);
         }
 
-        try(MongoCursor cursor = collection.find(query).sort(ascending("creationDate")).limit(20).iterator())
+        try(MongoCursor cursor = collection.find(query).sort(descending("creationDate")).limit(20).iterator())
         {
             if(!cursor.hasNext()){
                 return toReturn;
