@@ -137,7 +137,7 @@ ORDINI - ( _id,
 Cosiderazioni
 
 1)  Composizione del nodo Restaurant (Neo4J)
-        - _id
+        - _id(di mongo)
         - Name
         - Zip_code
         - AVG(rate)
