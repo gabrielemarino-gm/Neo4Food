@@ -111,3 +111,29 @@ ORDINI - ( _id,
                                                 currency,
                                                 quantity
                                               )
+
+
+
+
+############################################ Ricevimento José #######################################################
+
+1)  Spostare l'Admin in Users
+        - Aggiungere un campo isAdmin
+        - Adattare quesy su Admin.java
+
+2)  Insert Order e Send Order in una transaction Mongo
+
+3)  Model solo per bellezza!
+
+4)  Ordini Fake Okay
+
+5)  Modifica getRestaurantLogin() per evitare di chiedere i campi a seconda dei flag
+
+6)  Valutare le performance della VM con htop
+
+7)  OPTIONAL
+        - Modifica piatti ristorante
+        - WebSocket notifica nuovi ordini ricevuti dal ristorante
+
+
+

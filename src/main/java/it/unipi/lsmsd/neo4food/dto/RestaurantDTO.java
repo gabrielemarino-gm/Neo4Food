@@ -9,6 +9,7 @@ public class RestaurantDTO {
     private String priceRange;
     private Float rating;
     private String email;
+    // ATTENZIONE ALLA PASSWORD
     private String password;
     private String address;
     private String zipcode;
