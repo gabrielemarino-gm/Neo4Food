@@ -9,8 +9,6 @@ public class RestaurantDTO {
     private String priceRange;
     private Float rating;
     private String email;
-    // ATTENZIONE ALLA PASSWORD
-    private String password;
     private String address;
     private String zipcode;
     private List<DishDTO> dishes;
@@ -21,7 +19,6 @@ public class RestaurantDTO {
     public void setPriceRange(String priceRange) {this.priceRange = priceRange;}
     public void setRating(Float rating) {this.rating = rating;}
     public void setEmail(String email) {this.email = email;}
-    public void setPassword(String password) {this.password = password;}
     public void setAddress(String address) {this.address = address;}
     public void setZipcode(String zipcode) {this.zipcode = zipcode;}
     public void setDishes(List<DishDTO> list) {this.dishes = list;}
@@ -32,7 +29,6 @@ public class RestaurantDTO {
     public String getPriceRange() {return priceRange;}
     public Float getRating() {return rating;}
     public String getEmail() {return email;}
-    public String getPassword() {return password;}
     public String getAddress() {return address;}
     public String getZipcode() {return zipcode;}
     public List<DishDTO> getDishes() {return dishes;}
@@ -46,7 +42,6 @@ public class RestaurantDTO {
                 ", priceRange='" + priceRange + '\'' +
                 ", rating=" + rating +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", address='" + address + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", dishes=" + dishes +

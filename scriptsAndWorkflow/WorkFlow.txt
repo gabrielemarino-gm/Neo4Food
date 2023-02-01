@@ -131,7 +131,9 @@ ORDINI - ( _id,
 
 6)  Valutare le performance della VM con htop
 
-7)  OPTIONAL
+7)  Levare le Password nei DTO!
+
+8)  OPTIONAL
         - Modifica piatti ristorante
         - WebSocket notifica nuovi ordini ricevuti dal ristorante
 
