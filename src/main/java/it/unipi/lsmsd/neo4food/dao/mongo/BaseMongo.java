@@ -34,11 +34,17 @@ public abstract class BaseMongo {
         if(clientDatabase != null){
             return clientDatabase;
         }
-        return init();
+        return initDatabase();
     }
 
-    private static MongoDatabase init(){
+    public static ClientSession getSession(){
+        if(clientConnection != null){
+            return clientConnection.startSession();
+        }
+        return initClient().startSession();
+    }
 
+    private static MongoClient initClient(){
         ConnectionString uri = new ConnectionString(String.format(URL_FORMAT,NODE01,PORT01,NODE02,PORT02,NODE03,PORT03));
         MongoClientSettings mcs = MongoClientSettings.builder()
                 .applyConnectionString(uri)
@@ -47,7 +53,11 @@ public abstract class BaseMongo {
                 .build();
 
         clientConnection = MongoClients.create(mcs);
-        clientDatabase = clientConnection.getDatabase(DATABASE);
+        return clientConnection;
+    }
+
+    private static MongoDatabase initDatabase(){
+        clientDatabase = initClient().getDatabase(DATABASE);
 
         return clientDatabase;
     }

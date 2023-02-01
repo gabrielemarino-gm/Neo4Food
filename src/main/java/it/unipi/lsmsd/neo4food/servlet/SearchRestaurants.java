@@ -10,7 +10,7 @@ import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 @WebServlet("/ricerca")
-public class RicercaRistoranti extends HttpServlet
+public class SearchRestaurants extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {

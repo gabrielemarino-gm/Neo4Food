@@ -1,32 +1,38 @@
 package it.unipi.lsmsd.neo4food.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class User extends RegisteredUser{
+public class User extends RegisteredUser {
+    private String firstName;
+    private String lastName;
     private String username;
-    private final String firstName;
-    private final String lastName;
-    private final String paymentMethod;
-    private final String paymentNumber;
-
-    public User(String id, String email, String uname,
-                String psw, String fname, String lname,
-                String phone, String addr, String zip,
-                String pmethod, String pnumber){
-        super(id, psw, email, phone, addr, zip, false);
-        username = uname;
-        firstName = fname;
-        lastName = lname;
-        paymentMethod = pmethod;
-        paymentNumber = pnumber;
+    private String phoneNumber;
+    private String paymentMethod;
+    private String paymentNumber;
+//  COMPLETE CONSTRUCTOR NEW USER
+    public User(String email, String password, String username,
+                String firstName, String lastName, String fullAddress,
+                String phoneNumber, String zipcode){
+        super(email, password, fullAddress, zipcode, false);
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        paymentNumber = "";
+        paymentMethod = "";
     }
-
-    public void setUsername(String username) {this.username = username;}
-
-    public String getUsername() {return username;}
+//  SET ONLY
+    public void setFirstName(String newFirstName) {firstName = newFirstName;}
+    public void setLastName(String newLastName) {lastName = newLastName;}
+    public void setUsername(String newUsername) {username = newUsername;}
+    public void setPhoneNumber(String newPhoneNumber) {phoneNumber = newPhoneNumber;}
+    public void setPaymentMethod(String newPaymentMethod) {paymentMethod = newPaymentMethod;}
+    public void setPaymentNumber(String newPaymentNumber) {paymentNumber = newPaymentNumber;}
+//  GET ONLY
     public String getFirstName() {return firstName;}
     public String getLastName() {return lastName;}
+    public String getUsername() {return username;}
+    public String getPhoneNumber() {return phoneNumber;}
     public String getPaymentMethod() {return paymentMethod;}
     public String getPaymentNumber() {return paymentNumber;}
+//  OTHER LOGIC
+
 }

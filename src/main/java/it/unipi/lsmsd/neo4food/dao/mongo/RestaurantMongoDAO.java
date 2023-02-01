@@ -112,19 +112,25 @@ public RestaurantDTO getRestaurantLogin(String eml, String password){
 //-------------------------------------------------------------
 //---USED BY RESTAURANT AND USER TO GET ONLY SELECTED FIELDS---
 //-------------------------------------------------------------
-//CASE 1 - Any user need to get only list of dishes without orders
-//CASE 2 - Restaurant itself wants to get only list of dishes without orders
-//CASE 3 - Restaurant itself wants to get only list of orders without dishes
-//CASE 4 -
-public RestaurantDTO getRestaurantDetails(String rid, boolean getMoreDetails, boolean getDishes, boolean getOrders)
+//CASE 1 - Un utente richiede alcune informazioni e la lista dei piatti senza ordini (RESTAURANT - DETAILS)
+//CASE 2 - Restaurant itself wants to get only list of dishes without orders (CHECKOUT - SEND)
+//CASE 3 - Il ristorante richiede solo la lista di ordini pendenti (PERSONAL - RESTAURANT - PERSONAL) (LOGIN - RESTURANT)
+public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean getOrders)
     {
 //      Variabile che devo restituire
         RestaurantDTO toReturn = new RestaurantDTO();
-//      TODO - Gestire proiezioni a seconda dei valori booleani presi in input
 
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
+        Document projection = new Document();
 
-        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).limit(1).iterator())
+        if(!getOrders){
+            projection.append("orders", 0);
+        }
+        if(!getDishes){
+            projection.append("dishes", 0);
+        }
+
+        try(MongoCursor cursor = collection.find(eq("_id", new ObjectId(rid))).projection(projection).limit(1).iterator())
         {
 //          Per ogni documento trovato su MongoDB:
             while (cursor.hasNext())

@@ -73,15 +73,16 @@ public class UserMongoDAO extends BaseMongo {
     }
 
 //>>>>>>>>>>>>>OK<<<<<<<<<<<<<
-    public void registerUser(User user)
+    public UserDTO registerUser(User user)
     {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
 
         try
         {
+            ObjectId id = new ObjectId();
             InsertOneResult result = collection.insertOne(
                     new Document()
-                    .append("_id", new ObjectId())
+                    .append("_id", id)
                     .append("firstname", user.getFirstName())
                     .append("lastname", user.getLastName())
                     .append("username", user.getUsername())
@@ -95,14 +96,38 @@ public class UserMongoDAO extends BaseMongo {
                     .append("paymentNumber", user.getPaymentNumber())
             );
 
+//          A questo punto se sono riuscito ad inserire un utente, questo
+//          ha utilizzato credenziali mai usate prima
+//          se quindi fa ACK, sono sicuro che l'inserimento ha avuto successo
+//          posso quindi restituire un nuovo utente
+
+            if(result.wasAcknowledged()){
+                UserDTO userDTO = new UserDTO();
+
+                userDTO.setId(id.toString());
+                userDTO.setUsername(user.getUsername());
+                userDTO.setFirstName(user.getFirstName());
+                userDTO.setLastName(user.getLastName());
+                userDTO.setEmail(user.getEmail());
+                userDTO.setPhoneNumber(user.getPhoneNumber());
+                userDTO.setAddress(user.getAddress());
+                userDTO.setZipcode(user.getZipcode());
+                userDTO.setPaymentMethod(user.getPaymentMethod());
+                userDTO.setPaymentNumber(user.getPaymentNumber());
+
+                return userDTO;
+            }
+
         }
         catch (MongoException mongoException)
         {
             System.err.println("Mongo Exception: " + mongoException.getMessage());
         }
+
+        return null;
     }
 
-    public boolean updateUser(User user){
+    public boolean updateUser(UserDTO user){
 
         Document query = new Document("_id", new ObjectId(user.getId()));
         Bson updates = Updates.combine(
