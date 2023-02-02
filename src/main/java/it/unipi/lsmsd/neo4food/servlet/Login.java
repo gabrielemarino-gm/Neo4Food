@@ -81,6 +81,7 @@ public class Login extends HttpServlet
                 UserDTO registered = ServiceProvider.getUserService().registerUser(newUser);
 
                 if(registered != null){
+                    ServiceProvider.getSupportService().addUser(registered.getUsername());
                     HttpSession session = request.getSession();
                     session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
                     session.setAttribute("username", registered.getUsername());

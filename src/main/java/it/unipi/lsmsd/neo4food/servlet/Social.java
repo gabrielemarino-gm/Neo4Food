@@ -50,6 +50,33 @@ public class Social extends HttpServlet
             response.getWriter().flush();
             return;
         }
+        else if(actionType.equals("setFollow"))
+        {
+            String actor = request.getParameter("actor");
+            String target = request.getParameter("target");
+
+//            ServiceProvider.getSocialService().setFollow(actor, target);
+
+
+        }
+        else if(actionType.equals("removeFollow"))
+        {
+            String actor = request.getParameter("actor");
+            String target = request.getParameter("target");
+
+//            ServiceProvider.getSocialService().removeFollow(actor, target);
+
+
+        }
+        else if (actionType.equals("search"))
+        {
+            String target = request.getParameter("target");
+            String page = request.getParameter("page");
+
+//            ServiceProvider.getSocialService().findFriends();
+
+
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);

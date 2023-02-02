@@ -14,18 +14,31 @@ import static org.neo4j.driver.Values.parameters;
 
 public class SocialNeoDAO extends BaseNeo4J{
 
-    /** Imposta un amicizia tra due utenti
+    /** Imposta FOLLOW tra Follower e Following
      *
-     * INPUT - USERNAME 1 and USERNAME 2*/
-    public void setFriendship(String user1 , String user2) {
+     * INPUT - Follower and Following */
+    public void setFollow(String user1 , String user2) {
         String setQuery = "MATCH (u1:User), (u2:User) " +
                           "WHERE u1.username = $user1 AND u2.username = $user2 " +
-                          "MERGE (u1)-[:IS_FRIEND]->(u2) " +
-                          "MERGE (u2)-[:IS_FRIEND]->(u1)";
+                          "MERGE (u1)-[:FOLLOWS]->(u2)";
 
         try (Session session = getSession()) {
             session.writeTransaction(tx -> {
                 tx.run(setQuery, parameters( "user1", user1 ,  "user2",user2  ))
+                        .consume();
+                return 1;
+            });
+        }
+    }
+
+    public void removeFollow(String user1 , String user2) {
+        String remQuery = "MATCH (u1:User)-[r:FOLLOWS]->(u2:User) " +
+                          "WHERE u1.username = $user1 AND u2.username = $user2 " +
+                          "DELETE r";
+
+        try (Session session = getSession()) {
+            session.writeTransaction(tx -> {
+                tx.run(remQuery, parameters( "user1", user1 ,  "user2",user2  ))
                         .consume();
                 return 1;
             });
@@ -38,7 +51,7 @@ public class SocialNeoDAO extends BaseNeo4J{
      *  come nome, media dei voti e numero di voti*/
     public void getRecommendation(String user, String zipcode) {
         try (Session session = getSession()) {
-            String searchQuery = "MATCH (u1:User)-[:IS_FRIEND]->(u2:User)-[rate:RATED]->(r:Restaurant) " +
+            String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User)-[rate:RATED]->(r:Restaurant) " +
                                  "WHERE u1.username = $user and r.zipcode = $zipcode" +
                                  "WITH r, COUNT(rate.rating) as nrating, " +
                                  "AVG(rate.rating) as avg_rating " +
@@ -62,7 +75,6 @@ public class SocialNeoDAO extends BaseNeo4J{
      *  INPUT - ReastaurantId, username utente, rating, review testuale */
     public void setRating(String user , String rid, double rate, String review) {
         try (Session session = getSession()) {
-
 
             String searchQuery = "MATCH (u:User)-[rate:RATED]->(r:Restaurant) " +
                                  "WHERE u.username = $user AND r.rid = $rid " +

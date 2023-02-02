@@ -55,7 +55,7 @@ public class UtilityNeoDAO extends BaseNeo4J{
      *  Fornisce username e numero totale di amici */
     public void getInfluencers() {
         try (Session session = getSession()) {
-            String query = "MATCH (u1:User)-[x:IS_FRIEND]->(u2:User) " +
+            String query = "MATCH (u1:User)-[x:FOLLOWS]->(u2:User) " +
                            "WITH u1.username as username," +
                            "COUNT(x) as nfriends " +
                            "ORDER BY nfriends DESC" +

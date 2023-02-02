@@ -132,8 +132,6 @@ ORDINI - ( _id,
         - Modifica piatti ristorante
         - WebSocket notifica nuovi ordini ricevuti dal ristorante
 
-
-
 Cosiderazioni
 
 1)  Composizione del nodo Restaurant (Neo4J)
