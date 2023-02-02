@@ -6,13 +6,6 @@
 <%@ page import="it.unipi.lsmsd.neo4food.service.ServiceProvider" %>
 <%@ page import="com.google.gson.Gson" %>
 
-<%--Lista presa da RestaurantDTO--%>
-<%
-
-    RestaurantDTO details = (RestaurantDTO) request.getAttribute("restaurantDTO");
-    List<DishDTO> dishList = details.getDishes();
-    ListDTO<CommentDTO> commentList = ServiceProvider.getSocialService().getComments(details.getId(), 0);
-%>
 
 
 <!DOCTYPE html>
@@ -22,6 +15,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant</title>
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
+    <%--Lista presa da RestaurantDTO--%>
+    <%
+        RestaurantDTO details = (RestaurantDTO) request.getAttribute("restaurantDTO");
+        List<DishDTO> dishList = details.getDishes();
+    %>
     <style>
         .tempOrder
         {
@@ -145,6 +143,11 @@
 
             document.getElementById("ordini").submit();
         }
+        //
+        //
+        // REVIEWS
+        //
+        let page = 0;
 
         function openReviews()
         {
@@ -159,14 +162,16 @@
 //          (   POST REQUEST
                 toSend = {
                     action: "getComments",
-                    page: 0,
+                    page: page,
                     restaurantId: <%= details.getId()%>,
                 };
+
+                page++;
 
 
                 $.post("<c:url value="/social"/>", toSend, function (result) {
                     alert("Commenti ricevuti");
-                    if (result["intCount"] == 0)
+                    if (result[""] > 0)
                     {
                         $("#boxRev").append("<div>there is no Review</div>")
                         return;
@@ -209,6 +214,7 @@
                 pageReviewActive = 0;
             }
         }
+
     </script>
 </head>
 <body>

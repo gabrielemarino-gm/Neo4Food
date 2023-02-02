@@ -1,8 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.DishDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.*" %>
+<%@ page import="javax.xml.ws.Service" %>
+<%@ page import="it.unipi.lsmsd.neo4food.service.ServiceProvider" %>
+<%@ page import="com.google.gson.Gson" %>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +15,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant</title>
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
+    <%--Lista presa da RestaurantDTO--%>
+    <%
+        RestaurantDTO details = (RestaurantDTO) request.getAttribute("restaurantDTO");
+        List<DishDTO> dishList = details.getDishes();
+    %>
     <style>
         .tempOrder
         {
@@ -134,6 +144,8 @@
             document.getElementById("ordini").submit();
         }
 
+        let page = 0;
+
         function openReviews()
         {
             let bgReviewDivID = "#review";
@@ -143,6 +155,36 @@
                 $(bgReviewDivID).show();
                 $("body").css({"overflow": "hidden;"});
                 pageReviewActive = 1;
+
+//          (   POST REQUEST
+                toSend = {
+                    action: "getComments",
+                    page: page,
+                    restaurantId: <%= details.getId()%>,
+                };
+
+                page++;
+
+
+                $.post("<c:url value="/social"/>", toSend, function (result) {
+                    alert("Commenti ricevuti");
+                    if (result[""] > 0)
+                    {
+                        $("#boxRev").append("<div>there is no Review</div>")
+                        return;
+                    }
+
+                    for(i=0; i<result.list.length, i++)
+                    {
+                        var commento = result.list[i];
+                        $("#boxRev").append("<div><div>"+commento.text+"</div><br><div>"+commento.rate+"</div></div>");
+                    }
+                    return;
+
+                }).fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
+//          )
             }
             else
             {
@@ -169,15 +211,11 @@
                 pageReviewActive = 0;
             }
         }
+
     </script>
 </head>
 <body>
-<%--Lista presa da RestaurantDTO--%>
-<%
 
-    RestaurantDTO details = (RestaurantDTO) request.getAttribute("restaurantDTO");
-    List<DishDTO> dishList = details.getDishes();
-%>
 <%--                Header con login o nomeutente--%>
 <%@include file="template/header.jsp"%>
 <div class="-top-6 overflow-hidden h-48 z-50">
@@ -306,16 +344,16 @@
     </form>
 
     <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
-        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+        <div id="boxRev" class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
 <%--        List of Reviews--%>
-            <button class="absolute bottom-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openReviews()">Close</button>
+            <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openReviews()">X</button>
         </div>
     </div>
 
     <div id="addreview" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
-        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+        <div id="boxAddRev" class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
 <%--        List of Reviews--%>
-            <button class="absolute bottom-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openAddReview()">Close</button>
+            <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openAddReview()">X</button>
         </div>
     </div>
 </div>

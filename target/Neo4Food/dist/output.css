@@ -599,6 +599,10 @@ video {
   right: 0.75rem;
 }
 
+.top-3 {
+  top: 0.75rem;
+}
+
 .z-40 {
   z-index: 40;
 }

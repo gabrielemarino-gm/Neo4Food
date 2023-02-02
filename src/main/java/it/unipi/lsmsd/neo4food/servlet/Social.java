@@ -26,6 +26,8 @@ public class Social extends HttpServlet
 
             String toSend = new Gson().toJson(commentList);
 
+            System.out.println(toSend);
+
             if(commentList != null){
                 response.getWriter().println(toSend);
                 response.getWriter().flush();

@@ -20,7 +20,6 @@
         <artifactId>neo4j-java-driver</artifactId>
         <version>4.4.0</version>
       </dependency>
- 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -43,7 +42,6 @@
       <artifactId>mongodb-driver-sync</artifactId>
       <version>4.7.2</version>
     </dependency>
-
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
