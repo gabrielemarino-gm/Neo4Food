@@ -57,6 +57,9 @@ public class Social extends HttpServlet
 
 //            ServiceProvider.getSocialService().setFollow(actor, target);
 
+//            response.getWriter().println();
+//            response.getWriter().flush();
+//            return;
 
         }
         else if(actionType.equals("removeFollow"))
@@ -66,7 +69,9 @@ public class Social extends HttpServlet
 
 //            ServiceProvider.getSocialService().removeFollow(actor, target);
 
-
+//            response.getWriter().println();
+//            response.getWriter().flush();
+//            return;
         }
         else if (actionType.equals("search"))
         {
@@ -75,6 +80,10 @@ public class Social extends HttpServlet
 
 //            ServiceProvider.getSocialService().findFriends();
 
+
+//            response.getWriter().println();
+//            response.getWriter().flush();
+//            return;
 
         }
 
