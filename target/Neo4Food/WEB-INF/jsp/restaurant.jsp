@@ -225,8 +225,12 @@
 %>
             </button>
 
-            <button class="px-3 rounded-xl hover:bg-button" onclick="openAddReview()">Add Review</button>
-
+<%          if (isLogged)
+            {
+%>
+                <button class="px-3 rounded-xl hover:bg-button" onclick="openAddReview()">Add Review</button>
+<%          }
+%>
 <%--        Soldi --%>
             <div class="ml-auto flex flex-wrap">
 <%
