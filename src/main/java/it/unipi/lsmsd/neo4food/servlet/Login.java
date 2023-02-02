@@ -45,7 +45,7 @@ public class Login extends HttpServlet
                     String rid = ((RestaurantDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
 
                     List<OrderDTO> lista = ServiceProvider.getRestaurantService()
-                                            .getRestaurantDetails(rid,false,false,true)
+                                            .getRestaurantDetails(rid,false,true)
                                             .getOrders();
                     request.setAttribute("orderList", lista);
 
@@ -72,16 +72,24 @@ public class Login extends HttpServlet
             String zipcode = request.getParameter("zipcode");
             String password = request.getParameter("password");
             String address = request.getParameter("address");
-            User user = new User("0",email,username,password,firstname,lastname,phonenumber,address,zipcode,"","");
+
 
             if (!ServiceProvider.getUserService().userExists(username ,email))
             {
-//              Can create new user
-                ServiceProvider.getUserService().registerUser(user);
-                UserDTO registered = ServiceProvider.getUserService().getUserLogin(user.getEmail(), user.getPassword());
-                HttpSession session = request.getSession();
-                session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
-                session.setAttribute("username", registered.getUsername());
+                User newUser = new User(email, password, username, firstname, lastname, address, phonenumber, zipcode);
+
+                UserDTO registered = ServiceProvider.getUserService().registerUser(newUser);
+
+                if(registered != null){
+                    HttpSession session = request.getSession();
+                    session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
+                    session.setAttribute("username", registered.getUsername());
+                }
+                else{
+//                      Something strange happened
+                    targetJSP = "WEB-INF/jsp/login.jsp";
+                    request.setAttribute("message", "Some error occurred");
+                }
 
             }
             else

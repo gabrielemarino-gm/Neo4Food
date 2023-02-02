@@ -97,7 +97,7 @@ public class Checkout extends HttpServlet
 //            Ricarico pagina del ristorante prendendo la lista aggiornata
             targetJSP = "/WEB-INF/jsp/personalrestaurant.jsp";
             List<OrderDTO> lista = ServiceProvider.getRestaurantService()
-                    .getRestaurantDetails(restarantid,false,false,true)
+                    .getRestaurantDetails(restarantid,false,true)
                     .getOrders();
             request.setAttribute("orderList", lista);
 

@@ -1,26 +1,32 @@
 package it.unipi.lsmsd.neo4food.model;
 
 public class Dish {
-    private final String id;
-    private final String name;
-    private final Float cost;
-    private final String currency;
-    private final String description;
-    private final String ownerid;
-
-    public Dish(String i, String n, Float c, String cu, String d, String o){
-        id = i;
-        name = n;
-        cost = c;
-        currency = cu;
-        description = d;
-        ownerid = o;
+    private String name;
+    private Double price;
+    private String currency;
+    private String description;
+//  COMPLETE CONSTRUCTOR
+    public Dish(String name, Double price, String currency, String description){
+        this.name = name;
+        this.price = price;
+        this.currency = currency;
+        this.description = description;
     }
-
-    public String getId() {return id;}
+//  SET ONLY
+    public void setName(String newName) {name = newName;}
+    public void setPrice(Double newPrice) {price = newPrice;}
+    public void setCurrency(String newCurrency) {currency = newCurrency;}
+    public void setDescription(String newDescription) {description = newDescription;}
+//  GET ONLY
     public String getName() {return name;}
-    public Float getCost() {return cost;}
+    public Double getPrice() {return price;}
     public String getCurrency() {return currency;}
     public String getDescription() {return description;}
-
+//  OTHER LOGIC
+    public void addToRestaurant(Restaurant target){
+        target.addDish(this);
+    }
+    public void addToOrder(Order target){
+        target.addDish(this);
+    }
 }

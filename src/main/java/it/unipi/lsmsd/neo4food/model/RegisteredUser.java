@@ -1,38 +1,38 @@
 package it.unipi.lsmsd.neo4food.model;
 
 public abstract class RegisteredUser {
-    private String id;
-    private String password;
     private String email;
-    private String phoneNumber;
+    private String password;
     private String address;
     private String zipcode;
     private Boolean isRestaurant;
-//-----------
-    RegisteredUser(String i, String p, String e, String pn, String a, String z, Boolean R){
-        id = i;
-        password = p;
-        email = e;
-        phoneNumber = pn;
-        address = a;
-        zipcode = z;
-        isRestaurant = R;
+
+//  COMPLETE CONSTRUCTOR
+    RegisteredUser(String email, String password, String address, String zipcode, boolean isRestaurant){
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.zipcode = zipcode;
+        this.isRestaurant = isRestaurant;
     }
-//-----------
-    public void setId(String id) {this.id = id;}
-    public void setPassword(String password) {this.password = password;}
-    public void setEmail(String email) {this.email = email;}
-    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
-    public void setAddress(String address) {this.address = address;}
-    public void setZipcode(String zipcode) {this.zipcode = zipcode;}
-    public void setRestaurant(Boolean restaurant) {isRestaurant = restaurant;}
-//-----------
-    public String getId() {return id;}
-    public String getPassword() {return password;}
+//  SET ONLY
+    public boolean setPassword(String oldPassword, String newPassword){
+        if(password.equals(oldPassword)){
+            password = newPassword;
+            return true;
+        }
+        return false;
+    }
+    public void setEmail(String newEmail) {email = newEmail;}
+    public void setAddress(String newAddress) {address = newAddress;}
+    public void setZipcode(String newZipcode) {zipcode = newZipcode;}
+    public void setRestaurant(boolean newIsRestaurant) {isRestaurant = newIsRestaurant;}
+//  GET ONLY
     public String getEmail() {return email;}
-    public String getPhoneNumber() {return phoneNumber;}
+    public String getPassword() {return password;}
     public String getAddress() {return address;}
     public String getZipcode() {return zipcode;}
-    public Boolean getRestaurant() {return isRestaurant;}
-//-----------
+    public boolean isRestaurant() {return isRestaurant;}
+//  OTHER LOGIC
+
 }

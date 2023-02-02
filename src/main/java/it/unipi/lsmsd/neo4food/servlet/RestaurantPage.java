@@ -9,7 +9,7 @@ import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 @WebServlet("/restaurant")
-public class LoadRestaurant extends HttpServlet
+public class RestaurantPage extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -20,7 +20,7 @@ public class LoadRestaurant extends HttpServlet
         if("details".equals(actionType))
         {
             RestaurantDTO ret = ServiceProvider.getRestaurantService()
-                                .getRestaurantDetails(res,true,true,false);
+                                .getRestaurantDetails(res,true,false);
             request.setAttribute("restaurantDTO", ret);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);

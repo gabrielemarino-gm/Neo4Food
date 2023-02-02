@@ -65,13 +65,18 @@ public class PersonalPage extends HttpServlet
             String newPaymentnumber = request.getParameter("pnumber");
             //          -------
 //                Actually perform update
+            UserDTO newData = new UserDTO();
 
-            Boolean result = ServiceProvider.getUserService().
-                                updateUser(new User(uid, null,null,
-                                null, newFirstname,newLastname,
-                                newPhone,newAddress,newZipcode,
-                                newPaymentmethod,newPaymentnumber)
-                                );
+            newData.setId(uid);
+            newData.setFirstName(newFirstname);
+            newData.setLastName(newLastname);
+            newData.setPhoneNumber(newPhone);
+            newData.setAddress(newAddress);
+            newData.setZipcode(newZipcode);
+            newData.setPaymentMethod(newPaymentmethod);
+            newData.setPaymentNumber(newPaymentnumber);
+
+            Boolean result = ServiceProvider.getUserService().updateUser(newData);
             if(result)
             {
 //              Update andato a buon fine
@@ -118,7 +123,7 @@ public class PersonalPage extends HttpServlet
             String rid = ((RestaurantDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
 
             List<OrderDTO> lista = ServiceProvider.getRestaurantService()
-                    .getRestaurantDetails(rid,false,false,true)
+                    .getRestaurantDetails(rid,false,true)
                     .getOrders();
             request.setAttribute("orderList", lista);
             return "WEB-INF/jsp/personalrestaurant.jsp";
