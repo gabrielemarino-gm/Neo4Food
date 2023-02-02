@@ -8,7 +8,7 @@
     Boolean isLogged = false;
     Boolean isRestaurant = false;
     
-    if (request.getSession() != null)
+    if (session != null)
         if(session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
         isLogged = true;
         if (session.getAttribute("username") != null){

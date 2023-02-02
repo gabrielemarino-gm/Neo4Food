@@ -8,7 +8,8 @@ module.exports = {
             'principale': '#FFF4EA',
             'test_col' : '#7C2714',
             'button' : '#FFE8D3',
-            'white': '#ffffff'
+            'white': '#ffffff',
+            'black':'#000000'
         },
         extend: {},
         spacing: {
@@ -46,6 +47,7 @@ module.exports = {
             56: '14rem',
             60: '15rem',
             64: '16rem',
+            'bgReview': '16rem',
             72: '18rem',
             80: '20rem',
             88: '23rem',

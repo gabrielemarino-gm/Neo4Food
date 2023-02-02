@@ -24,6 +24,7 @@
     <script type="text/javascript">
 
         var contaPiatti = 0;
+        var pageReviewActive = 0;
 
         let totalDishId = '#totalDiv';
         let totalCostId = '#moneyDiv';
@@ -132,6 +133,42 @@
 
             document.getElementById("ordini").submit();
         }
+
+        function openReviews()
+        {
+            let bgReviewDivID = "#review";
+
+            if (!pageReviewActive)
+            {
+                $(bgReviewDivID).show();
+                $("body").css({"overflow": "hidden;"});
+                pageReviewActive = 1;
+            }
+            else
+            {
+                $(bgReviewDivID).hide();
+                $("body").css({"overflow": ""});
+                pageReviewActive = 0;
+            }
+        }
+
+        function openAddReview()
+        {
+            let bgReviewDivID = "#addreview";
+
+            if (!pageReviewActive)
+            {
+                $(bgReviewDivID).show();
+                $("body").css({"overflow": "hidden;"});
+                pageReviewActive = 1;
+            }
+            else
+            {
+                $(bgReviewDivID).hide();
+                $("body").css({"overflow": ""});
+                pageReviewActive = 0;
+            }
+        }
     </script>
 </head>
 <body>
@@ -147,6 +184,7 @@
     <img class="blur-md w-full" src="https://ilfattoalimentare.it/wp-content/uploads/2017/06/junk-food-hamburger-patatine-fast-food-pizza-dolci-Fotolia_130389179_Subscription_Monthly_M.jpg" alt="imgFood">
 </div>
 
+<%--        DETTAGLI RISTORNTE    --%>
 <div class="relative mx-auto w-2/3 rounded-lg bg-principale text-center py-3 -my-11 shadow-md px-5">
     <%--        Restaurant detailed infos--%>
     <div class="text-3xl font-bold"><%= details.getName() %></div>
@@ -154,51 +192,58 @@
     <div class=""><%= details.getEmail() %></div>
 
         <div class="h-5"></div>
-    <div class="flex flex-wrap">
+        <div class="flex flex-wrap">
+<%--        Stelle --%>
+            <button class="flex flex-wrap px-3 rounded-xl hover:bg-button" onclick="openReviews()">
 <%
-        Float rate = details.getRating();
-        int rateInt = rate.intValue();
-        int nStar=0;
-        for (; nStar<rateInt; nStar++)
-        {
+                Float rate = details.getRating();
+                int rateInt = rate.intValue();
+                int nStar=0;
+                for (; nStar<rateInt; nStar++)
+                {
 %>
-            <img class="h-5" src="img/star.png" alt="star">
+                    <img class="h-5" src="img/star.png" alt="star">
 <%
-        }
+                }
 
-        rate = rate*10;
-        nStar = rateInt;
-        if (rate%10 > 5)
-        {
+                rate = rate*10;
+                nStar = rateInt;
+                if (rate%10 > 5)
+                {
 %>
-            <img class="h-5" src="img/half_star.png" alt="star">
+                    <img class="h-5" src="img/half_star.png" alt="star">
 <%
-            nStar = rateInt+1;
-        }
+                    nStar = rateInt+1;
+                }
 
-        for (; nStar<5; nStar++)
-        {
+                for (; nStar<5; nStar++)
+                {
 %>
-            <img class="h-5" src="img/empty_star.png" alt="star">
+                    <img class="h-5" src="img/empty_star.png" alt="star">
 <%
-        }
+                }
 %>
+            </button>
 
-        <div class="ml-auto flex flex-wrap">
+            <button class="px-3 rounded-xl hover:bg-button" onclick="openAddReview()">Add Review</button>
+
+<%--        Soldi --%>
+            <div class="ml-auto flex flex-wrap">
 <%
-            String money = details.getPriceRange();
-            String[] splits = money.split("");
-            for (nStar=0; nStar<splits.length; nStar++)
-            {
+                String money = details.getPriceRange();
+                String[] splits = money.split("");
+                for (nStar=0; nStar<splits.length; nStar++)
+                {
 %>
-                <img class="h-5" src="img/money.png" alt="star">
+                    <img class="h-5" src="img/money.png" alt="star">
 <%
-            }
+                }
 %>
+            </div>
         </div>
     </div>
-</div>
 
+<%--        LISTA DEI PIATTI    --%>
 <div class="flex flex-wrap justify-center">
     <form id="ordini" method="post" action="<c:url value="/checkout"/>">
         <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
@@ -255,6 +300,20 @@
             </div>
         </div>
     </form>
+
+    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
+        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+<%--        List of Reviews--%>
+            <button class="absolute bottom-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openReviews()">Close</button>
+        </div>
+    </div>
+
+    <div id="addreview" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
+        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+<%--        List of Reviews--%>
+            <button class="absolute bottom-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openAddReview()">Close</button>
+        </div>
+    </div>
 </div>
 <%@include file="template/footer.jsp"%>
 </body>
