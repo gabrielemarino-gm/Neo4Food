@@ -1,5 +1,6 @@
 package it.unipi.lsmsd.neo4food.dao.neo4j;
 
+import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dto.CommentDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import org.neo4j.driver.Record;
@@ -22,7 +23,7 @@ public class SocialNeoDAO extends BaseNeo4J{
                           "MERGE (u1)-[:IS_FRIEND]->(u2) " +
                           "MERGE (u2)-[:IS_FRIEND]->(u1)";
 
-        try (Session session = driver.session()) {
+        try (Session session = getSession()) {
             session.writeTransaction(tx -> {
                 tx.run(setQuery, parameters( "user1", user1 ,  "user2",user2  ))
                         .consume();
@@ -31,13 +32,12 @@ public class SocialNeoDAO extends BaseNeo4J{
         }
     }
 
-
     /** Esegue una raccomandazione ad un utente di 10 ristoranti
      *
      *  Fornisce i ristoranti piu valutati dagli amici
      *  come nome, media dei voti e numero di voti*/
     public void getRecommendation(String user, String zipcode) {
-        try (Session session = driver.session()) {
+        try (Session session = getSession()) {
             String searchQuery = "MATCH (u1:User)-[:IS_FRIEND]->(u2:User)-[rate:RATED]->(r:Restaurant) " +
                                  "WHERE u1.username = $user and r.zipcode = $zipcode" +
                                  "WITH r, COUNT(rate.rating) as nrating, " +
@@ -60,8 +60,8 @@ public class SocialNeoDAO extends BaseNeo4J{
      *  Se un commento esiste gia, quello vecchio viene sovrascritto
      *
      *  INPUT - ReastaurantId, username utente, rating, review testuale */
-    public void setRating(String user , String rid, int rate, String review) {
-        try (Session session = driver.session()) {
+    public void setRating(String user , String rid, double rate, String review) {
+        try (Session session = getSession()) {
 
 
             String searchQuery = "MATCH (u:User)-[rate:RATED]->(r:Restaurant) " +
@@ -99,36 +99,42 @@ public class SocialNeoDAO extends BaseNeo4J{
      *  INPUT - restaurantId, pagina di commenti */
     public ListDTO<CommentDTO> getComments(String restaurantid, int page){
 
-        try (Session session = driver.session()) {
+        try (Session session = getSession()){
             String searchQuery = "MATCH (r:Restaurant)<-[rate:RATED]-(u:User) " +
                     "WHERE r.rid = $rid " +
-                    "RETURN u.name as user, rate.rating as rate, rate.review as comment " +
+                    "RETURN u.username as user, rate.rating as rate, rate.review as comment " +
                     "SKIP $skip " +
-                    "LIMIT 20";
+                    "LIMIT $limit";
+
+            ListDTO<CommentDTO> toReturn = new ListDTO<CommentDTO>();
 
             session.writeTransaction(tx -> {
-                Result result = tx.run(searchQuery, parameters( "rid", restaurantid, "skip", (page*20)));
-                ListDTO<CommentDTO> toReturn = new ListDTO<CommentDTO>();
+                Result result = tx.run(searchQuery, parameters( "rid", restaurantid, "skip", (page * Constants.MAX_COMMENTS), "limit", Constants.MAX_COMMENTS));
                 List<CommentDTO> tempList = new ArrayList<CommentDTO>();
 
                 while(result.hasNext()){
                     Record r = result.next();
+
                     CommentDTO tempComment = new CommentDTO();
 
-                    tempComment.setUserName(r.get("user").asString());
-                    tempComment.setRate(r.get("rate").asDouble());
-                    tempComment.setCommentText(r.get("comment")!= null ? r.get("comment").asString() : "");
+                    System.out.println(r);
+                    tempComment.setUserName(r.get("user") != null ? r.get("user").asString() : "Anonymous");
+                    tempComment.setRate(r.get("rate") != null ? r.get("rate").asDouble(): -1);
+                    tempComment.setReview(r.get("comment")!= null ? r.get("comment").asString() : "");
 
-                    tempList.add(tempComment);
+                    if(tempComment.getRate() >= 0) {
+                        tempList.add(tempComment);
+                    }
                 }
 
                 toReturn.setList(tempList);
                 toReturn.setItemCount(tempList.size());
 
-                return toReturn;
+                return 1;
             });
+
+            return toReturn;
         }
-        return null;
     }
 
     @Override

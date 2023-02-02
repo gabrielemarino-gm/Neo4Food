@@ -2,28 +2,28 @@ package it.unipi.lsmsd.neo4food.dto;
 
 public class CommentDTO
 {
-    private String commentText;
-    private double rate;
-    private String userName;
     private String restaurantID;
+    private String username;
+    private double rate;
+    private String review;
 
-    public void setCommentText(String t) {this.commentText = t;}
-    public void setRate(double r) {this.rate = r;}
-    public void setUserName(String u) {this.userName = u;}
-    public void setRestaurantID(String id) {this.restaurantID = id;}
+    public void setRestaurantID(String rid) {this.restaurantID = rid;}
+    public void setUserName(String user) {this.username = user;}
+    public void setRate(double rate) {this.rate = rate;}
+    public void setReview(String text) {this.review = text;}
 
-    public String getCommentText() {return this.commentText;}
-    public String getUserName() {return this.userName;}
     public String getRestaurantID() {return this.restaurantID;}
+    public String getUserName() {return this.username;}
     public double getRate() {return this.rate;}
-    
+    public String getReview() {return this.review;}
+
     @Override
     public String toString() {
         return "CommentDTO{" +
-                "commentText='" + commentText + '\'' +
+                "restaurantID='" + restaurantID + '\'' +
+                ", username='" + username + '\'' +
                 ", rate=" + rate +
-                ", userName='" + userName + '\'' +
-                ", restaurantID='" + restaurantID + '\'' +
+                ", review='" + review + '\'' +
                 '}';
     }
 }

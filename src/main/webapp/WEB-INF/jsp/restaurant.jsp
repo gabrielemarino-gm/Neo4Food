@@ -2,11 +2,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.*" %>
-<%@ page import="javax.xml.ws.Service" %>
-<%@ page import="it.unipi.lsmsd.neo4food.service.ServiceProvider" %>
 <%@ page import="com.google.gson.Gson" %>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,12 +29,11 @@
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
 
-        var contaPiatti = 0;
-        var pageReviewActive = 0;
-
+        let contaPiatti = 0;
         let totalDishId = '#totalDiv';
         let totalCostId = '#moneyDiv';
         let confirmDiv = '#orderDiv';
+
 
         function addItem(id)
         {
@@ -83,7 +78,7 @@
             let count = parseInt($(dishQuantityId).val());
             count++;
             // Aggiungo dentro il Div della quantita
-            $(dishQuantityId).val(count)
+            $(dishQuantityId).val(count);
             // }
             //    --------------------------------
         }
@@ -103,7 +98,7 @@
             let removeButtonId = '#remove' + id;
 
             // Rimuovo il totale della spesa
-            let price = parseFloat($(dishCostId).val())
+            let price = parseFloat($(dishCostId).val());
 
             let totalCost = parseFloat($(totalCostId).text());
             totalCost = totalCost - price;
@@ -135,7 +130,9 @@
             // }
             //    ---------------------------------
         }
-        function submitForm(){
+
+        function submitForm()
+        {
 
             $('.inputboxQty').each(function (){
                 $(this).prop("disabled", false);
@@ -143,46 +140,50 @@
 
             document.getElementById("ordini").submit();
         }
-        //
+
         //
         // REVIEWS
         //
-        let page = 0;
+
+        let pageReviewActive = false;
+        let bgReviewDivID = "#review";
+        let bgAddReviewDivID = "#addreview";
+
+        toSend = {
+            action: "getComments",
+            page: 0,
+            restaurantId: "<%= details.getId() %>",
+        };
 
         function openReviews()
         {
-            let bgReviewDivID = "#review";
-
+            // DENTRO QUESTO IF STO APRENDO IL BOTTONE PER LA PRIMA VOLTA O DOPO AVERLO CHIUSO
             if (!pageReviewActive)
             {
                 $(bgReviewDivID).show();
                 $("body").css({"overflow": "hidden;"});
-                pageReviewActive = 1;
-
-//          (   POST REQUEST
-                toSend = {
-                    action: "getComments",
-                    page: page,
-                    restaurantId: <%= details.getId()%>,
-                };
-
-                page++;
-
+                pageReviewActive = true;
 
                 $.post("<c:url value="/social"/>", toSend, function (result) {
-                    alert("Commenti ricevuti");
-                    if (result[""] > 0)
+                    json = JSON.parse(result);
+
+                    if (json.itemCount == 0)
                     {
-                        $("#boxRev").append("<div>there is no Review</div>")
-                        return;
+                        $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No Reviews</div>');
+                    }
+                    else{
+                        for(i = 0; i<json.list.length; i++)
+                        {
+                            var commento = json.list[i];
+                            $("#boxRev").append("<div><div>"+commento.username+"</div><div>"+commento.review+"</div><div>"+commento.rate+"</div></div>");
+
+                            if(i == <%= Constants.MAX_COMMENTS - 1 %>){
+                                $("#boxRev").append('<button id="moreReviews" onclick="openReviews()">Load more</button>');
+                            }
+                        }
                     }
 
-                    for(i=0; i<result.list.length, i++)
-                    {
-                        var commento = result.list[i];
-                        $("#boxRev").append("<div><div>"+commento.text+"</div><br><div>"+commento.rate+"</div></div>");
-                    }
-                    return;
+                    toSend.page++;
 
                 }).fail(function (xhr, status, error){
                     alert(xhr+"\n"+status+"\n"+error);
@@ -191,28 +192,39 @@
             }
             else
             {
-                $(bgReviewDivID).hide();
-                $("body").css({"overflow": ""});
-                pageReviewActive = 0;
+                $("#moreReviews").remove();
+                $.post("<c:url value="/social"/>", toSend, function (result) {
+                    json = JSON.parse(result);
+
+                    if (json.itemCount == 0)
+                    {
+                        $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No more Reviews</div>');
+                    }
+                    else{
+                        for(i = 0; i<json.list.length; i++)
+                        {
+                            var commento = json.list[i];
+                            $("#boxRev").append("<div><div>"+commento.username+"</div><div>"+commento.review+"</div><div>"+commento.rate+"</div></div>");
+                            if(i == <%= Constants.MAX_COMMENTS %>){
+                                $("#boxRev").append('<button id="moreReviews" onclick="openReviews()">Load more</button>');
+                            }
+                        }
+                    }
+
+                    toSend.page++;
+
+                }).fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
             }
         }
 
-        function openAddReview()
-        {
-            let bgReviewDivID = "#addreview";
-
-            if (!pageReviewActive)
-            {
-                $(bgReviewDivID).show();
-                $("body").css({"overflow": "hidden;"});
-                pageReviewActive = 1;
-            }
-            else
-            {
-                $(bgReviewDivID).hide();
-                $("body").css({"overflow": ""});
-                pageReviewActive = 0;
-            }
+        function closeReviews() {
+            $(bgReviewDivID).hide();
+            $("body").css({"overflow": ""});
+            pageReviewActive = false;
+            $('#boxRev').empty();
+            toSend.page = 0;
         }
 
     </script>
@@ -221,6 +233,40 @@
 
 <%--                Header con login o nomeutente--%>
 <%@include file="template/header.jsp"%>
+
+<script type="text/javascript">
+    function openAddReview()
+    {
+        $(bgAddReviewDivID).show();
+        $("body").css({"overflow": "hidden;"});
+    }
+
+    function sendReview(){
+        var review = {
+            action: "addReview",
+            who: '<%= username %>',
+            to: "<%= details.getId()%>",
+            rate: $('#givenRating').val(),
+            text: $('#givenReview').val(),
+        }
+
+        $.post("<c:url value="/social"/>", review, function (result) {
+
+            $(bgAddReviewDivID).hide();
+            $('#givenRating').val(2.5)
+            $('#givenReview').val("")
+        }).fail(function (xhr, status, error){
+            alert(xhr+"\n"+status+"\n"+error);
+        });
+    }
+
+    function closeAddReview()
+    {
+        $(bgAddReviewDivID).hide();
+        $("body").css({"overflow": ""});
+    }
+</script>
+
 <div class="-top-6 overflow-hidden h-48 z-50">
     <img class="blur-md w-full" src="https://ilfattoalimentare.it/wp-content/uploads/2017/06/junk-food-hamburger-patatine-fast-food-pizza-dolci-Fotolia_130389179_Subscription_Monthly_M.jpg" alt="imgFood">
 </div>
@@ -266,7 +312,7 @@
 %>
             </button>
 
-<%          if (isLogged)
+<%          if (isLogged && !isRestaurant)
             {
 %>
                 <button class="px-3 rounded-xl hover:bg-button" onclick="openAddReview()">Add Review</button>
@@ -347,16 +393,26 @@
     </form>
 
     <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
-        <div id="boxRev" class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
 <%--        List of Reviews--%>
-            <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openReviews()">X</button>
+            <div id="boxRev" >
+
+            </div>
+        <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="closeReviews()">X</button>
         </div>
     </div>
 
     <div id="addreview" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
-        <div id="boxAddRev" class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
-<%--        List of Reviews--%>
-            <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="openAddReview()">X</button>
+        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+<%--        Add Reviews--%>
+            <div id="boxAddRev" >
+                <form>
+                    <input type="range" id="givenRating" min="0" max="5" step="0.5">
+                    <input type="text" id="givenReview">
+                    <button type="button" onclick="sendReview()">Send review</button>
+                </form>
+            </div>
+            <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="closeAddReview()">X</button>
         </div>
     </div>
 </div>

@@ -9,7 +9,7 @@ public class UtilityNeoDAO extends BaseNeo4J{
      *
      *  Fornisce il nome, il numero di ratings e la media di tali ratings */
     public void getBestRestaurants() {
-        try (Session session = driver.session()) {
+        try (Session session = getSession()) {
             String searchQuery = "MATCH (u1:User)-[rate:RATED]->(r:Restaurant) " +
                                  "WITH r.name as name," +
                                  "COUNT(rate.rating) as nrating," +
@@ -32,7 +32,7 @@ public class UtilityNeoDAO extends BaseNeo4J{
      *
      *  Fornisce nome, media e numero di ratings fatti */
     public void getMostActiveUsers() {
-        try (Session session = driver.session()) {
+        try (Session session = getSession()) {
             String query = "MATCH (u1:User)-[rate:RATED]->(r:Restaurant) " +
                            "WITH u1.username as username," +
                            "COUNT(rate.rating) as nrating," +
@@ -54,7 +54,7 @@ public class UtilityNeoDAO extends BaseNeo4J{
      *
      *  Fornisce username e numero totale di amici */
     public void getInfluencers() {
-        try (Session session = driver.session()) {
+        try (Session session = getSession()) {
             String query = "MATCH (u1:User)-[x:IS_FRIEND]->(u2:User) " +
                            "WITH u1.username as username," +
                            "COUNT(x) as nfriends " +

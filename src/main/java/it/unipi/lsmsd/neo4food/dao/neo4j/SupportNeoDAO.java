@@ -8,7 +8,8 @@ public class SupportNeoDAO extends BaseNeo4J{
     /** Aggiunge un nodo utente al database
      *
      * INPUT - Nome utente */
-    public void addUser(String username) {
+
+    private void addUserIfNotExists(String username) {
         try (Session session = driver.session()) {
             String addUser = "MERGE (u:User {username: $username})";
 
@@ -23,7 +24,7 @@ public class SupportNeoDAO extends BaseNeo4J{
     /** Aggiunge un nodo ristorante al database
      *
      * INPUT - Id ristorante, nome, zipcode */
-    public void addRestaurant(String rid, String name, String zipcode) {
+    private void addRestaurantIfNotExists(String rid, String name, String zipcode) {
         try (Session session = driver.session()) {
             String addRestaurant = "MERGE (r:Restaurant {rid: $rid, name: $name, zipcode: $zipcode})";
 

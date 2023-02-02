@@ -19,6 +19,7 @@ public class Social extends HttpServlet
         String actionType = request.getParameter("action");
 
         if(actionType.equals("getComments")){
+
             String rid = request.getParameter("restaurantId");
             int page = Integer.parseInt(request.getParameter("page"));
 
@@ -26,18 +27,27 @@ public class Social extends HttpServlet
 
             String toSend = new Gson().toJson(commentList);
 
-            System.out.println(toSend);
-
             if(commentList != null){
                 response.getWriter().println(toSend);
                 response.getWriter().flush();
             }
             else
             {
-                response.getWriter().println("{intCount : 0}");
+                response.getWriter().println("{'itemCount'= 0}");
                 response.getWriter().flush();
             }
 
+            return;
+        } else if (actionType.equals("addReview")) {
+            String author = request.getParameter("who");
+            String target = request.getParameter("to");
+            Double mark = Double.parseDouble(request.getParameter("rate"));
+            String text = request.getParameter("text") != null ? request.getParameter("text") : "";
+
+            ServiceProvider.getSocialService().setRating(author, target, mark, text);
+
+            response.getWriter().println();
+            response.getWriter().flush();
             return;
         }
 

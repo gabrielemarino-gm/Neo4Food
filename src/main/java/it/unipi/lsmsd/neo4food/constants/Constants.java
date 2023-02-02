@@ -12,5 +12,5 @@ public class Constants {
                                                             "Italian", "American",
                                                             "Seafood", "Chinese",
                                                             "Japanese", "Mexican"};
-
+    public static final int MAX_COMMENTS = 2;
 }
