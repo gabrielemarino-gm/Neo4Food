@@ -21,6 +21,15 @@
     }
     %>
 
+    <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
+    <script>
+        function showSearch()
+        {
+            $("#userSearchText").show();
+        }
+    </script>
+
+
     <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
 <%--        Il pulsante del logo ti manda a ricerca solo se non si e' ristorante--%>
             <% if(!isRestaurant){ %>
@@ -55,6 +64,11 @@
                             <a><%= username %></a>
                         </button>
                     </form>
+                    <%--    Il pulsante per fare una ricerca --%>
+                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:border-2" onclick="showSearch()">
+                        <img class="h-5 mr-3" src="img/lente.png" alt="lente">
+                        <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" name="userSearch" placeholder="Search by username">
+                    </button>
 <%              }
                 else
                 {%>
