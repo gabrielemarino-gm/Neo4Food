@@ -49,10 +49,10 @@ public class SocialNeoDAO extends BaseNeo4J{
      *
      *  Fornisce i ristoranti piu valutati dagli amici
      *  come nome, media dei voti e numero di voti*/
-    public void getRecommendation(String user, String zipcode) {
+    public void getRecommendationRestaurant(String user, String zipcode) {
         try (Session session = getSession()) {
             String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User)-[rate:RATED]->(r:Restaurant) " +
-                                 "WHERE u1.username = $user and r.zipcode = $zipcode" +
+                                 "WHERE u1.username = $user and r.zipcode = $zipcode" +"AND NOT EXISTS (u1)-[:RATED]->(r)"+
                                  "WITH r, COUNT(rate.rating) as nrating, " +
                                  "AVG(rate.rating) as avg_rating " +
                                  "ORDER BY nrating, avg_rating DESC " +
@@ -67,6 +67,9 @@ public class SocialNeoDAO extends BaseNeo4J{
             });
         }
     }
+
+
+
 
     /** Imposta un commento da parte di un utente verso un ristorante
      *
@@ -148,7 +151,43 @@ public class SocialNeoDAO extends BaseNeo4J{
             return toReturn;
         }
     }
+    public void getRecommendationFriendOfFriend(String user) {
+        try (Session session = getSession()) {
+            String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User)-[:FOLLOWS]->(u3:User)<-[f:FOLLOWS]-(:User) " +
+                    "WHERE u1.username = $user " +"AND NOT EXISTS (u1)-[:FOLLOWS]->(u3)"+
+                    "WITH COUNT(f) as nfollowers,u3 " +
+                    "ORDER BY nfollowers DESC " +
+                    "RETURN nfollowers , u3.username as username " +
+                    "LIMIT 10";
 
+            session.writeTransaction(tx -> {
+                Result result = tx.run(searchQuery, parameters( "user", user));
+                System.out.println(result.list());
+
+                return 1;
+            });
+        }
+    }
+
+
+
+    public void getRecommendationUserRestaurant(String user) {
+        try (Session session = getSession()) {
+            String searchQuery = "MATCH (u1:User)-[:RATED]->(r:Restaurant)<-[rate:RATED]-(u2:User)<-[f:FOLLOWS]-(:User)" +
+                    "WHERE u1.username = $user " +"AND NOT EXISTS (u1)-[:FOLLOWS]->(u2)"+
+                    "WITH COUNT(DISTINCT f) as nfollowers,COUNT (DISTINCT rate) as nsamerest,u2 " +
+                    "ORDER BY nsamerest,nfollowers DESC " +
+                    "RETURN nfollowers , u2.username as username,nsamerest " +
+                    "LIMIT 10";
+
+            session.writeTransaction(tx -> {
+                Result result = tx.run(searchQuery, parameters( "user", user));
+                System.out.println(result.list());
+
+                return 1;
+            });
+        }
+    }
     @Override
     public void close() throws RuntimeException{
         driver.close();

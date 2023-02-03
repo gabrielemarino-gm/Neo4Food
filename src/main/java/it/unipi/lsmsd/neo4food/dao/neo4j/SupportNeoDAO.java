@@ -35,6 +35,20 @@ public class SupportNeoDAO extends BaseNeo4J{
             });
         }
     }
+    public void addComment(String username,String rid,String comment, int rating) {
+        try (Session session = driver.session()) {
+            String addUser =
+                    "MATCH (u:User), (r.Restaurant)" +
+                    "WHERE u.username=$username AND r.rid=$rid" +
+                    "MERGE (u:User )" + "-[:RATED{comment: $comment , rating=$rating}]-> " + "(r:Restaurant)";
+
+            session.writeTransaction(tx -> {
+                tx.run(addUser, parameters("username",username,"rid",rid,"comment", comment , "rating" , rating))
+                        .consume();
+                return 1;
+            });
+        }
+    }
 
     @Override
     public void close() throws RuntimeException{
