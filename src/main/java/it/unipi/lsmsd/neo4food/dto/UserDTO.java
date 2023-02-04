@@ -12,6 +12,7 @@ public class UserDTO {
     private String zipcode;
     private String paymentMethod;
     private String paymentNumber;
+    private int nfollowers;
 //    -------------------------------------
     public void setId(String id) {this.id = id;}
     public void setUsername(String username) {this.username = username;}
@@ -23,6 +24,8 @@ public class UserDTO {
     public void setZipcode(String zipcode) {this.zipcode = zipcode;}
     public void setPaymentMethod(String paymentMethod) {this.paymentMethod = paymentMethod;}
     public void setPaymentNumber(String paymentNumber) {this.paymentNumber = paymentNumber;}
+    public void setNfollowers(int nfollowers) {this.nfollowers = nfollowers;}
+
     //    -------------------------------------
     public String getId() {return id;}
     public String getUsername() {return username;}
@@ -34,6 +37,7 @@ public class UserDTO {
     public String getZipcode() {return zipcode;}
     public String getPaymentMethod() {return paymentMethod;}
     public String getPaymentNumber() {return paymentNumber;}
+    public int getNfollowers() {return nfollowers;}
     //    -------------------------------------
     @Override
     public String toString() {
@@ -48,6 +52,7 @@ public class UserDTO {
                 ", zipcode='" + zipcode + '\'' +
                 ", paymentMethod='" + paymentMethod + '\'' +
                 ", paymentNumber='" + paymentNumber + '\'' +
+                ", nFollowers='" + nfollowers + '\'' +
                 '}';
     }
 }

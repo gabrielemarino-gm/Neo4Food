@@ -3,6 +3,9 @@ package it.unipi.lsmsd.neo4food.dao.neo4j;
 import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dto.CommentDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.OrderDTO;
+import it.unipi.lsmsd.neo4food.dto.UserDTO;
+import it.unipi.lsmsd.neo4food.model.User;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
@@ -26,6 +29,7 @@ public class SocialNeoDAO extends BaseNeo4J{
             session.writeTransaction(tx -> {
                 tx.run(setQuery, parameters( "user1", user1 ,  "user2",user2  ))
                         .consume();
+
                 return 1;
             });
         }
@@ -151,41 +155,74 @@ public class SocialNeoDAO extends BaseNeo4J{
             return toReturn;
         }
     }
-    public void getRecommendationFriendOfFriend(String user) {
+    public static ListDTO<UserDTO> getRecommendationFriendOfFriend(String user) {
         try (Session session = getSession()) {
-            String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User)-[:FOLLOWS]->(u3:User)<-[f:FOLLOWS]-(:User) " +
-                    "WHERE u1.username = $user " +"AND NOT EXISTS (u1)-[:FOLLOWS]->(u3)"+
-                    "WITH COUNT(f) as nfollowers,u3 " +
+            ListDTO<UserDTO> toReturn = new ListDTO<UserDTO>();
+            String searchQuery = "MATCH (u1:User{username : $user})-[:FOLLOWS]->(u2:User)-[:FOLLOWS]->(u3:User)<-[f:FOLLOWS]-(:User) " +
+                    "WHERE NOT EXISTS {(u1)-[:FOLLOWS]->(u3)}"+
+                    "WITH COUNT(f) as nfollowers , u3 " +
                     "ORDER BY nfollowers DESC " +
                     "RETURN nfollowers , u3.username as username " +
                     "LIMIT 10";
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(searchQuery, parameters( "user", user));
-                System.out.println(result.list());
+
+                List<UserDTO> tempList = new ArrayList<UserDTO>();
+
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    UserDTO tempUser = new UserDTO();
+                    tempUser.setUsername(record.get("username").asString());
+                    tempUser.setNfollowers(record.get("nfollowers").asInt());
+
+                    tempList.add(tempUser);
+
+                }
+
+                toReturn.setList(tempList);
+                toReturn.setItemCount(tempList.size());
 
                 return 1;
+
             });
+            return toReturn;
         }
     }
 
 
 
-    public void getRecommendationUserRestaurant(String user) {
+    public static ListDTO<UserDTO> getRecommendationUserRestaurant(String user) {
         try (Session session = getSession()) {
-            String searchQuery = "MATCH (u1:User)-[:RATED]->(r:Restaurant)<-[rate:RATED]-(u2:User)<-[f:FOLLOWS]-(:User)" +
-                    "WHERE u1.username = $user " +"AND NOT EXISTS (u1)-[:FOLLOWS]->(u2)"+
-                    "WITH COUNT(DISTINCT f) as nfollowers,COUNT (DISTINCT rate) as nsamerest,u2 " +
-                    "ORDER BY nsamerest,nfollowers DESC " +
-                    "RETURN nfollowers , u2.username as username,nsamerest " +
+            ListDTO<UserDTO> toReturn = new ListDTO<UserDTO>();
+            String searchQuery = "MATCH (u1:User{username : $user})-[:RATED]->(r:Restaurant)<-[rate:RATED]-(u2:User)<-[f:FOLLOWS]-(:User)" +
+                    " NOT EXISTS {(u1)-[:FOLLOWS]->(u2)}"+
+                    "WITH COUNT(DISTINCT f) as nfollowers , COUNT (DISTINCT rate) as nsamerest,u2 " +
+                    "ORDER BY nsamerest , nfollowers DESC " +
+                    "RETURN nfollowers , u2.username as username , nsamerest " +
                     "LIMIT 10";
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(searchQuery, parameters( "user", user));
-                System.out.println(result.list());
+                List<UserDTO> tempList = new ArrayList<UserDTO>();
+
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    UserDTO tempUser = new UserDTO();
+                    tempUser.setUsername(record.get("username").asString());
+                    tempUser.setNfollowers(record.get("nfollowers").asInt());
+
+                    tempList.add(tempUser);
+
+                }
+
+                toReturn.setList(tempList);
+                toReturn.setItemCount(tempList.size());
 
                 return 1;
+
             });
+            return toReturn;
         }
     }
     @Override
@@ -193,3 +230,5 @@ public class SocialNeoDAO extends BaseNeo4J{
         driver.close();
     }
 }
+
+
