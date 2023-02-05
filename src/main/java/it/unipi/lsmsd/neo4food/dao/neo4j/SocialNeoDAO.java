@@ -132,14 +132,18 @@ public class SocialNeoDAO extends BaseNeo4J{
                 List<CommentDTO> tempList = new ArrayList<CommentDTO>();
 
                 while(result.hasNext()){
-                    Record r = result.next();
 
+                    Record r = result.next();
                     CommentDTO tempComment = new CommentDTO();
 
                     System.out.println(r);
+                    System.out.println(r.get("comment"));
+
                     tempComment.setUserName(r.get("user") != null ? r.get("user").asString() : "Anonymous");
                     tempComment.setRate(r.get("rate") != null ? r.get("rate").asDouble(): -1);
-                    tempComment.setReview(r.get("comment")!= null ? r.get("comment").asString() : "");
+                    tempComment.setReview(!r.get("comment").isNull() ? r.get("comment").asString() : "No comment available");
+
+                    System.out.println(tempComment);
 
                     if(tempComment.getRate() >= 0) {
                         tempList.add(tempComment);
@@ -151,7 +155,7 @@ public class SocialNeoDAO extends BaseNeo4J{
 
                 return 1;
             });
-
+            System.out.println(toReturn);
             return toReturn;
         }
     }

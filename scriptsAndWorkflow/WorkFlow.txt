@@ -140,7 +140,10 @@ Cosiderazioni
         - Zip_code
         - AVG(rate)
 
-2)  I nodi Users vengono aggiunti quando un utente vota/recensisce un ristorante
+2)  I nodi Users vengono aggiunti quando un utente vota/recensisce un ristorante per la prima volta
+        - Anche i nodi ristoranti vengono inseriti quando vengono votati per la prima volta
+        - Se gli utenti vengono inseriti quando votano per la prima volta, da definire come cercare
+                utenti per inserirli tra i seguiti (magari cerco e trovo solo quelli che non sono seguiti)
 
 3)  Consigliati
         - Schermare i ristoranti per zip_code della ricerca

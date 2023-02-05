@@ -65,7 +65,7 @@
                         </button>
                     </form>
                     <%--    Il pulsante per fare una ricerca --%>
-                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:border-2" onclick="showSearch()">
+                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearch()">
                         <img class="h-5 mr-3" src="img/lente.png" alt="lente">
                         <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" name="userSearch" placeholder="Search by username">
                     </button>
