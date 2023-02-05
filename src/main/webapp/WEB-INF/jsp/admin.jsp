@@ -11,11 +11,7 @@
 </head>
 <body>
 
-<%--   Header con login o nomeutente--%>
-<%@include file="template/header.jsp"%>
 
 
-
-<%@include file="template/footer.jsp"%>
 </body>
 </html>
