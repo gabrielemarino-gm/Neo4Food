@@ -517,7 +517,7 @@
         </div>
     </form>
 
-    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview" onclick="closeReviews()">
+    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
         <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
 <%--        List of Reviews--%>
             <div id="boxRev">
