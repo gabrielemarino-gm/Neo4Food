@@ -43,7 +43,7 @@ public class AggregationMongoDAO extends BaseMongo{
                                         Arrays.asList(unwind, sort, addFields, match, group, project
                                         )
                                     ).into(new ArrayList<>());
-            System.out.println("Aggregation received. Processing prices.");
+            System.out.println("Aggregation received. Prices processing started.");
             int count = 0;
             ClientSession session = getSession();
             try{
@@ -91,7 +91,7 @@ public class AggregationMongoDAO extends BaseMongo{
     public void setAvgRate(){
         System.out.println("Begin of scores processing.");
         List<Document> list = ServiceProvider.getSupportService().getAvgRating();
-        System.out.println("Aggregation retreived. Score processing started.");
+        System.out.println("Aggregation received. Score processing started.");
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         ClientSession session = getSession();
         try{
