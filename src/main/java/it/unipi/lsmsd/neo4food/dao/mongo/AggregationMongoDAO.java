@@ -22,6 +22,7 @@ public class AggregationMongoDAO extends BaseMongo{
 
     public void setAvgPrices(){
 //        Aggregation avg price per restaurant
+        System.out.println("Begin of prices processing.");
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         //... {$unwind: "$dishes"},
         Bson unwind = new Document("$unwind", "$dishes");
@@ -42,6 +43,7 @@ public class AggregationMongoDAO extends BaseMongo{
                                         Arrays.asList(unwind, sort, addFields, match, group, project
                                         )
                                     ).into(new ArrayList<>());
+            System.out.println("Aggregation received. Prices processing started.");
             int count = 0;
             ClientSession session = getSession();
             try{
@@ -69,7 +71,7 @@ public class AggregationMongoDAO extends BaseMongo{
                             Updates.set("price_range", prange));
                     count++;
                     if(count%1000 == 0){
-                        System.out.println(count + " processed.");
+                        System.out.println(count + " prices processed.");
                     }
                 }
                 session.commitTransaction();
@@ -87,7 +89,9 @@ public class AggregationMongoDAO extends BaseMongo{
     }
 
     public void setAvgRate(){
+        System.out.println("Begin of scores processing.");
         List<Document> list = ServiceProvider.getSupportService().getAvgRating();
+        System.out.println("Aggregation received. Score processing started.");
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         ClientSession session = getSession();
         try{
@@ -104,7 +108,7 @@ public class AggregationMongoDAO extends BaseMongo{
                 count++;
 
                 if (count % 1000 == 0) {
-                    System.out.println(count + " processed.");
+                    System.out.println(count + " scores processed.");
 
                 }
             }

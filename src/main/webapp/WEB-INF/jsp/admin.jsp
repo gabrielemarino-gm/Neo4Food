@@ -49,13 +49,17 @@
     </head>
     <body>
         <div id="message"><h1 id="messageField"></h1></div>
-
+        <div>
+            <div><h1>Total users: <%= (long)request.getAttribute("uCount") %></h1></div>
+            <div><h1>Total restaurants: <%= (long)request.getAttribute("rCount") %></h1></div>
+            <div><h1>Total orders: <%= (long)request.getAttribute("oCount") %></h1></div>
+        </div>
         <button id="updateRatings" onclick="updateRatings()">Update ratings</button>
-
         <button id="updatePrices" onclick="updatePrices()">Update prices</button>
 
         <div>
         <%--    Altre statistiche per admin --%>
+
         </div>
     </body>
 </html>
