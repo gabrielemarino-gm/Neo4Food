@@ -6,6 +6,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmsd.neo4food.model.User" %>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Research</title>
     <meta charset="UTF-8">
@@ -27,7 +29,7 @@
                     var consigliato = json.list[i];
                     console.log(consigliato)
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div> </div>");
+                    $("#boxRec").append('<div><div>Username:' + consigliato.username + '</div><div>Followers:' + consigliato.nfollowers + '</div> </div>');
                 }
 
             })
@@ -63,23 +65,24 @@
 
             ;%>
 
+    <div class="py-8">
+<%  for (UserDTO item: list)
+    {
+%>
+        <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
+            <div>"<%=item.getUsername()%>" </div>
+            <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+        </div>
+<%  }
+%>
 
-<%
-for (UserDTO item: list)
+    </div>
+    <button onclick="getRecommendationRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations</button>
 
-{  ;%>
-
-<div>"<%=item.getUsername()%>" </div>
-<button onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
-<%}%>
-<div>
-    <button onclick="getRecommendationRequest()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Recommendations</button>
-
-</div>
-
-<div id="boxRec" />
-
+    <div id="boxRec">
+    </div>
 
 
 <%@ include file="template/footer.jsp"%>
 </body>
+</html>

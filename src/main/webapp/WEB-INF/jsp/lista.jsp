@@ -140,7 +140,7 @@
 
                                         rate = rate*10;
                                         nStar = rateInt;
-                                        if (rate%10 > 5)
+                                        if (rate%10 >= 5)
                                         {
 %>
                                             <img class="h-5" src="img/half_star.png" alt="star">
