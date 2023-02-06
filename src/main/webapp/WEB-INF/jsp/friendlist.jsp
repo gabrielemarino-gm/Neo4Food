@@ -70,7 +70,7 @@
     {
 %>
         <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
-            <div>"<%=item.getUsername()%>" </div>
+            <div><%=item.getUsername()%></div>
             <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
         </div>
 <%  }
