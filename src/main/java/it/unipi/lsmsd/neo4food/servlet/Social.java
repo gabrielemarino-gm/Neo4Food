@@ -3,9 +3,12 @@ package it.unipi.lsmsd.neo4food.servlet;
 import com.google.gson.Gson;
 import it.unipi.lsmsd.neo4food.dto.CommentDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -86,6 +89,45 @@ public class Social extends HttpServlet
 //            return;
 
         }
+        else if (actionType.equals("getFollowers")) {
+// lista Followers
+            targetJSP = "WEB-INF/jsp/friendlist.jsp";
+            String username = request.getParameter("username");
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getFollowers(username, 0);
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(request.getParameter("username"));
+
+            request.setAttribute("listDTO", userList);
+            request.setAttribute("userDTO", userDTO);
+
+        }
+        else if(actionType.equals("getRecommendation")){
+
+            String username = request.getParameter("username");
+
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getRecommendationFriendOfFriend(username);
+
+            String toSend = new Gson().toJson(userList);
+            response.getWriter().println(toSend);
+            response.getWriter().flush();
+            return;
+
+        }
+        else if(actionType.equals("removeFollow")){
+
+            String username = request.getParameter("username");
+            String username2 = request.getParameter("username2");
+            System.out.println(username2);
+            System.out.println(username);
+            ServiceProvider.getSocialService().removeFollow(username,username2);
+
+            String toSend = new Gson().toJson(username);
+            response.getWriter().println(toSend);
+            response.getWriter().flush();
+            return ;
+
+        }
+
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);

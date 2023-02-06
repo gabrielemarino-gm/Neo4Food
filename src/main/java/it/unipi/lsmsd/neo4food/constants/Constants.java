@@ -13,4 +13,5 @@ public class Constants {
                                                             "Seafood", "Chinese",
                                                             "Japanese", "Mexican"};
     public static final int MAX_COMMENTS = 2;
+    public static final int MAX_FOLLOWERS = 5;
 }

@@ -2,12 +2,16 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
+<%@ page import="it.unipi.lsmsd.neo4food.dto.UserDTO" %>
+<head>
 <%
     String username = null;
     String restaurantname = null;
     Boolean isLogged = false;
     Boolean isRestaurant = false;
-    
+
+
+
     if (session != null)
         if(session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
         isLogged = true;
@@ -19,17 +23,20 @@
             restaurantname = (String) session.getAttribute("restaurantname");
         }
     }
-    %>
 
-    <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
-    <script>
+
+
+    %>
+<script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
+    <script type="text/javascript">
+
         function showSearch()
         {
             $("#userSearchText").show();
         }
     </script>
 
-
+</head>
     <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
 <%--        Il pulsante del logo ti manda a ricerca solo se non si e' ristorante--%>
             <% if(!isRestaurant){ %>
@@ -57,6 +64,13 @@
 <%              if(!isRestaurant)
                 {%>
 <%--                Se non sono ristorante voglio andare alla pagina personale utente--%>
+    <form method="post" action="<c:url value="/social"/>">
+    <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
+        <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
+        <input type="hidden" name="action" value="getFollowers">
+        <a >Friend List</a>
+    </button>
+    </form>
                     <form method="post" action="<c:url value="/personal"/>">
                         <input type="hidden" name="actor" value="user">
                         <input type="hidden" name="action" value="personal">

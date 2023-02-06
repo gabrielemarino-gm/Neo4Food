@@ -229,6 +229,42 @@ public class SocialNeoDAO extends BaseNeo4J{
             return toReturn;
         }
     }
+
+    public ListDTO<UserDTO> getFollowers(String username, int page){
+
+        try (Session session = getSession()){
+            String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User) " +
+                    "WHERE u1.username = $username " +
+                    "RETURN u2.username as user " +
+                    "SKIP $skip " +
+                    "LIMIT $limit";
+
+            ListDTO<UserDTO> toReturn = new ListDTO<UserDTO>();
+
+            session.writeTransaction(tx -> {
+                Result result = tx.run(searchQuery, parameters( "username", username, "skip", (page * Constants.MAX_FOLLOWERS), "limit", Constants.MAX_FOLLOWERS));
+                List<UserDTO> tempList = new ArrayList<UserDTO>();
+
+                while(result.hasNext()){
+                    Record r = result.next();
+
+                    UserDTO tempUser = new UserDTO();
+                    tempUser.setUsername(r.get("user") != null ? r.get("user").asString() : "Anonymous");
+                    tempList.add(tempUser);
+                }
+
+
+                toReturn.setList(tempList);
+                toReturn.setItemCount(tempList.size());
+
+                return 1;
+            });
+
+            return toReturn;
+        }
+    }
+
+
     @Override
     public void close() throws RuntimeException{
         driver.close();
