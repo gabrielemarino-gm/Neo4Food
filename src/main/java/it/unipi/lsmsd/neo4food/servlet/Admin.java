@@ -19,17 +19,38 @@ public class Admin extends HttpServlet
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String targetJSP = "/WEB-INF/jsp/admin.jsp";
-        String token = request.getParameter("token");
-//        Controllo token
-        if(ServiceProvider.getAdminService().isTokenValid(token)){
-//            Login come admin
 
-        }else{
-//            Invalid request
-            targetJSP = "/WEB-INF/jsp/error/404.jsp";
+        if(request.getParameter("token") != null){
+            String token = request.getParameter("token");
+    //        Controllo token
+            if(ServiceProvider.getAdminService().isTokenValid(token))
+            {
+    //            Login come admin
 
+            }
+            else
+            {
+    //            Invalid request
+                targetJSP = "/WEB-INF/jsp/error/404.jsp";
+            }
         }
+//        Altre richieste
+        else
+        {
+            String actionType = request.getParameter("action");
+            if (actionType.equals("updateRatings"))
+            {
+                boolean result = ServiceProvider.getAggregationService().setAvgPrices();
 
+                response.getWriter().print(result ? "OK" : "NO");
+                response.getWriter().flush();
+                return;
+            }
+            else if(actionType.equals("updatePrices"))
+            {
+
+            }
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
@@ -43,48 +64,5 @@ public class Admin extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         doRequest(request, response);
-    }
-
-    private Boolean loginAsRestaurant(HttpServletRequest request, HttpServletResponse response)
-    {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        RestaurantDTO result = ServiceProvider.getRestaurantService().getRestaurantLogin(email, password);
-//      Ristorante trovato
-        if (!result.getId().equals("0"))
-        {
-            HttpSession session = request.getSession();
-            session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
-            session.setAttribute("restaurantname", result.getName());
-            return true;
-        }
-        else
-        //                No match
-        {
-            request.setAttribute("message", "Wrong credentials");
-            return false;
-        }
-    }
-
-    private Boolean loginAsUser(HttpServletRequest request, HttpServletResponse response)
-    {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        UserDTO result = ServiceProvider.getUserService().getUserLogin(email, password);
-
-//      Utente trovato
-        if (!result.getId().equals("0"))
-        {
-            HttpSession session = request.getSession();
-            session.setAttribute(Constants.AUTHENTICATION_FIELD, result);
-            session.setAttribute("username", result.getUsername());
-            return true;
-        }
-        else
-        {
-//          No match
-            request.setAttribute("message", "Wrong credentials");
-            return false;
-        }
     }
 }

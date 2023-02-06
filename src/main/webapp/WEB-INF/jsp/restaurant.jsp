@@ -243,23 +243,21 @@
                     json = JSON.parse(result);
 
                     if (json.itemCount == 0)
+                    // Se non ci sono review, va cosi
                     {
                         $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No Reviews</div>');
                     }
                     else
                     {
+                        // Se ci sono review le inserisco finche ci sono
                         for(i=0; i<json.list.length; i++)
                         {
                             var commento = json.list[i];
-
-                            console.log(commento.rate)
 
                             // Aggiungo le stelle anziche' il numero
                             var stelle = "";
                             var nStar = 0;
                             var rateInt = parseInt(commento.rate);
-
-                            console.log(parseInt(commento.rate));
 
                             for(; nStar<rateInt; nStar++)
                                 stelle += '<img class="h-5" src="img/star.png" alt="star">';
@@ -284,18 +282,17 @@
                             }
                         }
                     }
-
                     toSend.page++;
 
                 }).fail(function (xhr, status, error){
                     alert(xhr+"\n"+status+"\n"+error);
                 });
-//          )
+                //          )
             }
             else
             {
                 // QUI IL BOX E' GIA' ATTIVO
-                $("body").css({"overflow": "hidden"});
+                // $("body").css({"overflow": "hidden"});
 
                 $("#moreReviews").remove();
                 $.post("<c:url value="/social"/>", toSend, function (result) {
@@ -303,6 +300,7 @@
 
                     if (json.itemCount == 0)
                     {
+                        // Se sono finite va cosi
                         $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No more Reviews</div>');
                     }
                     else{
@@ -346,6 +344,7 @@
         }
 
         function closeReviews() {
+            console.log("rev");
             $(bgReviewDivID).hide();
             $("body").css({"overflow": ""});
             pageReviewActive = false;
@@ -518,7 +517,7 @@
         </div>
     </form>
 
-    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview" onclick="closeReviews()">
+    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
         <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
 <%--        List of Reviews--%>
             <div id="boxRev">
@@ -532,7 +531,7 @@
 <%--        Add Reviews--%>
             <div id="boxAddRev" class="items-center mt-5">
                 <form>
-                    <input class="rating" max="5" oninput="this.style.setProperty('--value', `${this.valueAsNumber}`)" step="0.5" style="--value:2.5" type="range" value="2.5">
+                    <input class="rating" max="5" oninput="this.style.setProperty('--value', `${this.valueAsNumber}`)" step="0.5" style="--value:2.5" type="range" id="givenRating" value="2.5">
                     <input class="text-left text-align-start px-5 mt-5 w-full h-32 overflow-hidden" type="text" id="givenReview">
                     <button class="float-right mt-5 px-3 rounded-xl border-2 hover:bg-button" type="button" onclick="sendReview()">Send review</button>
                 </form>
