@@ -59,8 +59,8 @@
                     for(DishDTO item: list){%>
                         <div class="mt-3 ml-5"><%= item.getName() %> x <%= item.getQuantity() %></div>
                     <%}%>
-                    <div class="mt-2 ml-88">Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getCurrency() %></div>
                 </div>
+                <div class="bg-white rounded-xl w-5/6 text-right px-5 py-1 relative mx-auto mt-3">Total: <%= new DecimalFormat("#0.00").format(order.getTotal()) %> <%= order.getCurrency() %></div>
                 <div class="h-10"></div>
                 <button type="button" class="absolute bottom-3 right-4 border-2 rounded-xl px-3 hover:bg-button" onclick="send()">Confirm order</button>
             </div>

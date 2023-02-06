@@ -1119,6 +1119,11 @@ video {
   padding-right: 0.25rem;
 }
 
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
 .pb-7 {
   padding-bottom: 1.75rem;
 }
@@ -1133,6 +1138,10 @@ video {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .text-2xl {
