@@ -500,7 +500,7 @@
 %>
 
             <div id="orderDiv" style="display: none;" class="fixed bottom-3 w-2/3 h-10 rounded-3xl bg-test_col text-center">
-                <button type="button" onclick="submitForm()">
+                <button class="w-full" type="button" onclick="submitForm()">
                     <input type="hidden" name="restaurant" value="<%= details.getName() %>">
                     <input type="hidden" name="rid" value="<%= details.getId() %>">
                     <input type="hidden" name="action" value="checkout">
@@ -510,7 +510,6 @@
                         <div class="tempOrder mr-2" id="totalDiv"></div>
                         <div class="tempOrder mr-2">for</div>
                         <div class="tempOrder mr-2" id="moneyDiv">0</div>
-                        <div>Checkout</div>
                     </div>
 
                 </button>
