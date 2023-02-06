@@ -61,11 +61,10 @@ public class UtilityNeoDAO extends BaseNeo4J{
      *  Fornisce username e numero totale di amici */
     public ListDTO<UserDTO> getInfluencers() {
         try (Session session = getSession()) {
-            String query = "MATCH (u1:User)-[x:FOLLOWS]->(u2:User) " +
-                           "WITH u1.username as username," +
-                           "COUNT(x) as nfollowers " +
-                           "ORDER BY nfollowers DESC " +
-                           "RETURN username , nfollowers LIMIT 20";
+            String query = "MATCH (u1:User)<-[x:FOLLOWS]-(:User) " +
+                    "RETURN u1.username as username, COUNT(x) as nfollowers " +
+                    "ORDER BY nfollowers DESC " +
+                    "LIMIT 20";
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(query);
