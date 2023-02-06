@@ -65,15 +65,11 @@ public class SocialNeoDAO extends BaseNeo4J{
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(searchQuery, parameters( "user", user, "zipcode", zipcode));
-                System.out.println(result.list());
 
                 return 1;
             });
         }
     }
-
-
-
 
     /** Imposta un commento da parte di un utente verso un ristorante
      *

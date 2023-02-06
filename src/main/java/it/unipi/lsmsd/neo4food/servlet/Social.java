@@ -74,7 +74,7 @@ public class Social extends HttpServlet
             String page = request.getParameter("page");
 
 //            ServiceProvider.getSocialService().findFriends();
-
+            System.out.println(request.getParameter("userSearch"));
 
 //            response.getWriter().println();
 //            response.getWriter().flush();
