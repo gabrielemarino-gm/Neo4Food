@@ -531,7 +531,7 @@
 <%--        Add Reviews--%>
             <div id="boxAddRev" class="items-center mt-5">
                 <form>
-                    <input class="rating" max="5" oninput="this.style.setProperty('--value', `${this.valueAsNumber}`)" step="0.5" style="--value:2.5" type="range" value="2.5">
+                    <input class="rating" id="givenRating" max="5" oninput="this.style.setProperty('--value', `${this.valueAsNumber}`)" step="0.5" style="--value:2.5" type="range" value="2.5">
                     <input class="text-left text-align-start px-5 mt-5 w-full h-32 overflow-hidden" type="text" id="givenReview">
                     <button class="float-right mt-5 px-3 rounded-xl border-2 hover:bg-button" type="button" onclick="sendReview()">Send review</button>
                 </form>
