@@ -27,7 +27,9 @@ public class Admin extends HttpServlet
             if(ServiceProvider.getAdminService().isTokenValid(token))
             {
     //            Login OK
-
+                request.setAttribute("uCount", ServiceProvider.getAdminService().userCount());
+                request.setAttribute("rCount", ServiceProvider.getAdminService().restCount());
+                request.setAttribute("oCount", ServiceProvider.getAdminService().orderCount());
             }
             else
             {
