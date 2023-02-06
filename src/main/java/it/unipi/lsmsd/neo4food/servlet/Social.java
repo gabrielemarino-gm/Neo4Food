@@ -65,17 +65,6 @@ public class Social extends HttpServlet
 //            return;
 
         }
-        else if(actionType.equals("removeFollow"))
-        {
-            String actor = request.getParameter("actor");
-            String target = request.getParameter("target");
-
-//            ServiceProvider.getSocialService().removeFollow(actor, target);
-
-//            response.getWriter().println();
-//            response.getWriter().flush();
-//            return;
-        }
         else if (actionType.equals("search"))
         {
             String target = request.getParameter("target");
@@ -122,6 +111,7 @@ public class Social extends HttpServlet
             ServiceProvider.getSocialService().removeFollow(username,username2);
 
             String toSend = new Gson().toJson(username);
+
             response.getWriter().println(toSend);
             response.getWriter().flush();
             return ;

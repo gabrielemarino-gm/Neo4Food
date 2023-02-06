@@ -10,8 +10,6 @@
     Boolean isLogged = false;
     Boolean isRestaurant = false;
 
-
-
     if (session != null)
         if(session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
         isLogged = true;
