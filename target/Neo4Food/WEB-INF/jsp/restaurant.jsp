@@ -25,6 +25,80 @@
         {
             color: #7C2714;
         }
+
+        .rating {
+            background-color: #FFF4EA;
+            --dir: right;
+            --fill: gold;
+            --fillbg: rgba(100, 100, 100, 0.15);
+            --heart: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.328l-1.453-1.313q-2.484-2.25-3.609-3.328t-2.508-2.672-1.898-2.883-0.516-2.648q0-2.297 1.57-3.891t3.914-1.594q2.719 0 4.5 2.109 1.781-2.109 4.5-2.109 2.344 0 3.914 1.594t1.57 3.891q0 1.828-1.219 3.797t-2.648 3.422-4.664 4.359z"/></svg>');
+            --star: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.25l-6.188 3.75 1.641-7.031-5.438-4.734 7.172-0.609 2.813-6.609 2.813 6.609 7.172 0.609-5.438 4.734 1.641 7.031z"/></svg>');
+            --stars: 5;
+            --starsize: 3rem;
+            --symbol: var(--star);
+            --value: 1;
+            --w: calc(var(--stars) * var(--starsize));
+            --x: calc(100% * (var(--value) / var(--stars)));
+            block-size: var(--starsize);
+            inline-size: var(--w);
+            position: relative;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+        }
+        [dir="rtl"] .rating {
+            --dir: left;
+        }
+        .rating::-moz-range-track {
+            background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
+            block-size: 100%;
+            mask: repeat left center/var(--starsize) var(--symbol);
+        }
+        .rating::-webkit-slider-runnable-track {
+            background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
+            block-size: 100%;
+            mask: repeat left center/var(--starsize) var(--symbol);
+            -webkit-mask: repeat left center/var(--starsize) var(--symbol);
+        }
+        .rating::-moz-range-thumb {
+            height: var(--starsize);
+            opacity: 0;
+            width: var(--starsize);
+        }
+        .rating::-webkit-slider-thumb {
+            height: var(--starsize);
+            opacity: 0;
+            width: var(--starsize);
+            -webkit-appearance: none;
+        }
+        .rating, .rating-label {
+            display: block;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+        }
+        .rating-label {
+            margin-block-end: 1rem;
+        }
+
+        /* NO JS */
+        .rating--nojs::-moz-range-track {
+            background: var(--fillbg);
+        }
+        .rating--nojs::-moz-range-progress {
+            background: var(--fill);
+            block-size: 100%;
+            mask: repeat left center/var(--starsize) var(--star);
+        }
+        .rating--nojs::-webkit-slider-runnable-track {
+            background: var(--fillbg);
+        }
+        .rating--nojs::-webkit-slider-thumb {
+            background-color: var(--fill);
+            box-shadow: calc(0rem - var(--w)) 0 0 var(--w) var(--fill);
+            opacity: 1;
+            width: 1px;
+        }
+        [dir="rtl"] .rating--nojs::-webkit-slider-thumb {
+            box-shadow: var(--w) 0 0 var(--w) var(--fill);
+        }
     </style>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
@@ -157,11 +231,12 @@
 
         function openReviews()
         {
+            // $("body").css({"overflow": "hidden"});
             // DENTRO QUESTO IF STO APRENDO IL BOTTONE PER LA PRIMA VOLTA O DOPO AVERLO CHIUSO
             if (!pageReviewActive)
             {
                 $(bgReviewDivID).show();
-                $("body").css({"overflow": "hidden;"});
+                $("body").css({"overflow": "hidden"});
                 pageReviewActive = true;
 
                 $.post("<c:url value="/social"/>", toSend, function (result) {
@@ -171,14 +246,41 @@
                     {
                         $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No Reviews</div>');
                     }
-                    else{
-                        for(i = 0; i<json.list.length; i++)
+                    else
+                    {
+                        for(i=0; i<json.list.length; i++)
                         {
                             var commento = json.list[i];
-                            $("#boxRev").append("<div><div>"+commento.username+"</div><div>"+commento.review+"</div><div>"+commento.rate+"</div></div>");
 
-                            if(i == <%= Constants.MAX_COMMENTS - 1 %>){
-                                $("#boxRev").append('<button id="moreReviews" onclick="openReviews()">Load more</button>');
+                            console.log(commento.rate)
+
+                            // Aggiungo le stelle anziche' il numero
+                            var stelle = "";
+                            var nStar = 0;
+                            var rateInt = parseInt(commento.rate);
+
+                            console.log(parseInt(commento.rate));
+
+                            for(; nStar<rateInt; nStar++)
+                                stelle += '<img class="h-5" src="img/star.png" alt="star">';
+
+                            var rate = commento.rate*10;
+                            nStar = rateInt;
+
+                            if (rate%10 >= 5)
+                            {
+                                stelle += '<img class="h-5" src="img/half_star.png" alt="star">';
+                                nStar = rateInt+1;
+                            }
+
+                            for (; nStar<5; nStar++)
+                                stelle += '<img class="h-5" src="img/empty_star.png" alt="star">';
+
+                            $("#boxRev").append('<div class="my-8 border-b py-3"><div class="font-bold">'+commento.username+'</div><div class="px-5">'+commento.review+'</div><div class="flex flex-wrap float-right -m-6 mr-1">'+stelle+'</div></div>');
+
+                            if(i == <%= Constants.MAX_COMMENTS - 1 %>)
+                            {
+                                $("#boxRev").append('<button class="ml-4 px-3 rounded-xl border-2 hover:bg-button" id="moreReviews" onclick="openReviews()">Load more</button>');
                             }
                         }
                     }
@@ -192,6 +294,9 @@
             }
             else
             {
+                // QUI IL BOX E' GIA' ATTIVO
+                $("body").css({"overflow": "hidden"});
+
                 $("#moreReviews").remove();
                 $.post("<c:url value="/social"/>", toSend, function (result) {
                     json = JSON.parse(result);
@@ -204,9 +309,30 @@
                         for(i = 0; i<json.list.length; i++)
                         {
                             var commento = json.list[i];
-                            $("#boxRev").append("<div><div>"+commento.username+"</div><div>"+commento.review+"</div><div>"+commento.rate+"</div></div>");
+
+                            // Aggiungo le stelle anziche' il numero
+                            var stelle = "";
+                            var nStar=0;
+                            var rateInt = parseInt(commento.rate);
+                            for(; nStar<rateInt; nStar++)
+                                stelle += '<img class="h-5" src="img/star.png" alt="star">';
+
+                            var rate = commento.rate*10;
+                            nStar = rateInt;
+
+                            if (rate%10 >= 5)
+                            {
+                                stelle += '<img class="h-5" src="img/half_star.png" alt="star">';
+                                nStar = rateInt+1;
+                            }
+
+                            for (; nStar<5; nStar++)
+                                stelle += '<img class="h-5" src="img/empty_star.png" alt="star">';
+
+                            $("#boxRev").append('<div class="my-8 border-b py-3"><div class="font-bold">'+commento.username+'</div><div class="px-5">'+commento.review+'</div><div class="flex flex-wrap float-right -m-6 mr-1">'+stelle+'</div></div>');
+
                             if(i == <%= Constants.MAX_COMMENTS %>){
-                                $("#boxRev").append('<button id="moreReviews" onclick="openReviews()">Load more</button>');
+                                $("#boxRev").append('<button class="ml-4 px-3 rounded-xl border-2 hover:bg-button" id="moreReviews" onclick="openReviews()">Load more</button>');
                             }
                         }
                     }
@@ -295,7 +421,7 @@
 
                 rate = rate*10;
                 nStar = rateInt;
-                if (rate%10 > 5)
+                if (rate%10 >= 5)
                 {
 %>
                     <img class="h-5" src="img/half_star.png" alt="star">
@@ -392,24 +518,23 @@
         </div>
     </form>
 
-    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
-        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+    <div id="review" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview" onclick="closeReviews()">
+        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
 <%--        List of Reviews--%>
-            <div id="boxRev" >
+            <div id="boxRev">
 
             </div>
-        <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="closeReviews()">X</button>
-        </div>
+    <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="closeReviews()">X</button>        </div>
     </div>
 
     <div id="addreview" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">
-        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5">
+        <div class="relative mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
 <%--        Add Reviews--%>
-            <div id="boxAddRev" >
+            <div id="boxAddRev" class="items-center mt-5">
                 <form>
-                    <input type="range" id="givenRating" min="0" max="5" step="0.5">
-                    <input type="text" id="givenReview">
-                    <button type="button" onclick="sendReview()">Send review</button>
+                    <input class="rating" max="5" oninput="this.style.setProperty('--value', `${this.valueAsNumber}`)" step="0.5" style="--value:2.5" type="range" value="2.5">
+                    <input class="text-left text-align-start px-5 mt-5 w-full h-32 overflow-hidden" type="text" id="givenReview">
+                    <button class="float-right mt-5 px-3 rounded-xl border-2 hover:bg-button" type="button" onclick="sendReview()">Send review</button>
                 </form>
             </div>
             <button class="absolute top-3 right-3 px-3 rounded-xl border-2 hover:bg-button" onclick="closeAddReview()">X</button>
