@@ -167,12 +167,6 @@ for (UserDTO item: list)
 </div>
 
 <div id="boxRec" />
->>>>>>> Stashed changes
-
-    <div id="boxRec">
-    </div>
-
-
 
 <%@ include file="template/footer.jsp"%>
 </body>
