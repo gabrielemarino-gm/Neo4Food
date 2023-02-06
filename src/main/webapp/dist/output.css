@@ -611,6 +611,10 @@ video {
   right: 3.7rem;
 }
 
+.right-1 {
+  right: 0.25rem;
+}
+
 .z-40 {
   z-index: 40;
 }
@@ -1108,6 +1112,11 @@ video {
 .px-96 {
   padding-left: 24rem;
   padding-right: 24rem;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .pb-7 {
