@@ -9,6 +9,7 @@ import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 import java.io.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -22,10 +23,10 @@ public class Admin extends HttpServlet
 
         if(request.getParameter("token") != null){
             String token = request.getParameter("token");
-    //        Controllo token
+    //        TODO
             if(ServiceProvider.getAdminService().isTokenValid(token))
             {
-    //            Login come admin
+    //            Login OK
 
             }
             else
@@ -40,15 +41,18 @@ public class Admin extends HttpServlet
             String actionType = request.getParameter("action");
             if (actionType.equals("updateRatings"))
             {
-                boolean result = ServiceProvider.getAggregationService().setAvgPrices();
-
-                response.getWriter().print(result ? "OK" : "NO");
+                ServiceProvider.getAggregationService().setAvgRate();
+                response.getWriter().print("OK");
                 response.getWriter().flush();
                 return;
             }
             else if(actionType.equals("updatePrices"))
             {
+                ServiceProvider.getAggregationService().setAvgPrices();
 
+                response.getWriter().print("OK");
+                response.getWriter().flush();
+                return;
             }
         }
 

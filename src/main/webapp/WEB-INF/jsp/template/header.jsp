@@ -62,13 +62,13 @@
 <%              if(!isRestaurant)
                 {%>
 <%--                Se non sono ristorante voglio andare alla pagina personale utente--%>
-    <form method="post" action="<c:url value="/social"/>">
-    <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
-        <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
-        <input type="hidden" name="action" value="getFollowers">
-        <a >Friend List</a>
-    </button>
-    </form>
+                <form method="post" action="<c:url value="/social"/>">
+                <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
+                    <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
+                    <input type="hidden" name="action" value="getFollowers">
+                    <a>Friend List</a>
+                </button>
+                </form>
                     <form method="post" action="<c:url value="/personal"/>">
                         <input type="hidden" name="actor" value="user">
                         <input type="hidden" name="action" value="personal">
@@ -79,7 +79,12 @@
                     <%--    Il pulsante per fare una ricerca --%>
                     <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearch()">
                         <img class="h-5 mr-3" src="img/lente.png" alt="lente">
-                        <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" name="userSearch" placeholder="Search by username">
+                        <form id="searchPeople" method="post">
+                            <input name="action" type="hidden" value="search">
+                            <input name="actor" type="hidden" value="<%= username %>">
+                            <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" name="userSearch" placeholder="Search by username">
+                            <button type="button" onclick=""></button>
+                        </form>
                     </button>
 <%              }
                 else
@@ -102,5 +107,6 @@
                 </button>
         <%  }
         %>
+
 
         </header>

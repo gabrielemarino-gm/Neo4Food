@@ -1,5 +1,7 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
+import it.unipi.lsmsd.neo4food.service.ServiceProvider;
+
 import java.io.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
@@ -14,13 +16,8 @@ public class Testing extends HttpServlet
         String targetJSP = "WEB-INF/jsp/error/404.jsp";
         String actionType = request.getParameter("action");
 
-        if(request.getParameter("action") != null)
-        {
-            String[] values = request.getParameterValues("iter");
-            for(String s: values){
-                System.out.println(s);
-            }
-        }
+//        ServiceProvider.getAggregationService().setAvgPrices();
+//        ServiceProvider.getAggregationService().setAvgRate();
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
