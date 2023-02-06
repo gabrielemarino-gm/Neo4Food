@@ -24,19 +24,21 @@
             function getRecommendationByFollowRequest() {
             $.post("<c:url value='/social'/>", toSend, function (result){
                 json = JSON.parse(result);
+
                 $("#boxRec").empty();
-                for(i = 0; i<json.list.length; i++) {
-                    var consigliato = json.list[i];
-                    console.log(consigliato)
+                if(!json || !json.list.length){
 
+                    $("#boxRec").append("<div>There is nothing to display based on your followers.</div>");
+                }else {
+                    for (i = 0; i < json.list.length; i++) {
+                        var consigliato = json.list[i];
+                        console.log(consigliato)
 
-                    $("#boxRec").append('<div><div>Username:' + consigliato.username + '</div><div>Followers:' + consigliato.nfollowers + '</div> </div>');
+                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div>" +
+                            "<Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div>" +
-                        "<Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
-
+                    }
                 }
-
             })
         .fail(function (xhr, status, error){
             alert(xhr+"\n"+status+"\n"+error);
@@ -52,11 +54,15 @@
             $.post("<c:url value='/social'/>", toSend3, function (result){
                 json = JSON.parse(result);
                 $("#boxRec").empty();
+                if(!json || !json.list.length){
+                    $("#boxRec").append("<div>There is nothing to display based on your rated restaurant.</div>");
+                }else {
                 for(i = 0; i<json.list.length; i++) {
                     var consigliato = json.list[i];
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
-                }
+                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                    }
+                    }
 
             })
                 .fail(function (xhr, status, error){
@@ -102,12 +108,15 @@ console.log(toSend4)
             $.post("<c:url value='/social'/>", toSend5, function (result){
                 json = JSON.parse(result);
                 $("#boxRec").empty();
-                for(i = 0; i<json.list.length; i++) {
-                    var consigliato = json.list[i];
+                if(!json || !Object.keys(json).length){
+                    $("#boxRec").append("<div>There is nothing to display</div>");
+                }else {
+                    for (i = 0; i < json.list.length; i++) {
+                        var consigliato = json.list[i];
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
+                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                    }
                 }
-
             })
                 .fail(function (xhr, status, error){
                     alert(xhr+"\n"+status+"\n"+error);
@@ -136,7 +145,6 @@ console.log(toSend4)
 <% ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
 
     List<UserDTO> list = listDTO.getList();
-
             ;%>
 
 
