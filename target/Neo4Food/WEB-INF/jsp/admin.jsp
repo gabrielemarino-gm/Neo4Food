@@ -22,11 +22,11 @@
                 $.post("<c:url value="/admin"/>", toSend, function (result) {
                 //  Do stuff on success
                     setMessage(result);
+                    $('#updateRatings').attr("disabled",false);
+                    $('#updateRatings').text("Update ratings");
                 }).fail(function(xhr, status, error){
                     setMessage("Something wrong occurred");
                 });
-                $('#updateRatings').attr("disabled",false);
-                $('#updateRatings').text("Update ratings");
             }
 
             function updatePrices(){
@@ -39,12 +39,12 @@
                 $.post("<c:url value="/admin"/>", toSend, function (result) {
                     //     Do stuff on success
                     setMessage(result);
+                    $('#updatePrices').attr("disabled", false);
+                    $('#updatePrices').text("Update prices");
                 }).fail(function(xhr, status, error){
                     setMessage("Something wrong occurred");
-                });
 
-                $('#updatePrices').attr("disabled", false);
-                $('#updatePrices').text("Update prices");
+                });
             }
 
             function setMessage(message){
@@ -60,7 +60,7 @@
         </script>
     </head>
     <body>
-        <div id="message"><h1 id="messageField"></h1></div>
+        <div id="message" style="display: none"><h1 id="messageField"></h1></div>
         <div>
             <div><h1>Total users: <%= (long)request.getAttribute("uCount") %></h1></div>
             <div><h1>Total restaurants: <%= (long)request.getAttribute("rCount") %></h1></div>

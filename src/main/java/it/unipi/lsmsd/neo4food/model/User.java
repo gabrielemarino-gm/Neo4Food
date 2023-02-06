@@ -1,5 +1,7 @@
 package it.unipi.lsmsd.neo4food.model;
 
+import java.util.List;
+
 public class User extends RegisteredUser {
     private String firstName;
     private String lastName;
@@ -7,6 +9,7 @@ public class User extends RegisteredUser {
     private String phoneNumber;
     private String paymentMethod;
     private String paymentNumber;
+    private List<Order> orders;
 //  COMPLETE CONSTRUCTOR NEW USER
     public User(String email, String password, String username,
                 String firstName, String lastName, String fullAddress,

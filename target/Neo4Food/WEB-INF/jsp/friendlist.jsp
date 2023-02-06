@@ -24,18 +24,21 @@
             function getRecommendationByFollowRequest() {
             $.post("<c:url value='/social'/>", toSend, function (result){
                 json = JSON.parse(result);
+
                 $("#boxRec").empty();
-                for(i = 0; i<json.list.length; i++) {
-                    var consigliato = json.list[i];
-                    console.log(consigliato)
+                if(!json || !json.list.length){
 
+                    $("#boxRec").append("<div>There is nothing to display based on your followers.</div>");
+                }else {
+                    for (i = 0; i < json.list.length; i++) {
+                        var consigliato = json.list[i];
+                        console.log(consigliato)
 
-                    $("#boxRec").append('<div><div>Username:' + consigliato.username + '</div><div>Followers:' + consigliato.nfollowers + '</div> </div>');
+                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div>" +
+                            "<Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
-
+                    }
                 }
-
             })
         .fail(function (xhr, status, error){
             alert(xhr+"\n"+status+"\n"+error);
@@ -51,11 +54,15 @@
             $.post("<c:url value='/social'/>", toSend3, function (result){
                 json = JSON.parse(result);
                 $("#boxRec").empty();
+                if(!json || !json.list.length){
+                    $("#boxRec").append("<div>There is nothing to display based on your rated restaurant.</div>");
+                }else {
                 for(i = 0; i<json.list.length; i++) {
                     var consigliato = json.list[i];
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
-                }
+                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                    }
+                    }
 
             })
                 .fail(function (xhr, status, error){
@@ -68,6 +75,7 @@
             username: "<%= userDTO.getUsername() %>",
             username2: ""
         }
+
         function removeFollow(username) {
           toSend2.username2 = username
 
@@ -100,12 +108,15 @@ console.log(toSend4)
             $.post("<c:url value='/social'/>", toSend5, function (result){
                 json = JSON.parse(result);
                 $("#boxRec").empty();
-                for(i = 0; i<json.list.length; i++) {
-                    var consigliato = json.list[i];
+                if(!json || !Object.keys(json).length){
+                    $("#boxRec").append("<div>There is nothing to display</div>");
+                }else {
+                    for (i = 0; i < json.list.length; i++) {
+                        var consigliato = json.list[i];
 
-                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
+                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                    }
                 }
-
             })
                 .fail(function (xhr, status, error){
                     alert(xhr+"\n"+status+"\n"+error);
@@ -134,39 +145,33 @@ console.log(toSend4)
 <% ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
 
     List<UserDTO> list = listDTO.getList();
-
             ;%>
 
-    <div class="py-8">
-<%  for (UserDTO item: list)
-    {
-%>
-        <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
-            <div><%=item.getUsername()%></div>
-            <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
-        </div>
-<%  }
-%>
-
-
-    </div>
-    <button onclick="getRecommendationRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations</button>
 
 <%
 for (UserDTO item: list)
 
 {  ;%>
-
+<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
 <div>"<%=item.getUsername()%>" </div>
-<button onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+</div>
 <%}%>
-<div>
-    <button onclick="getRecommendationByFollowRequest()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Recommendations By User</button>
-    <button onclick="getRecommendationByRestaurantRequest()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Recommendations By Restaurant</button>
-    <button onclick="getInfluencer()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Influencer</button>
 </div>
 
-<div id="boxRec" />
+<div>
+    <button onclick="getRecommendationByFollowRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations By User</button>
+    <button onclick="getRecommendationByRestaurantRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations By Restaurant</button>
+    <button onclick="getInfluencer()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Influencer</button>
+</div>
+
+
+
+<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
+    <div id="boxRec">
+    </div>
+</div>
+
 
 <%@ include file="template/footer.jsp"%>
 </body>

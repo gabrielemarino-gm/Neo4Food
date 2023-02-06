@@ -16,8 +16,7 @@ public class Testing extends HttpServlet
         String targetJSP = "WEB-INF/jsp/error/404.jsp";
         String actionType = request.getParameter("action");
 
-//        ServiceProvider.getAggregationService().setAvgPrices();
-//        ServiceProvider.getAggregationService().setAvgRate();
+//        ServiceProvider.getAggregationService().testing();
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);

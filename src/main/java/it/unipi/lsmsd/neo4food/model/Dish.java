@@ -2,6 +2,7 @@ package it.unipi.lsmsd.neo4food.model;
 
 public class Dish {
     private String name;
+    private Restaurant owner;
     private Double price;
     private String currency;
     private String description;

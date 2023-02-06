@@ -1,28 +1,24 @@
 package it.unipi.lsmsd.neo4food.dao.mongo;
 
 import com.mongodb.MongoException;
+
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Field;
-import com.mongodb.client.model.Updates;
+import com.mongodb.client.model.*;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.json.Converter;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.eq;
-
 public class AggregationMongoDAO extends BaseMongo{
 
     public void setAvgPrices(){
 //        Aggregation avg price per restaurant
-        System.out.println("Begin of prices processing.");
+
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         //... {$unwind: "$dishes"},
         Bson unwind = new Document("$unwind", "$dishes");
@@ -40,19 +36,17 @@ public class AggregationMongoDAO extends BaseMongo{
 
         try{
             List<Document> result = collection.aggregate(
-                                        Arrays.asList(unwind, sort, addFields, match, group, project
-                                        )
-                                    ).into(new ArrayList<>());
-            System.out.println("Aggregation received. Prices processing started.");
-            int count = 0;
+                    Arrays.asList(unwind, sort, addFields, match, group, project)).into(new ArrayList<>());
+
             ClientSession session = getSession();
             try{
-                session.startTransaction();
+                List toWrite = new ArrayList();
+
                 for(Document d : result){
 
                     String rid = d.get("_id").toString();
                     Double range = ((Double) d.get("avg"));
-                    String prange;
+                    String prange = "";
 
                     if (range < 5){
                         prange = "$";
@@ -62,21 +56,20 @@ public class AggregationMongoDAO extends BaseMongo{
                     }
                     else if(range < 18){
                         prange = "$$$";
-                    }else {
+                    } else {
                         prange = "$$$$";
                     }
 
-                    collection.updateOne(session,
-                            eq("_id", new ObjectId(rid)),
-                            Updates.set("price_range", prange));
-                    count++;
-                    if(count%1000 == 0){
-                        System.out.println(count + " prices processed.");
-                    }
+                    toWrite.add(new UpdateOneModel<>(
+                            new Document("_id", new ObjectId(rid)),
+                            new Document("$set", new Document("price_range", prange))
+                    ));
                 }
 
+                session.startTransaction();
+                collection.bulkWrite(session, toWrite);
                 session.commitTransaction();
-                System.out.println("Processing of prices terminated");
+
             }catch (Exception e){
                 session.abortTransaction();
                 e.printStackTrace();
@@ -90,39 +83,41 @@ public class AggregationMongoDAO extends BaseMongo{
     }
 
     public void setAvgRate(){
-        System.out.println("Begin of scores processing.");
+
         List<Document> list = ServiceProvider.getSupportService().getAvgRating();
-        System.out.println("Aggregation received. Score processing started.");
+
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
-        ClientSession session = getSession();
+
         try{
-            session.startTransaction();
-            int count = 0;
-            for(Document d : list) {
+            ClientSession session = getSession();
+            try {
+                List toWrite = new ArrayList<>();
+                for (Document d : list) {
 
-                String rid = d.get("rid").toString();
-                Double mean = (Double) d.get("val");
+                    String rid = d.get("rid").toString();
+                    Double mean = (Double) d.get("val");
 
-                collection.updateOne(session,
-                        eq("_id", new ObjectId(rid)),
-                        Updates.set("score", mean));
-
-                count++;
-
-                if (count % 1000 == 0) {
-                    System.out.println(count + " scores processed.");
+                    toWrite.add(new UpdateOneModel<>(
+                            new Document("_id", new ObjectId(rid)),
+                            new Document("$set", new Document("score", mean))
+                    ));
 
                 }
-            }
 
-            session.commitTransaction();
-            System.out.println("Processing of scores terminated");
-        }catch (Exception e){
-            session.abortTransaction();
-            e.printStackTrace();
-        }finally {
-            session.close();
+                session.startTransaction();
+                collection.bulkWrite(session, toWrite);
+                session.commitTransaction();
+
+            } catch (Exception e) {
+                session.abortTransaction();
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }catch (MongoException e){
+            System.err.println(e);
         }
     }
+
 }
 
