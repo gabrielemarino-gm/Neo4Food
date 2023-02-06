@@ -14,22 +14,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants List</title>
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
-    <%UserDTO userDTO = (UserDTO) request.getAttribute("userDTO");;%>
+    <%UserDTO userDTO = (UserDTO) request.getAttribute("userDTO");%>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
         toSend={
-            action: "getRecommendation",
+            action: "getRecommendationByFollow",
             username: "<%= userDTO.getUsername() %>",
         }
-            function getRecommendationRequest() {
+            function getRecommendationByFollowRequest() {
             $.post("<c:url value='/social'/>", toSend, function (result){
                 json = JSON.parse(result);
-
+                $("#boxRec").empty();
                 for(i = 0; i<json.list.length; i++) {
                     var consigliato = json.list[i];
                     console.log(consigliato)
 
+
                     $("#boxRec").append('<div><div>Username:' + consigliato.username + '</div><div>Followers:' + consigliato.nfollowers + '</div> </div>');
+
+                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
+
                 }
 
             })
@@ -38,12 +42,32 @@
         });
         }
 
+
+        toSend3={
+            action: "getRecommendationByRestaurant",
+            username: "<%= userDTO.getUsername() %>",
+        }
+        function getRecommendationByRestaurantRequest() {
+            $.post("<c:url value='/social'/>", toSend3, function (result){
+                json = JSON.parse(result);
+                $("#boxRec").empty();
+                for(i = 0; i<json.list.length; i++) {
+                    var consigliato = json.list[i];
+
+                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
+                }
+
+            })
+                .fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
+        }
+
         toSend2={
             action: "removeFollow",
             username: "<%= userDTO.getUsername() %>",
             username2: ""
         }
-
         function removeFollow(username) {
           toSend2.username2 = username
 
@@ -54,6 +78,40 @@
                     alert(xhr+"\n"+status+"\n"+error);
                 });
         }
+        toSend4={
+            action: "setFollow",
+            username: "<%= userDTO.getUsername() %>",
+            username2: ""
+        }
+        function setFollow(username) {
+            toSend4.username2 = username
+console.log(toSend4)
+            $.post("<c:url value='/social'/>", toSend4, function (result){
+                json = JSON.parse(result);
+            })
+                .fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
+        }
+        toSend5={
+            action: "getInfluencer",
+        }
+        function getInfluencer() {
+            $.post("<c:url value='/social'/>", toSend5, function (result){
+                json = JSON.parse(result);
+                $("#boxRec").empty();
+                for(i = 0; i<json.list.length; i++) {
+                    var consigliato = json.list[i];
+
+                    $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" +" </div>");
+                }
+
+            })
+                .fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
+        }
+
     </script>
 
 </head>
@@ -90,11 +148,30 @@
 <%  }
 %>
 
+
     </div>
     <button onclick="getRecommendationRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations</button>
 
+<%
+for (UserDTO item: list)
+
+{  ;%>
+
+<div>"<%=item.getUsername()%>" </div>
+<button onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+<%}%>
+<div>
+    <button onclick="getRecommendationByFollowRequest()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Recommendations By User</button>
+    <button onclick="getRecommendationByRestaurantRequest()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Recommendations By Restaurant</button>
+    <button onclick="getInfluencer()" class="my-3 px-3 float-left rounded-lg hover:bg-button">Get Influencer</button>
+</div>
+
+<div id="boxRec" />
+>>>>>>> Stashed changes
+
     <div id="boxRec">
     </div>
+
 
 
 <%@ include file="template/footer.jsp"%>

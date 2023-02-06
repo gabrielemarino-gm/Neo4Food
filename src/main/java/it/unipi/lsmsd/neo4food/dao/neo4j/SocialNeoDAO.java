@@ -191,10 +191,10 @@ public class SocialNeoDAO extends BaseNeo4J{
         try (Session session = getSession()) {
             ListDTO<UserDTO> toReturn = new ListDTO<UserDTO>();
             String searchQuery = "MATCH (u1:User{username : $user})-[:RATED]->(r:Restaurant)<-[rate:RATED]-(u2:User)<-[f:FOLLOWS]-(:User)" +
-                    " NOT EXISTS {(u1)-[:FOLLOWS]->(u2)}"+
+                    "WHERE NOT EXISTS {(u1)-[:FOLLOWS]->(u2)}"+
                     "WITH COUNT(DISTINCT f) as nfollowers , COUNT (DISTINCT rate) as nsamerest,u2 " +
                     "ORDER BY nsamerest , nfollowers DESC " +
-                    "RETURN nfollowers , u2.username as username , nsamerest " +
+                    "RETURN nfollowers , u2.username as username " +
                     "LIMIT 10";
 
             session.writeTransaction(tx -> {

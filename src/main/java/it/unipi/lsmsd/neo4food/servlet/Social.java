@@ -55,14 +55,17 @@ public class Social extends HttpServlet
         }
         else if(actionType.equals("setFollow"))
         {
-            String actor = request.getParameter("actor");
-            String target = request.getParameter("target");
+            String username = request.getParameter("username");
+            String username2 = request.getParameter("username2");
+            System.out.println(username2);
+            System.out.println(username);
+            ServiceProvider.getSocialService().setFollow(username,username2);
 
-//            ServiceProvider.getSocialService().setFollow(actor, target);
+            String toSend = new Gson().toJson(username);
 
-//            response.getWriter().println();
-//            response.getWriter().flush();
-//            return;
+            response.getWriter().println(toSend);
+            response.getWriter().flush();
+            return ;
 
         }
         else if (actionType.equals("search"))
@@ -90,11 +93,23 @@ public class Social extends HttpServlet
             request.setAttribute("userDTO", userDTO);
 
         }
-        else if(actionType.equals("getRecommendation")){
+        else if(actionType.equals("getRecommendationByFollow")){
 
             String username = request.getParameter("username");
 
             ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getRecommendationFriendOfFriend(username);
+
+            String toSend = new Gson().toJson(userList);
+            response.getWriter().println(toSend);
+            response.getWriter().flush();
+            return;
+
+        }
+        else if(actionType.equals("getRecommendationByRestaurant")){
+
+            String username = request.getParameter("username");
+
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getRecommendationUserRestaurant(username);
 
             String toSend = new Gson().toJson(userList);
             response.getWriter().println(toSend);
@@ -117,7 +132,20 @@ public class Social extends HttpServlet
             return ;
 
         }
+        else if(actionType.equals("getInfluencer"))
+        {
+            String username = request.getParameter("username");
 
+            ListDTO<UserDTO> userList=ServiceProvider.getUtilityService().getInfluencers();
+
+            String toSend = new Gson().toJson(userList);
+
+            response.getWriter().println(toSend);
+            response.getWriter().flush();
+            System.out.println(toSend);
+            return ;
+
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);

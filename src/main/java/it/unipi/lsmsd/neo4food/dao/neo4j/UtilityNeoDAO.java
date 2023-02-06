@@ -1,10 +1,16 @@
 package it.unipi.lsmsd.neo4food.dao.neo4j;
 
+import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.UserDTO;
+import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 
-public class UtilityNeoDAO extends BaseNeo4J{
+import java.util.ArrayList;
+import java.util.List;
 
+public class UtilityNeoDAO extends BaseNeo4J{
+    ListDTO<UserDTO> toReturn = new ListDTO<UserDTO>();
     /** Ritorna i 20 ristoranti con piu ratings in tutto il mondo
      *
      *  Fornisce il nome, il numero di ratings e la media di tali ratings */
@@ -53,19 +59,36 @@ public class UtilityNeoDAO extends BaseNeo4J{
     /** Ritorna i 20 utenti della community con piu amici
      *
      *  Fornisce username e numero totale di amici */
-    public void getInfluencers() {
+    public ListDTO<UserDTO> getInfluencers() {
         try (Session session = getSession()) {
             String query = "MATCH (u1:User)-[x:FOLLOWS]->(u2:User) " +
                            "WITH u1.username as username," +
-                           "COUNT(x) as nfriends " +
-                           "ORDER BY nfriends DESC" +
-                           "RETURN username , nfriends LIMIT 20";
+                           "COUNT(x) as nfollowers " +
+                           "ORDER BY nfollowers DESC " +
+                           "RETURN username , nfollowers LIMIT 20";
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(query);
-                System.out.println(result.list());
+
+
+                List<UserDTO> tempList = new ArrayList<UserDTO>();
+
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    UserDTO tempUser = new UserDTO();
+                    System.out.println(record);
+                    tempUser.setUsername(record.get("username").asString());
+                    tempUser.setNfollowers(record.get("nfollowers").asInt());
+
+                    tempList.add(tempUser);
+
+                }
+
+                toReturn.setList(tempList);
+                toReturn.setItemCount(tempList.size());
                 return 1;
             });
+            return toReturn;
         }
     }
 
