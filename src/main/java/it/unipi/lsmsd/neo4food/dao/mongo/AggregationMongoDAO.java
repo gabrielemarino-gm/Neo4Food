@@ -47,7 +47,7 @@ public class AggregationMongoDAO extends BaseMongo{
             int count = 0;
             ClientSession session = getSession();
             try{
-
+                session.startTransaction();
                 for(Document d : result){
 
                     String rid = d.get("_id").toString();
@@ -74,6 +74,7 @@ public class AggregationMongoDAO extends BaseMongo{
                         System.out.println(count + " prices processed.");
                     }
                 }
+
                 session.commitTransaction();
                 System.out.println("Processing of prices terminated");
             }catch (Exception e){
@@ -95,6 +96,7 @@ public class AggregationMongoDAO extends BaseMongo{
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         ClientSession session = getSession();
         try{
+            session.startTransaction();
             int count = 0;
             for(Document d : list) {
 

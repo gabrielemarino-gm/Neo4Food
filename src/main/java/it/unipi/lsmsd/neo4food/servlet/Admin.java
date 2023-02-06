@@ -44,7 +44,8 @@ public class Admin extends HttpServlet
             if (actionType.equals("updateRatings"))
             {
                 ServiceProvider.getAggregationService().setAvgRate();
-                response.getWriter().print("OK");
+
+                response.getWriter().print("Ratings updated");
                 response.getWriter().flush();
                 return;
             }
@@ -52,7 +53,7 @@ public class Admin extends HttpServlet
             {
                 ServiceProvider.getAggregationService().setAvgPrices();
 
-                response.getWriter().print("OK");
+                response.getWriter().print("Prices updated");
                 response.getWriter().flush();
                 return;
             }

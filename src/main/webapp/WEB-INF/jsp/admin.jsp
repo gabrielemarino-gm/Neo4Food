@@ -10,6 +10,7 @@
         <title>Admin page</title>
         <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
         <script type="text/javascript">
+            let messageTimeout;
 
             function updateRatings(){
                 toSend = {
@@ -20,12 +21,12 @@
 
                 $.post("<c:url value="/admin"/>", toSend, function (result) {
                 //  Do stuff on success
-                    $('#updateRatings').attr("disabled",false);
-                    $('#updateRatings').text("Update ratings");
-
+                    setMessage(result);
                 }).fail(function(xhr, status, error){
-                    alert("Some error occurred, sorry...")
+                    setMessage("Something wrong occurred");
                 });
+                $('#updateRatings').attr("disabled",false);
+                $('#updateRatings').text("Update ratings");
             }
 
             function updatePrices(){
@@ -37,26 +38,39 @@
 
                 $.post("<c:url value="/admin"/>", toSend, function (result) {
                     //     Do stuff on success
-                    $('#updatePrices').attr("disabled", false);
-                    $('#updatePrices').text("Update prices");
-
+                    setMessage(result);
                 }).fail(function(xhr, status, error){
-                    alert("Some error occurred, sorry...")
+                    setMessage("Something wrong occurred");
                 });
+
+                $('#updatePrices').attr("disabled", false);
+                $('#updatePrices').text("Update prices");
             }
 
+            function setMessage(message){
+                messageTimeout = setTimeout(hideMessage, 5);
+                $('#message').hide();
+                $('#messageField').text(message);
+            }
+
+            function hideMessage(){
+                $('#message').hide();
+                $('#messageField').text("");
+            }
         </script>
     </head>
     <body>
-        <div id="message"><h1 id="messageField"></h1></div>
+        <div id="message" style="display: none"><h1 id="messageField"></h1></div>
         <div>
             <div><h1>Total users: <%= (long)request.getAttribute("uCount") %></h1></div>
             <div><h1>Total restaurants: <%= (long)request.getAttribute("rCount") %></h1></div>
             <div><h1>Total orders: <%= (long)request.getAttribute("oCount") %></h1></div>
         </div>
+        <div>
+            <h1>WARNING: Those actions may take several minutes, be careful...</h1>
         <button id="updateRatings" onclick="updateRatings()">Update ratings</button>
         <button id="updatePrices" onclick="updatePrices()">Update prices</button>
-
+        </div>
         <div>
         <%--    Altre statistiche per admin --%>
 
