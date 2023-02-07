@@ -27,11 +27,72 @@
     %>
 <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
+        function toggleButtonState(){
+            $('#userSearchButton').click(function() {
+                var currentState = $(this).attr('state');
+                if (currentState === 'offSearch') {
+                    $(this).attr('state', 'onSearch');
 
+                }
+            });
+
+
+        }
+
+        function toggleSearch(){
+            const element = document.querySelector('#search');
+
+            if (element.style.display === 'block') {
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'block';
+            }
+        }
         function showSearch()
         {
             $("#userSearchText").show();
+            toggleButtonState()
         }
+
+        toSend2={
+            action: "setFollow",
+            username: "<%= username %>",
+            username2: ""
+        }
+        function setFollow(username) {
+            toSend2.username2 = username
+
+            $.post("<c:url value='/social'/>", toSend2, function (result){
+                json = JSON.parse(result);
+            })
+                .fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
+        }
+
+toSend={action:"searchUser",
+username:"",}
+        function searchUser() {
+
+            if($('#userSearchButton').attr('state')=='onSearch') {
+                var userSearchText = document.querySelector('#userSearchText');
+                toSend.username = userSearchText.value
+
+                $.post("<c:url value='/social'/>", toSend, function (result) {
+                    json = JSON.parse(result);
+
+                    toggleSearch();
+                    $("#boxSearch").empty();
+                    $("#boxSearch").append("<div><div>Username:" + json.username + "</div><div>First Name:" + json.firstName + "</div><div>Last Name:" + json.lastName + "</div></div>" +
+                    "<Button onclick='setFollow(\"" + json.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                })
+                    .fail(function (xhr, status, error) {
+                        alert(xhr + "\n" + status + "\n" + error);
+                    });
+            }
+        }
+
+
     </script>
 
 </head>
@@ -59,6 +120,8 @@
                         <a>Order history</a>
                     </button>
                 </form>
+
+
 <%              if(!isRestaurant)
                 {%>
 <%--                Se non sono ristorante voglio andare alla pagina personale utente--%>
@@ -77,15 +140,28 @@
                         </button>
                     </form>
                     <%--    Il pulsante per fare una ricerca --%>
-                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearch()">
-                        <img class="h-5 mr-3" src="img/lente.png" alt="lente">
+                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearch()" state="offSearch">
+                        <img class="h-5 mr-3" src="img/lente.png" onclick="searchUser() " alt="lente">
                         <form id="searchPeople" method="post">
                             <input name="action" type="hidden" value="search">
                             <input name="actor" type="hidden" value="<%= username %>">
                             <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" name="userSearch" placeholder="Search by username">
-                            <button type="button" onclick=""></button>
+                            <button type="button" ></button>
                         </form>
+
+
+
                     </button>
+
+    <div id="search" style="display:none;"  class=" z-50 fixed h-full w-full bg-black bg-opacity-20 ">
+        <div  class=" mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
+
+            <div id="boxSearch">
+
+            </div>
+            <button class=" top-3 right-3 px-1 rounded-xl" onclick="toggleSearch()"><img class="h-7" src="img/x.png" alt="X"/></button>        </div>
+    </div>
+
 <%              }
                 else
                 {%>
@@ -97,6 +173,8 @@
                             <a><%= restaurantname %></a>
                         </button>
                     </form>
+
+
 <%              }%>
         <%-- Altrimenti metto link alla pagina di login--%>
         <%  }

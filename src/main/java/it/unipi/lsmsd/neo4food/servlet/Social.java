@@ -112,8 +112,21 @@ public class Social extends HttpServlet {
                                 toSend = (new Gson()).toJson(userList);
                                 response.getWriter().println(toSend);
                                 response.getWriter().flush();
-                                System.out.println(toSend);
                                 return;
+                            }
+
+                            if(actionType.equals("searchUser")){
+
+                                username = request.getParameter("username");
+
+                                UserDTO userDTO = ServiceProvider.getUserService().getUser(username);
+                                System.out.println(userDTO);
+                                if(userDTO.getId()!="0"){
+                                    toSend = (new Gson()).toJson(userDTO);
+                                    response.getWriter().println(toSend);
+                                    response.getWriter().flush();
+                                    return;
+                                }
                             }
                         }
                     }

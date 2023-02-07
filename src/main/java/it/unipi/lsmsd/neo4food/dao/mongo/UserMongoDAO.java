@@ -155,4 +155,30 @@ public class UserMongoDAO extends BaseMongo {
         }
         return false;
     }
+
+    public UserDTO getUser(String usr){
+        UserDTO userDTO = new UserDTO();
+        MongoCollection<Document> collection = getDatabase().getCollection("Users");
+        try(MongoCursor cursor = collection.find(eq("username", usr)).limit(1).iterator())
+        {
+
+            if (cursor.hasNext()) {
+                Document res = (Document) cursor.next();
+
+                userDTO.setId(res.get("_id") != null ? res.get("_id").toString() : "ID not available");
+                userDTO.setUsername(res.get("username") != null ? res.get("username").toString() : "Username not available");
+                userDTO.setFirstName(res.get("firstname") != null ? res.get("firstname").toString() : "Firstname not available");
+                userDTO.setLastName(res.get("lastname") != null ? res.get("lastname").toString() : "Lastname not available");
+
+                return userDTO;
+            } else {
+                userDTO.setId("0");
+                return userDTO;
+            }
+
+        }
+
+
+    }
+
 }
