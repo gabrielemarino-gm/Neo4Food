@@ -48,8 +48,8 @@
             }
 
             function setMessage(message){
-                messageTimeout = setTimeout(hideMessage, 5);
-                $('#message').hide();
+                messageTimeout = setTimeout(hideMessage, 5000);
+                $('#message').show();
                 $('#messageField').text(message);
             }
 
@@ -57,6 +57,140 @@
                 $('#message').hide();
                 $('#messageField').text("");
             }
+        //     ---------Analytics zipcode------------
+            let zipBox = '#bestZipcodeBox';
+            function getZips(){
+                toSend = {
+                  action: "analytics",
+                  type: "zips"
+                };
+
+                $('#zipsButton').attr("disabled", true);
+                $('#zipsButton').text("Wait please...");
+
+                $.post("<c:url value="/admin"/>", toSend, function (result) {
+                    json = JSON.parse(result);
+                    //     Do stuff on success
+
+                    $(zipBox).empty();
+                    if(json.itemCount > 0) {
+                        for (i = 0; i < json.itemCount; i++) {
+                            obj = json.list[i];
+                            $(zipBox).append('<div><div>' + obj.zipcode + '</div><div>' + obj.count + '</div></div>')
+
+                        }
+                    }
+
+                    $('#zipsButton').attr("disabled", false);
+                    $('#zipsButton').text("Load most active zipcodes");
+
+
+                }).fail(function(xhr, status, error){
+                    setMessage("Something wrong occurred");
+
+                });
+            }
+        //     ---------Analytics mostActiveUsers---------
+            let mostActiveBox = '#mostActiveBox';
+            function getMostActive(){
+                toSend = {
+                    action: "analytics",
+                    type: "mostActive"
+                };
+
+                $('#mostActiveButton').attr("disabled", true);
+                $('#mostActiveButton').text("Wait please...");
+
+                $.post("<c:url value="/admin"/>", toSend, function (result) {
+                    //     Do stuff on success
+                    json = JSON.parse(result);
+
+                    $(mostActiveBox).empty();
+                    if(json.itemCount > 0) {
+                        for (i = 0; i < json.itemCount; i++) {
+                            obj = json.list[i];
+                            $(mostActiveBox).append('<div><div>' + obj.user + '</div><div>' + obj.count + '</div><div>' + obj.dub+'</div></div>')
+
+                        }
+                    }
+
+                    $('#mostActiveButton').attr("disabled", false);
+                    $('#mostActiveButton').text("Most active users");
+
+                }).fail(function(xhr, status, error){
+                    setMessage("Something wrong occurred");
+
+                });
+
+            }
+        //     ---------Analytics guadagni---------
+            let profitBox = '#profitBox';
+            function getProfits(){
+                toSend = {
+                    action: "analytics",
+                    type: "profits"
+                };
+
+                $('#profitButton').attr("disabled", true);
+                $('#profitButton').text("Wait please...");
+
+                $.post("<c:url value="/admin"/>", toSend, function (result) {
+                    //     Do stuff on success
+                    json = JSON.parse(result);
+
+                    $(profitBox).empty();
+                    if(json.itemCount > 0) {
+                        for (i = 0; i < json.itemCount; i++) {
+                            obj = json.list[i];
+                            $(profitBox).append('<div><div>' + obj.restaurant + '</div><div>' + obj.dub + '</div></div>')
+
+                        }
+                    }
+
+                    $('#profitButton').attr("disabled", false);
+                    $('#profitButton').text("Load profits");
+
+                }).fail(function(xhr, status, error){
+                    setMessage("Something wrong occurred");
+
+                });
+
+            }
+        //     ---------Analytics caviale---------
+            let cavialeBox = '#cavialeBox';
+            function getCaviale(){
+                toSend = {
+                    action: "analytics",
+                    type: "caviale"
+                };
+
+                $('#cavialeButton').attr("disabled", true);
+                $('#cavialeButton').text("Wait please...");
+
+                $.post("<c:url value="/admin"/>", toSend, function (result) {
+                    //     Do stuff on success
+
+                    json = JSON.parse(result);
+
+                    $(cavialeBox).empty();
+                    if(json.itemCount > 0) {
+                        for (i = 0; i < json.itemCount; i++) {
+                            obj = json.list[i];
+                            $(cavialeBox).append('<div><div>' + obj.dish + '</div><div>' + obj.dub + '</div><div>' + obj.restaurant+'</div></div>')
+
+                        }
+                    }
+
+                    $('#cavialeButton').attr("disabled", false);
+                    $('#cavialeButton').text("Load caviale!");
+
+                }).fail(function(xhr, status, error){
+                    setMessage("Something wrong occurred");
+
+                });
+
+            }
+
         </script>
     </head>
     <body>
@@ -74,6 +208,38 @@
         <div>
         <%--    Altre statistiche per admin --%>
 
+            <div>
+<%--                Zipcode piu attivi (Con piu ordini piazzati) TOP 10 --%>
+<%--                Group by zipcode and count su ordini --%>
+                <button id="zipsButton" onclick="getZips()">Load most active zipcodes</button>
+                <div id="bestZipcodeBox">
+
+                </div>
+            </div>
+
+            <div>
+<%--                Utenti piu attivi (Influencer) TOP 10 --%>
+<%--                Da Neo4j --%>
+                <button id="mostActiveButton" onclick="getMostActive()">Most active users</button>
+                <div id="mostActiveBox">
+
+                </div>
+            </div>
+            <div>
+<%--                Ristoranti con guadagno maggiore nel mese --%>
+<%--                Group by rid su Orders --%>
+                <button id="profitButton" onclick="getProfits()">Load money grabbers</button>
+                <div id="profitBox">
+
+                </div>
+            </div>
+            <div>
+<%--                Piatti piu cari (nome, prezzo, ristorante proprietario) --%>
+                <button id="cavialeButton" onclick="getCaviale()">Load caviale!</button>
+                <div id="cavialeBox">
+
+                </div>
+            </div>
         </div>
     </body>
 </html>

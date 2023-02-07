@@ -1,11 +1,10 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
+import com.google.gson.Gson;
 import it.unipi.lsmsd.neo4food.constants.Constants;
-import it.unipi.lsmsd.neo4food.dto.OrderDTO;
+import it.unipi.lsmsd.neo4food.dto.*;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
-import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
-import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 
 import java.io.*;
 import java.util.List;
@@ -41,6 +40,7 @@ public class Admin extends HttpServlet
         else
         {
             String actionType = request.getParameter("action");
+
             if (actionType.equals("updateRatings"))
             {
                 ServiceProvider.getAggregationService().setAvgRate();
@@ -57,6 +57,10 @@ public class Admin extends HttpServlet
                 response.getWriter().flush();
                 return;
             }
+            else if(actionType.equals("analytics")){
+                serveAnalytics(request, response);
+                return;
+            }
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
@@ -71,5 +75,50 @@ public class Admin extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         doRequest(request, response);
+    }
+
+    private void serveAnalytics(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        String type = request.getParameter("type");
+
+        if(type.equals("zips"))
+        {
+//            Zipcode - Numero Ordini
+            ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getOrdersPerZip();
+
+            String toSend = (new Gson()).toJson(anaList);
+            response.getWriter().print(toSend);
+            response.getWriter().flush();
+        }
+        else if (type.equals("mostActive"))
+        {
+//            Nome utente - N recensioni - media
+
+            ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getUtilityService().getMostActiveUsers();
+
+            String toSend = (new Gson()).toJson(anaList);
+            response.getWriter().print(toSend);
+            response.getWriter().flush();
+        }
+        else if (type.equals("profits"))
+        {
+//              Nome ristorante - Totale
+
+            ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getLastMonthProfits();
+
+            String toSend = (new Gson()).toJson(anaList);
+            response.getWriter().print(toSend);
+            response.getWriter().flush();
+        }
+        else if (type.equals("caviale"))
+        {
+//              Nome piatto - Prezzo - Nome ristorante
+
+            ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getCaviale();
+
+            String toSend = (new Gson()).toJson(anaList);
+            response.getWriter().print(toSend);
+            response.getWriter().flush();
+        }
     }
 }
