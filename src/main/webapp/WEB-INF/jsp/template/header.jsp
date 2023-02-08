@@ -54,7 +54,7 @@
             toggleButtonState()
         }
 
-        toSend2={
+        toSend8={
             action: "setFollow",
             username: "<%= username %>",
             username2: ""
@@ -70,7 +70,7 @@
                 });
         }
 
-toSend={action:"searchUser",
+toSend7={action:"searchUser",
 username:"",}
         function searchUser() {
 
@@ -78,7 +78,7 @@ username:"",}
                 var userSearchText = document.querySelector('#userSearchText');
                 toSend.username = userSearchText.value
 
-                $.post("<c:url value='/social'/>", toSend, function (result) {
+                $.post("<c:url value='/social'/>", toSend7, function (result) {
                     json = JSON.parse(result);
 
                     toggleSearch();

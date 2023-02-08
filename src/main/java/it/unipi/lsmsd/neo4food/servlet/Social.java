@@ -63,6 +63,7 @@ public class Social extends HttpServlet {
                         System.out.println(request.getParameter("userSearch"));
                     } else {
                         ListDTO userList;
+
                         if (actionType.equals("getFollowers")) {
                             targetJSP = "WEB-INF/jsp/friendlist.jsp";
                             username = request.getParameter("username");
@@ -72,10 +73,13 @@ public class Social extends HttpServlet {
                             request.setAttribute("listDTO", userList);
                             request.setAttribute("userDTO", userDTO);
                         } else {
+
                             if (actionType.equals("getRecommendationByFollow")) {
+
                                 username = request.getParameter("username");
-                                ServiceProvider.getSocialService();
-                                userList = SocialNeoDAO.getRecommendationFriendOfFriend(username);
+                                System.out.println(username);
+                                userList = ServiceProvider.getSocialService().getRecommendationFriendOfFriend(username);
+
                                 toSend = (new Gson()).toJson(userList);
                                 response.getWriter().println(toSend);
                                 response.getWriter().flush();
@@ -118,7 +122,7 @@ public class Social extends HttpServlet {
                                 username = request.getParameter("username");
 
                                 UserDTO userDTO = ServiceProvider.getUserService().getUser(username);
-                                System.out.println(userDTO);
+
                                 if(userDTO.getId()!="0"){
                                     toSend = (new Gson()).toJson(userDTO);
                                     response.getWriter().println(toSend);

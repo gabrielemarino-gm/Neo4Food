@@ -21,7 +21,9 @@
             action: "getRecommendationByFollow",
             username: "<%= userDTO.getUsername() %>",
         }
+
             function getRecommendationByFollowRequest() {
+
             $.post("<c:url value='/social'/>", toSend, function (result){
                 json = JSON.parse(result);
 

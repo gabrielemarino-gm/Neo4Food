@@ -170,7 +170,6 @@ public class SocialNeoDAO extends BaseNeo4J{
                     UserDTO tempUser = new UserDTO();
                     tempUser.setUsername(record.get("username").asString());
                     tempUser.setNfollowers(record.get("nfollowers").asInt());
-
                     tempList.add(tempUser);
 
                 }
