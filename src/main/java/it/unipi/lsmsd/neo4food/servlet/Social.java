@@ -75,7 +75,20 @@ public class Social extends HttpServlet {
                             userDTO.setUsername(request.getParameter("username"));
                             request.setAttribute("listDTO", userList);
                             request.setAttribute("userDTO", userDTO);
+
                         } else {
+                            if (actionType.equals("getFollowersNextPage")) {
+
+                                username = request.getParameter("username");
+                                int page2 = Integer.parseInt(request.getParameter("page"));
+                                userList = ServiceProvider.getSocialService().getFollowers(username, page2);
+
+                                toSend = (new Gson()).toJson(userList);
+                                response.getWriter().println(toSend);
+                                response.getWriter().flush();
+                                return;
+
+                            }
 
                             if (actionType.equals("getRecommendationByFollow")) {
 
