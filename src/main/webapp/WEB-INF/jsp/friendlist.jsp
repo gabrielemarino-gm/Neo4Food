@@ -21,6 +21,25 @@
             action: "getRecommendationByFollow",
             username: "<%= userDTO.getUsername() %>",
         }
+        page=0
+
+        function nextPage(){
+            page+=1
+            return page
+        }
+        function previousPage(){
+            if (page>0) {
+                page -= 1
+            }
+            return page
+        }
+
+        toSend4={
+            action: "setFollow",
+            username: "<%= userDTO.getUsername() %>",
+            username2: ""
+        }
+
 
             function getRecommendationByFollowRequest() {
 
@@ -89,21 +108,7 @@
                     alert(xhr+"\n"+status+"\n"+error);
                 });
         }
-        toSend4={
-            action: "setFollow",
-            username: "<%= userDTO.getUsername() %>",
-            username2: ""
-        }
-        function setFollow(username) {
-            toSend4.username2 = username
-console.log(toSend4)
-            $.post("<c:url value='/social'/>", toSend4, function (result){
-                json = JSON.parse(result);
-            })
-                .fail(function (xhr, status, error){
-                    alert(xhr+"\n"+status+"\n"+error);
-                });
-        }
+
         toSend5={
             action: "getInfluencer",
         }
@@ -125,6 +130,24 @@ console.log(toSend4)
                     alert(xhr+"\n"+status+"\n"+error);
                 });
         }
+
+        toSend6={
+            action: "getFollowers",
+            username:"",
+            page,
+        }
+        function getFollowers() {
+            toSend6=nextPage();
+            $.post("<c:url value='/social'/>", toSend6, function (result){
+                json = JSON.parse(result);
+                $("#boxRec").empty();
+
+            })
+                .fail(function (xhr, status, error){
+                    alert(xhr+"\n"+status+"\n"+error);
+                });
+        }
+
 
     </script>
 
@@ -148,6 +171,9 @@ for (UserDTO item: list)
 <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
 </div>
 <%}%>
+<%if(!list.isEmpty()){%>
+<div id="pageSelector" >></div>
+<%}%>
 </div>
 
 <div>
@@ -161,7 +187,9 @@ for (UserDTO item: list)
 <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
     <div id="boxRec">
     </div>
+
 </div>
+
 
 
 <%@ include file="template/footer.jsp"%>

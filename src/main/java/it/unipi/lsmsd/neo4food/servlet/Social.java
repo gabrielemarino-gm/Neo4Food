@@ -22,6 +22,7 @@ public class Social extends HttpServlet {
         String actionType = request.getParameter("action");
         String username;
         String text;
+
         if (actionType.equals("getComments")) {
             username = request.getParameter("restaurantId");
             int page = Integer.parseInt(request.getParameter("page"));
@@ -53,6 +54,7 @@ public class Social extends HttpServlet {
                     System.out.println(username2);
                     System.out.println(username);
                     ServiceProvider.getSocialService().setFollow(username, username2);
+
                     toSend = (new Gson()).toJson(username);
                     response.getWriter().println(toSend);
                     response.getWriter().flush();
@@ -67,7 +69,8 @@ public class Social extends HttpServlet {
                         if (actionType.equals("getFollowers")) {
                             targetJSP = "WEB-INF/jsp/friendlist.jsp";
                             username = request.getParameter("username");
-                            userList = ServiceProvider.getSocialService().getFollowers(username, 0);
+                            int page2 = Integer.parseInt(request.getParameter("page"));
+                            userList = ServiceProvider.getSocialService().getFollowers(username, page2);
                             UserDTO userDTO = new UserDTO();
                             userDTO.setUsername(request.getParameter("username"));
                             request.setAttribute("listDTO", userList);
@@ -99,8 +102,6 @@ public class Social extends HttpServlet {
                             if (actionType.equals("removeFollow")) {
                                 username = request.getParameter("username");
                                 username2 = request.getParameter("username2");
-                                System.out.println(username2);
-                                System.out.println(username);
                                 ServiceProvider.getSocialService().removeFollow(username, username2);
                                 toSend = (new Gson()).toJson(username);
                                 response.getWriter().println(toSend);

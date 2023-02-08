@@ -60,9 +60,9 @@
             username2: ""
         }
         function setFollow(username) {
-            toSend2.username2 = username
+            toSend8.username2 = username
 
-            $.post("<c:url value='/social'/>", toSend2, function (result){
+            $.post("<c:url value='/social'/>", toSend8, function (result){
                 json = JSON.parse(result);
             })
                 .fail(function (xhr, status, error){
@@ -128,6 +128,7 @@ username:"",}
                 <form method="post" action="<c:url value="/social"/>">
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
                     <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
+                    <input type="hidden" name="page" value= 0 >
                     <input type="hidden" name="action" value="getFollowers">
                     <a>Following</a>
                 </button>
