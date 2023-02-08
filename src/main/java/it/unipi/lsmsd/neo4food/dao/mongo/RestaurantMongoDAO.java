@@ -1,8 +1,11 @@
 package it.unipi.lsmsd.neo4food.dao.mongo;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.UpdateResult;
 import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
@@ -12,6 +15,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,6 +172,72 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean
         }
 
         return toReturn;
+    }
 
+    public String addDish(DishDTO target){
+//      rid - dname - dprice - dcurr - ddesc
+
+        Document query = new Document("_id", new ObjectId(target.getRestaurantId()));
+        ObjectId oid = new ObjectId();
+        Bson update = new Document("$push", new Document("dishes",
+                            new Document("_id", oid)
+                                    .append("name", target.getName())
+                                    .append("price", target.getPrice().toString())
+                                    .append("currency", target.getCurrency())
+                                    .append("description", target.getDescription())
+                            ));
+
+        try{
+            UpdateResult result = getDatabase().getCollection("Restaurants")
+                                .updateOne(query, update);
+
+            return oid.toString();
+        }
+        catch (MongoException e){
+            System.err.println(e);
+        }
+
+        return "";
+    }
+    public int remDish(DishDTO target){
+//        rid - did
+        Document query = new Document("_id", new ObjectId(target.getRestaurantId()));
+        Bson update = new Document("$pull", new Document("dishes",
+                    new Document("_id", new ObjectId(target.getId()))));
+
+        try{
+            UpdateResult result = getDatabase().getCollection("Restaurants")
+                    .updateOne(query, update);
+
+            return (int) result.getModifiedCount();
+        }
+        catch (MongoException e){
+            System.err.println(e);
+        }
+        return 0;
+    }
+    public int modDish(DishDTO target){
+//      rid - did - dname - dprice - ddesc
+        Document query = new Document("_id", new ObjectId(target.getRestaurantId()))
+                .append("dishes._id", new ObjectId(target.getId()));
+
+        Bson update = new Document("$set",
+                        new Document("dishes.$.name",target.getName())
+                                .append("dishes.$.price",target.getPrice().toString())
+                                .append("dishes.$.description", target.getDescription())
+                        );
+
+
+        try{
+            UpdateResult result = getDatabase().getCollection("Restaurants")
+                    .updateOne(query, update);
+
+            return (int) result.getModifiedCount();
+        }
+        catch (MongoException e){
+            System.err.println(e);
+        }
+
+        return 0;
     }
 }

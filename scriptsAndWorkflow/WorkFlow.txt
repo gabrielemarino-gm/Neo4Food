@@ -145,6 +145,5 @@ AGGIUNGI - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
 RIMUOVI - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
                                     {$pull: {dishes: {<CAMPO E VALORE DEL PIATTO DA RIMUOVERE>}}})
 
-MODIFICA - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
-                                    {$set: {"dishes.$[element].name": <NUOVO NOME>}},
-                                    {arrayFilters: [{"element._id": ObjectId(<ID PIATTO DA MODIFICARE>)}]})
+MODIFICA - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>), "dishes._id": ObjectId(<ID PIATTO>)},
+                                    {$set: {"dishes.$.name": <NUOVO NOME>}})

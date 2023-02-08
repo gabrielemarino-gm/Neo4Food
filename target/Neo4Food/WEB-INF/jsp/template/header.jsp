@@ -22,8 +22,6 @@
         }
     }
 
-
-
     %>
 <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
@@ -54,15 +52,15 @@
             toggleButtonState()
         }
 
-        toSend2={
+        toSend8={
             action: "setFollow",
             username: "<%= username %>",
             username2: ""
         }
         function setFollow(username) {
-            toSend2.username2 = username
+            toSend8.username2 = username
 
-            $.post("<c:url value='/social'/>", toSend2, function (result){
+            $.post("<c:url value='/social'/>", toSend8, function (result){
                 json = JSON.parse(result);
             })
                 .fail(function (xhr, status, error){
@@ -70,7 +68,7 @@
                 });
         }
 
-toSend={action:"searchUser",
+toSend7={action:"searchUser",
 username:"",}
         function searchUser() {
 
@@ -78,7 +76,7 @@ username:"",}
                 var userSearchText = document.querySelector('#userSearchText');
                 toSend.username = userSearchText.value
 
-                $.post("<c:url value='/social'/>", toSend, function (result) {
+                $.post("<c:url value='/social'/>", toSend7, function (result) {
                     json = JSON.parse(result);
 
                     toggleSearch();
@@ -96,14 +94,27 @@ username:"",}
     </script>
 
 </head>
+<%-- GESTIONE BOTTONI HEADER --%>
     <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
-<%--        Il pulsante del logo ti manda a ricerca solo se non si e' ristorante--%>
+
+<%--        Il pulsante del logo ti manda a ricerca se non si e' ristorante --%>
+<%--        Oppure alla pagina personale se si e' un ristorante             --%>
+
             <% if(!isRestaurant){ %>
+<%--            Utente registrato o non registrato--%>
             <a href="<c:url value="/ricerca"/>"><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
             <%}else{%>
-            <a><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
+<%--            Ristorante --%>
+            <form method="post" action="<c:url value="/personal"/>" class="h-12 float-left">
+                <input type="hidden" name="actor" value="restaurant">
+                <input type="hidden" name="action" value="personal">
+                <button type="submit">
+                    <a><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
+                </button>
+            </form>
             <%}%>
         <%-- Se sono loggato mostro pulsante di logout--%>
+
 <%          if (isLogged)
             {%>
             <%--    Il pulsante di logout fa sloggare tutti--%>
@@ -128,6 +139,7 @@ username:"",}
                 <form method="post" action="<c:url value="/social"/>">
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
                     <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
+                    <input type="hidden" name="page" value= 0 >
                     <input type="hidden" name="action" value="getFollowers">
                     <a>Following</a>
                 </button>
@@ -139,7 +151,7 @@ username:"",}
                             <a><%= username %></a>
                         </button>
                     </form>
-                    <%--    Il pulsante per fare una ricerca --%>
+                    <%--    Il pulsante per fare una ricerca di utenti --%>
                     <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearch()" state="offSearch">
                         <img class="h-5 mr-3" src="img/lente.png" onclick="searchUser() " alt="lente">
                         <form id="searchPeople" method="post">
@@ -168,7 +180,7 @@ username:"",}
 <%--                Se sono ristorante voglio andare alla pagina personale del ristorante--%>
                     <form method="post" action="<c:url value="/personal"/>">
                         <input type="hidden" name="actor" value="restaurant">
-                        <input type="hidden" name="action" value="personal">
+                        <input type="hidden" name="action" value="dishes">
                         <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
                             <a><%= restaurantname %></a>
                         </button>

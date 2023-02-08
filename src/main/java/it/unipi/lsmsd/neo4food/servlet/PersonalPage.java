@@ -1,11 +1,8 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
-import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
+import it.unipi.lsmsd.neo4food.dto.*;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
-import it.unipi.lsmsd.neo4food.dto.ListDTO;
-import it.unipi.lsmsd.neo4food.dto.OrderDTO;
-import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
 
 import java.io.*;
@@ -31,6 +28,10 @@ public class PersonalPage extends HttpServlet
             }
             else if(actor.equals("restaurant"))
             {
+                if(actionType.equals("addDish") || actionType.equals("modDish") || actionType.equals("remDish") ){
+                    editDish(request, response, actionType);
+                    return;
+                }
                 String target = restaurantRequest(request, response);
                 targetJSP = target != null ? target : "WEB-INF/jsp/personalrestaurant.jsp";
 
@@ -138,9 +139,78 @@ public class PersonalPage extends HttpServlet
 
             return "WEB-INF/jsp/orders.jsp";
 
-        }else {
+        }else if(actionType.equals("dishes")){
+            String me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
 
-            return null;
+            ListDTO<DishDTO> lista = new ListDTO<>();
+            List<DishDTO> temp = ServiceProvider.getRestaurantService().getRestaurantDetails(me,true,false).getDishes();
+            lista.setList(temp);
+            lista.setItemCount(temp.size());
+
+            request.setAttribute("dishes", lista);
+
+            return "WEB-INF/jsp/dishes.jsp";
+        }else{
+
         }
+        return null;
+    }
+
+    private void editDish(HttpServletRequest request, HttpServletResponse response, String actionType) throws IOException
+    {
+        String rid = request.getParameter("rid");
+        String did = request.getParameter("did");
+        String dname = request.getParameter("dname");
+        String ddesc = request.getParameter("ddesc") != null ? request.getParameter("ddesc") : "";
+        double dprice = Double.parseDouble((request.getParameter("dprice")));
+        String dcurr = request.getParameter("dcurr");
+
+        if(actionType.equals("addDish"))
+        {
+            if(dname == null || dname.equals("") || dcurr == null){throw new RuntimeException();}
+
+            DishDTO toAdd = new DishDTO();
+//            ------------
+            toAdd.setRestaurantId(rid);
+            toAdd.setName(dname);
+            toAdd.setPrice(dprice);
+            toAdd.setCurrency(dcurr);
+            toAdd.setDescription(ddesc);
+//            ------------
+            String res = ServiceProvider.getRestaurantService().addDish(toAdd);
+
+            response.getWriter().write(res);
+            response.getWriter().flush();
+        }
+        else if(actionType.equals("remDish"))
+        {
+            DishDTO toRemove = new DishDTO();
+//            ------------
+            toRemove.setRestaurantId(rid);
+            toRemove.setId(did);
+//            ------------
+            int res = ServiceProvider.getRestaurantService().remDish(toRemove);
+
+            response.getWriter().write(res + " removed");
+            response.getWriter().flush();
+        }
+        else if(actionType.equals("modDish"))
+        {
+            if(dname == null || dname.equals("")){throw new RuntimeException();}
+
+            DishDTO toModify = new DishDTO();
+//            --------------
+            toModify.setRestaurantId(rid);
+            toModify.setId(did);
+            toModify.setName(dname);
+            toModify.setPrice(dprice);
+            toModify.setDescription(ddesc);
+//            --------------
+            int res = ServiceProvider.getRestaurantService().modDish(toModify);
+
+            response.getWriter().write(res + " affected");
+            response.getWriter().flush();
+        }
+
     }
 }
