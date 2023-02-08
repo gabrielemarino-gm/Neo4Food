@@ -1,9 +1,3 @@
-1) Capire il progetto di Jose
-2) Scraping online, usirei Python (API se si trovano gratis?)
-3) Rivedere l'idea, aggiungere query
-4) Rivedere le collection
-5) Scrivere il codice (Prima di scrivere si deve progettare qualcosina)
-
 OSSERVAZIONI IMPORTANTI:
  - Il file index.jsp ha un refresh interno che chiama il servlet '/shop'
  - Il servlet '/shop' e' la classe controller.ShopServlet
@@ -30,10 +24,6 @@ RIGUARDO AI SERVLET:
 > Session - Campo persistente delle richieste, contiene cose riguardande alla sessione tra host e server
 
 ---------------------
-Cosa fare?
-Campi con alcuni not exists
-  - score
-  - price_range
 
  --- > DA FARE SU MONGODB < ---
 1) Funzione admin: se clicca il tasto, calcola il prezzo medio dei piatti nei ristoranti e aggiorna "price_range"
@@ -41,12 +31,8 @@ Campi con alcuni not exists
 3) Funzione admin: se clicca il tasto, calcola lo score da neo4j e aggiorna lo score medio del ristorante su mongoDB
 
  --- > DA FARE SU JAVA < ---
-1) Pagina commenti
-2) Pagina admin per mettere le analytics in seguito
+1) Sistema raccomandazioni (Neo4J)
 2) Pagina aggiunta piatti (Ristorante)
-3) Pagina cerca e lista amici
-4) Bottoni follow/unfollow
-5) Sistema raccomandazioni (Neo4J)
 
 
 ---CAMPI COLLECTIONS MONGODB---
@@ -117,14 +103,8 @@ ORDINI - ( _id,
 
 ############################################ Ricevimento José #######################################################
 
-1)  Spostare l'Admin in Users
-        - Aggiungere un campo isAdmin
-        - Adattare quesy su Admin.java
-
 2)  Model solo per bellezza! (DA CONTROLLARE SE VA BENE COSI COME E' FATTO)
         -Usare il tool di IntelliJ per fare il diagramma delle classi
-
-3)  Ordini Fake Okay
 
 5)  Valutare le performance della VM con htop
 
@@ -152,4 +132,19 @@ Cosiderazioni
 
 4)  Coordinare i vari database e mettere dati più "realistici"
 
-5)  Demonde che aggiurna i valori fra MongoDB e Neo4J
+5)  Demone che aggiurna i valori fra MongoDB e Neo4J
+
+
+_______________________
+--PER MODIFICA PIATTI--
+_______________________
+
+AGGIUNGI - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
+                                    {$push: {"dishes": {<DATI NUOVO PIATTO>}}})
+
+RIMUOVI - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
+                                    {$pull: {dishes: {<CAMPO E VALORE DEL PIATTO DA RIMUOVERE>}}})
+
+MODIFICA - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
+                                    {$set: {"dishes.$[element].name": <NUOVO NOME>}},
+                                    {arrayFilters: [{"element._id": ObjectId(<ID PIATTO DA MODIFICARE>)}]})

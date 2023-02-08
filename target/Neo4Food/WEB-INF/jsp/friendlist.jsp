@@ -129,18 +129,6 @@ console.log(toSend4)
 <body>
 <%@ include file="template/header.jsp"%>
 
-<div>
-<%--    Applicare come 'attivo' --%>
-    <button>
-        Following
-    </button>
-<%--    Applicare come 'disattivo' --%>
-    <button>
-        Interesting
-    </button>
-</div>
-
-
 <div id="box"></div>
 <% ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
 

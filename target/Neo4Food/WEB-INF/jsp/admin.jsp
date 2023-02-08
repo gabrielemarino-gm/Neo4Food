@@ -75,8 +75,8 @@
                     $(zipBox).empty();
                     if(json.itemCount > 0) {
                         for (i = 0; i < json.itemCount; i++) {
-                            commento = json.list[i];
-                            $(zipBox).append('<div><div>' + commento.zipcode + '</div><div>' + commento.count + '</div></div>')
+                            obj = json.list[i];
+                            $(zipBox).append('<div><div>' + obj.zipcode + '</div><div>' + obj.count + '</div></div>')
 
                         }
                     }
@@ -108,8 +108,8 @@
                     $(mostActiveBox).empty();
                     if(json.itemCount > 0) {
                         for (i = 0; i < json.itemCount; i++) {
-                            commento = json.list[i];
-                            $(mostActiveBox).append('<div><div>' + commento.user + '</div><div>' + commento.count + '</div><div>' + commento.dub+'</div></div>')
+                            obj = json.list[i];
+                            $(mostActiveBox).append('<div><div>' + obj.user + '</div><div>' + obj.count + '</div><div>' + obj.dub+'</div></div>')
 
                         }
                     }
@@ -141,8 +141,8 @@
                     $(profitBox).empty();
                     if(json.itemCount > 0) {
                         for (i = 0; i < json.itemCount; i++) {
-                            commento = json.list[i];
-                            $(profitBox).append('<div><div>' + commento.restaurant + '</div><div>' + commento.dub + '</div></div>')
+                            obj = json.list[i];
+                            $(profitBox).append('<div><div>' + obj.restaurant + '</div><div>' + obj.dub + '</div></div>')
 
                         }
                     }
@@ -175,8 +175,8 @@
                     $(cavialeBox).empty();
                     if(json.itemCount > 0) {
                         for (i = 0; i < json.itemCount; i++) {
-                            commento = json.list[i];
-                            $(cavialeBox).append('<div><div>' + commento.dish + '</div><div>' + commento.dub + '</div><div>' + commento.restaurant+'</div></div>')
+                            obj = json.list[i];
+                            $(cavialeBox).append('<div><div>' + obj.dish + '</div><div>' + obj.dub + '</div><div>' + obj.restaurant+'</div></div>')
 
                         }
                     }

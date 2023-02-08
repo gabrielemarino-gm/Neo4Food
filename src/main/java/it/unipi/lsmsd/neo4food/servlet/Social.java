@@ -16,8 +16,6 @@ import javax.servlet.http.*;
 
 @WebServlet({"/social"})
 public class Social extends HttpServlet {
-    public Social() {
-    }
 
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";

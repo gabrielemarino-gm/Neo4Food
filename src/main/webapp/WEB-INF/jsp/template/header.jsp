@@ -129,7 +129,7 @@ username:"",}
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
                     <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
                     <input type="hidden" name="action" value="getFollowers">
-                    <a>Friend List</a>
+                    <a>Following</a>
                 </button>
                 </form>
                     <form method="post" action="<c:url value="/personal"/>">
