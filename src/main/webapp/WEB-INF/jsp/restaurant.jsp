@@ -523,7 +523,9 @@
             <div id="boxRev">
 
             </div>
-    <button class="absolute top-3 right-3 px-1 rounded-xl" onclick="closeReviews()"><img class="h-7" src="img/x.png" alt="X"/></button>        </div>
+            <button class="absolute top-3 right-3 px-1 rounded-xl" onclick="closeReviews()"><img class="h-7" src="img/x.png" alt="X"/>
+            </button>
+        </div>
     </div>
 
     <div id="addreview" style="display: none;" class="z-50 fixed h-full w-full bg-black bg-opacity-20 -my-bgReview">

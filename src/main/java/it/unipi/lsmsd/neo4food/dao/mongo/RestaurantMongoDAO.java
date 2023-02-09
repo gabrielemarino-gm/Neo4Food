@@ -61,7 +61,6 @@ public class RestaurantMongoDAO extends BaseMongo {
                 RestaurantDTO e = new RestaurantDTO();
                 e.setId(id);
                 e.setName(name);
-                e.setPriceRange(range);
                 e.setRating(rating);
 
                 tempList.add(e);
@@ -93,7 +92,7 @@ public RestaurantDTO getRestaurantLogin(String eml, String password){
 
         String id = res.get("_id").toString();
         String name = res.get("name") != null ? res.get("name").toString() : "Name not available";
-        Float rating = res.get("rating") != null ? Float.parseFloat(res.get("rating").toString()): 0;
+        Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()): 0;
         String address = res.get("full_address") != null ? res.get("full_address").toString() : "Address not available";
         String zipcode = res.get("zip_code") != null ? res.get("zip_code").toString() : "Zipcode not available";
         String email = res.get("email") != null? res.get("email").toString() : "Email not available";

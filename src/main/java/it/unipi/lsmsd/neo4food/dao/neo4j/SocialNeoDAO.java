@@ -3,6 +3,7 @@ package it.unipi.lsmsd.neo4food.dao.neo4j;
 import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dto.CommentDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,26 +50,49 @@ public class SocialNeoDAO extends BaseNeo4J{
         }
     }
 
-    /** Esegue una raccomandazione ad un utente di 10 ristoranti
+    /** Esegue una raccomandazione ad un utente di 5 ristoranti
      *
      *  Fornisce i ristoranti piu valutati dagli amici
      *  come nome, media dei voti e numero di voti*/
-    public void getRecommendationRestaurant(String user, String zipcode) {
+    public ListDTO<RestaurantDTO> getRecommendationRestaurant(String user, String zipcode) {
+        ListDTO<RestaurantDTO> toReturn = new ListDTO<>();
+
         try (Session session = getSession()) {
+//                                  Match ristoranti che segue un follower
             String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User)-[rate:RATED]->(r:Restaurant) " +
-                                 "WHERE u1.username = $user and r.zipcode = $zipcode" +"AND NOT EXISTS (u1)-[:RATED]->(r)"+
-                                 "WITH r, COUNT(rate.rating) as nrating, " +
-                                 "AVG(rate.rating) as avg_rating " +
-                                 "ORDER BY nrating, avg_rating DESC " +
-                                 "RETURN r.name as name, avg_rating " +
-                                 "LIMIT 10";
+//                                  Dove io sono il soggetto e lo zipcode e' quello dato
+                                "WHERE u1.username = $user and r.zipcode = $zipcode " +
+//                                  Dove io non ho dato un voto a quel ristorante
+                                "AND NOT (u1)-[:RATED]->(r) "+
+                                "WITH r, COUNT(rate.rating) as nrating, " +
+                                "AVG(rate.rating) as avg_rating " +
+                                "ORDER BY nrating DESC, avg_rating DESC " +
+                                "RETURN r.rid as rid, r.name as name, avg_rating as avg " +
+                                "LIMIT 5";
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(searchQuery, parameters( "user", user, "zipcode", zipcode));
+                List<RestaurantDTO> toSet = new ArrayList<>();
+
+                while (result.hasNext()){
+                    Record r = result.next();
+                    RestaurantDTO toAppend = new RestaurantDTO();
+
+                    toAppend.setId(r.get("rid").asString());
+                    toAppend.setName(r.get("name").asString());
+                    toAppend.setRating(r.get("avg").asFloat());
+
+                    toSet.add(toAppend);
+                }
+
+                toReturn.setList(toSet);
+//                Metto 0 cosi non mi mostra il bottone pagina successiva
+                toReturn.setItemCount(0);
 
                 return 1;
             });
         }
+        return toReturn;
     }
 
     /** Imposta un commento da parte di un utente verso un ristorante

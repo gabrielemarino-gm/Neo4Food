@@ -47,6 +47,7 @@ public class Login extends HttpServlet
                     List<OrderDTO> lista = ServiceProvider.getRestaurantService()
                                             .getRestaurantDetails(rid,false,true)
                                             .getOrders();
+
                     request.setAttribute("orderList", lista);
 
                 }
