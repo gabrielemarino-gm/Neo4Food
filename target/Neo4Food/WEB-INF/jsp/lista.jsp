@@ -110,29 +110,37 @@
 <%                              }
                             }
 
-                         if(isLogged){
-                            if("recc".equals(filter)){ %>
-                        <div id="buttonRecc" class="text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-test_col shadow-md">
-                            <form>
-                                <input type="hidden" name="page" value="0"/>
-                                <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
-                                <input type="hidden" name="action" value="search"/>
-                                <input type="hidden" name="filter" value="recc"/>
-                                <button class="cliccato" type="submit">Recommend me!</button>
-                            </form>
-                        </div>
-                        <%  }else{ %>
-                        <div id="buttonRecc" class="filters text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-principale shadow-md hover:bg-button">
-                            <form>
-                                <input type="hidden" name="page" value="0"/>
-                                <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
-                                <input type="hidden" name="action" value="search"/>
-                                <input type="hidden" name="filter" value="recc"/>
-                                <button  type="submit">Recommend me!</button>
-                            </form>
-                        </div>
-                    </div>
-                    <%  }} %>
+                         if(isLogged)
+                         {
+                            if("recc".equals(filter))
+                            {
+%>
+                                <div id="buttonRecc" class="text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-test_col shadow-md">
+                                    <form>
+                                        <input type="hidden" name="page" value="0"/>
+                                        <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
+                                        <input type="hidden" name="action" value="search"/>
+                                        <input type="hidden" name="filter" value="recc"/>
+                                        <button class="cliccato" type="submit">Recommend me!</button>
+                                    </form>
+                                </div>
+<%                          }
+                            else
+                            {
+%>
+                                <div id="buttonRecc" class="filters text-center h-9 mr-3 mt-3 px-4 py-2 rounded-lg bg-principale shadow-md hover:bg-button">
+                                    <form>
+                                        <input type="hidden" name="page" value="0"/>
+                                        <input type="hidden" name="zipcode" value="<%= zipcode %>"/>
+                                        <input type="hidden" name="action" value="search"/>
+                                        <input type="hidden" name="filter" value="recc"/>
+                                        <button  type="submit">Recommend me!</button>
+                                    </form>
+                                </div>
+<%                          }
+                         }
+%>
+
                     <div class="h-3"></div>
 
                 </div>
