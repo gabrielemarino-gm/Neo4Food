@@ -155,7 +155,7 @@
                             '<div class="mt-3 float-right">' +
                                 '<button class="modifyButtons border rounded-lg px-3 hover:bg-button" id="modifyConfirm' + result + '" type="button" onclick="modifyConfirm(\'' + result + '\')">Modify</button>' +
                                 '<button class="border rounded-lg px-3 hover:bg-button" style="display:none;" id="revert' + result + '" type="button" onclick="revert(\'' + result + '\', true)">Revert</button>' +
-                                '<button class="border rounded-lg px-3 hover:bg-button" id="remove' + result + '" type="button" onclick="remDish(\'' + result + '\')">X</button>' +
+                                '<button class="border rounded-lg px-3 hover:bg-button" id="remove' + result + '" type="button" onclick="remDish(\'' + result + '\')">Remove</button>' +
                             '</div>' +
                         '</div>';
                     $("#dishesBox").append(text);
