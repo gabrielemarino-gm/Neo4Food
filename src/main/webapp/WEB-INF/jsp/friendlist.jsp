@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Research</title>
+    <title>Friend List</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants List</title>
@@ -21,50 +21,56 @@
             action: "getRecommendationByFollow",
             username: "<%= userDTO.getUsername() %>",
         }
-        page=0
+
+        page=0;
 
         function nextPage(){
-            page+=1
-            return page
-        }
-        function previousPage(){
-            if (page>0) {
-                page -= 1
-            }
-            return page
+            page += 1;
+            return page;
         }
 
-        toSend4={
+        function previousPage()
+        {
+            if (page>0)
+                page -= 1;
+
+            return page;
+        }
+
+        toSend4 = {
             action: "setFollow",
             username: "<%= userDTO.getUsername() %>",
             username2: ""
         }
 
 
-            function getRecommendationByFollowRequest() {
-
-            $.post("<c:url value='/social'/>", toSend, function (result){
+        function getRecommendationByFollowRequest()
+        {
+            $.post("<c:url value='/social'/>", toSend, function (result)
+            {
                 json = JSON.parse(result);
 
                 $("#boxRec").empty();
 
-                if(!json || !json.list.length){
-
+                if(!json || !json.list.length)
+                {
                     $("#boxRec").append("<div>There is nothing to display based on your followers.</div>");
-                }else {
-                    for (i = 0; i < json.list.length; i++) {
+                }
+                else
+                {
+                    for (i = 0; i < json.list.length; i++)
+                    {
                         var consigliato = json.list[i];
-                        console.log(consigliato)
+                        console.log(consigliato);
 
                         $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div>" +
                             "<Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
-
                     }
                 }
-            })
-        .fail(function (xhr, status, error){
-            alert(xhr+"\n"+status+"\n"+error);
-        });
+            }).fail(function (xhr, status, error)
+            {
+                alert(xhr+"\n"+status+"\n"+error);
+            });
         }
 
 
@@ -72,8 +78,11 @@
             action: "getRecommendationByRestaurant",
             username: "<%= userDTO.getUsername() %>",
         }
-        function getRecommendationByRestaurantRequest() {
-            $.post("<c:url value='/social'/>", toSend3, function (result){
+
+        function getRecommendationByRestaurantRequest()
+        {
+            $.post("<c:url value='/social'/>", toSend3, function (result)
+            {
                 json = JSON.parse(result);
                 $("#boxRec").empty();
                 if(!json || !json.list.length){
@@ -86,10 +95,10 @@
                     }
                     }
 
-            })
-                .fail(function (xhr, status, error){
+            }).fail(function (xhr, status, error)
+            {
                     alert(xhr+"\n"+status+"\n"+error);
-                });
+            });
         }
 
         toSend2={
@@ -98,38 +107,45 @@
             username2: ""
         }
 
-        function removeFollow(username) {
-          toSend2.username2 = username
+        function removeFollow(username)
+        {
+            toSend2.username2 = username;
 
             $.post("<c:url value='/social'/>", toSend2, function (result){
                 json = JSON.parse(result);
-            })
-                .fail(function (xhr, status, error){
-                    alert(xhr+"\n"+status+"\n"+error);
-                });
+            }).fail(function (xhr, status, error)
+            {
+                alert(xhr+"\n"+status+"\n"+error);
+            });
         }
 
         toSend5={
             action: "getInfluencer",
         }
-        function getInfluencer() {
-            $.post("<c:url value='/social'/>", toSend5, function (result){
 
+        function getInfluencer()
+        {
+            $.post("<c:url value='/social'/>", toSend5, function (result)
+            {
                 json = JSON.parse(result);
                 $("#boxRec").empty();
-                if(!json || !Object.keys(json).length){
-                    $("#boxRec").append("<div>There is nothing to display</div>");
-                }else {
-                    for (i = 0; i < json.list.length; i++) {
-                        var consigliato = json.list[i];
 
+                if(!json || !Object.keys(json).length)
+                {
+                    $("#boxRec").append("<div>There is nothing to display</div>");
+                }
+                else
+                {
+                    for (i = 0; i < json.list.length; i++)
+                    {
+                        var consigliato = json.list[i];
                         $("#boxRec").append("<div ><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
                     }
                 }
-            })
-                .fail(function (xhr, status, error){
-                    alert(xhr+"\n"+status+"\n"+error);
-                });
+            }).fail(function (xhr, status, error)
+            {
+                alert(xhr+"\n"+status+"\n"+error);
+            });
         }
 
         toSend6={
@@ -137,59 +153,70 @@
             username:"<%= userDTO.getUsername() %>",
             page,
         }
-        function getFollowersNext() {
-            page=page+1
+
+        function getFollowersNext()
+        {
+            page = page + 1;
             toSend6.page=page;
-            $.post("<c:url value='/social'/>", toSend6, function (result){
+
+            $.post("<c:url value='/social'/>", toSend6, function (result)
+            {
                 console.log(result)
                 json = JSON.parse(result);
 
                 $("#boxFollow").empty();
-                if(!json || !Object.keys(json).length){
+                if(!json || !Object.keys(json).length)
+                {
                     $("#boxFollow").empty();
                     $("#boxFollow").append("<div>There is nothing to display</div>");
-                }else {
+                }
+                else
+                {
                     $("#boxFollow").empty();
-                    for (i = 0; i < json.list.length; i++) {
+                    for (i = 0; i < json.list.length; i++)
+                    {
                         var follower = json.list[i];
-
                         $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>Username:" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > REMOVE FOLLOW" + "</button>" + " </div>");
                     }
                 }
-
-
-            })
-                .fail(function (xhr, status, error){
+            }).fail(function (xhr, status, error)
+            {
                     alert(xhr+"\n"+status+"\n"+error);
-                });
+            });
         }
 
-        function getFollowersPrevious() {
-            if (page > 0) {
-                page = page - 1
+        function getFollowersPrevious()
+        {
+            if (page > 0)
+            {
+                page = page - 1;
                 toSend6.page = page;
-                $.post("<c:url value='/social'/>", toSend6, function (result) {
+                $.post("<c:url value='/social'/>", toSend6, function (result)
+                {
                     console.log(result)
                     json = JSON.parse(result);
 
                     $("#boxFollow").empty();
-                    if (!json || !Object.keys(json).length) {
+                    if (!json || !Object.keys(json).length)
+                    {
                         $("#boxFollow").empty();
                         $("#boxFollow").append("<div>There is nothing to display</div>");
-                    } else {
+                    }
+                    else
+                    {
                         $("#boxFollow").empty();
-                        for (i = 0; i < json.list.length; i++) {
+                        for (i = 0; i < json.list.length; i++)
+                        {
                             var follower = json.list[i];
-
                             $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>Username:" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > REMOVE FOLLOW" + "</button>" + " </div>");
                         }
                     }
 
 
-                })
-                    .fail(function (xhr, status, error) {
-                        alert(xhr + "\n" + status + "\n" + error);
-                    });
+                }).fail(function (xhr, status, error)
+                {
+                    alert(xhr + "\n" + status + "\n" + error);
+                });
             }
         }
 
@@ -222,8 +249,8 @@ for (UserDTO item: list)
 
 <%}%>
 </div>
-<button  onclick="getFollowersPrevious()" ><---PreviousPage</button>
-<button  onclick="getFollowersNext()" >NextPage---></button>
+<button  onclick="getFollowersPrevious()" ><</button>
+<button  onclick="getFollowersNext()" >></button>
 <div>
     <button onclick="getRecommendationByFollowRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations By User</button>
     <button onclick="getRecommendationByRestaurantRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations By Restaurant</button>
