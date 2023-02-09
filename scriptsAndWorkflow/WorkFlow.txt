@@ -137,16 +137,16 @@ Cosiderazioni
 
 -----------------------------------------
 
-Aggregazione setAvgPrices (Mongo):
+Aggregazione setAvgPrices (Mongo): FATTO
         - Rimuovere sort e project, non servono a niente e occupano 6 secondi
 
 Aggregazione setAvgRate (Neo):
         - Dovrebbe andare bene cosi
 
-Aggregazione getOrdersPerZip (Mongo):
+Aggregazione getOrdersPerZip (Mongo): FATTO
         - Togliere il project, non serve a nulla e occupa 200ms
 
-Aggregazione getLastMonthProfits (Mongo):
+Aggregazione getLastMonthProfits (Mongo): FATTO
         - Togliere il project, non serve a nulla e occupa 300ms
 
 Aggregazione getCaviale (Mongo):

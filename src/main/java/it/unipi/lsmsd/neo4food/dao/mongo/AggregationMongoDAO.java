@@ -12,11 +12,9 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import javax.swing.text.DefaultEditorKit;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class AggregationMongoDAO extends BaseMongo{
@@ -27,21 +25,16 @@ public class AggregationMongoDAO extends BaseMongo{
         MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
         //... {$unwind: "$dishes"},
         Bson unwind = new Document("$unwind", "$dishes");
-        //... {$sort: {_id: 1}},
-        Bson sort = new Document("$sort", new Document("_id", 1));
         //... {$addFields: {dishPrice: {$toDouble: "$dishes.price"}}},
         Bson addFields = new Document("$addFields", new Document("dishPrice", new Document("$toDouble", "$dishes.price")));
         //... {$match: {dishPrice: {$gt: 0}}}
         Bson match = new Document("$match", new Document("dishPrice", new Document("$gt",0)));
         //... {$group: {_id: "$_id", avg: {$avg:"$dishPrice"}}}])
         Bson group = new Document("$group", new Document("_id", "$_id").append("avg", new Document("$avg", "$dishPrice")));
-        //... {$project: {rid: "$_id", avg: "$avg"}}
-        Bson project = new Document("$project", new Document("_id", "$_id").append("avg","$avg"));
-
 
         try{
             List<Document> result = collection.aggregate(
-                    Arrays.asList(unwind, sort, addFields, match, group, project)).into(new ArrayList<>());
+                    Arrays.asList(unwind, addFields, match, group)).into(new ArrayList<>());
 
             ClientSession session = getSession();
             try{
@@ -132,20 +125,19 @@ public class AggregationMongoDAO extends BaseMongo{
         Bson group = new Document("$group", new Document("_id", "$zipcode").append("sum", new Document("$sum", 1)));
         //... {$sort: {sum: -1}},
         Bson sort = new Document("$sort", new Document("sum", -1));
-        //... {$project: {zip: "$_id", count: "$sum"}}
-        Bson project = new Document("$project", new Document("zip", "$_id").append("count","$sum"));
-
+        //... {$limit: 10}
+        Bson limit = new Document("$limit", 10);
 
         try{
             List<Document> result = collection.aggregate(
-                Arrays.asList(group, sort, project)).into(new ArrayList<>());
+                Arrays.asList(group, sort, limit)).into(new ArrayList<>());
             List<AnalyticsDTO> toSet = new ArrayList<>();
 
             for(Document d : result){
                 AnalyticsDTO toAppend = new AnalyticsDTO();
 
-                toAppend.setZipcode(d.get("zip").toString());
-                toAppend.setCount(d.getInteger("count"));
+                toAppend.setZipcode(d.get("_id").toString());
+                toAppend.setCount(d.getInteger("sum"));
 
                 toSet.add(toAppend);
             }
@@ -168,18 +160,16 @@ public class AggregationMongoDAO extends BaseMongo{
                     new Document("$gte", LocalDateTime.now().minusMonths(1))));
         //... {$group: {_id: "$restaurantId"", name: {$first:"$restaurant"}, gain: {$sum: "$total"}}}]
         Bson group = new Document("$group", new Document("_id", "$restaurantId")
-                                .append("name",new Document("$first","$restaurant"))
+                                .append("rest",new Document("$first","$restaurant"))
                                 .append("gain", new Document("$sum", "$total")));
         //... {$sort: {gain: -1}},
         Bson sort = new Document("$sort", new Document("gain", -1));
-        //... {$project: {rest: "$name", gain: "$gain"}}
-        Bson project = new Document("$project", new Document("rest", "$name").append("gain","$gain"));
         //... {$limit: 10}
         Bson limit = new Document("$limit", 10);
 
         try{
             List<Document> result = collection.aggregate(
-                    Arrays.asList(match, group,sort,project, limit)).into(new ArrayList<>());
+                    Arrays.asList(match, group, sort, limit)).into(new ArrayList<>());
             List<AnalyticsDTO> toSet = new ArrayList<>();
 
             for(Document d : result){
