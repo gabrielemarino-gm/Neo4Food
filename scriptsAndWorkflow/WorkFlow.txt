@@ -135,15 +135,19 @@ Cosiderazioni
 5)  Demone che aggiurna i valori fra MongoDB e Neo4J
 
 
-_______________________
---PER MODIFICA PIATTI--
-_______________________
+-----------------------------------------
 
-AGGIUNGI - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
-                                    {$push: {"dishes": {<DATI NUOVO PIATTO>}}})
+Aggregazione setAvgPrices (Mongo):
+        - Rimuovere sort e project, non servono a niente e occupano 6 secondi
 
-RIMUOVI - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>)},
-                                    {$pull: {dishes: {<CAMPO E VALORE DEL PIATTO DA RIMUOVERE>}}})
+Aggregazione setAvgRate (Neo):
+        - Dovrebbe andare bene cosi
 
-MODIFICA - db.Restaurants.updateOne({_id: ObjectId(<ID RISTORANTE>), "dishes._id": ObjectId(<ID PIATTO>)},
-                                    {$set: {"dishes.$.name": <NUOVO NOME>}})
+Aggregazione getOrdersPerZip (Mongo):
+        - Togliere il project, non serve a nulla e occupa 200ms
+
+Aggregazione getLastMonthProfits (Mongo):
+        - Togliere il project, non serve a nulla e occupa 300ms
+
+Aggregazione getCaviale (Mongo):
+        - Dovrebbe andare bene cosi
