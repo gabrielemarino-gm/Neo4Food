@@ -8,8 +8,7 @@ import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -22,7 +21,6 @@ public class Social extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
         String actionType = request.getParameter("action");
-        String toSend;
 
         if (actionType.equals("getComments"))
         {
@@ -42,7 +40,7 @@ public class Social extends HttpServlet
                 response.getWriter().println("{'itemCount'= 0}");
                 response.getWriter().flush();
             }
-
+            return;
         }
 //        Creo una nuova review
         else if (actionType.equals("addReview")) {
@@ -67,27 +65,34 @@ public class Social extends HttpServlet
 
             return;
         }
+        else if (actionType.equals("removeFollow"))
+        {
+            String actor = request.getParameter("actor");
+            String target = request.getParameter("target");
 
+            ServiceProvider.getSocialService().removeFollow(actor, target);
+
+            return;
+        }
+
+//      chiamato da in header.jsp
+//      ritorna a friendlist.jsp
         else if (actionType.equals("getFollowers"))
         {
             targetJSP = "WEB-INF/jsp/friendlist.jsp";
             String username = request.getParameter("username");
-            int page2 = Integer.parseInt(request.getParameter("page"));
-            userList = ServiceProvider.getSocialService().getFollowers(username, page2);
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(request.getParameter("username"));
-            request.setAttribute("listDTO", userList);
-            request.setAttribute("userDTO", userDTO);
+            int page = Integer.parseInt(request.getParameter("page"));
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getFollowers(username, page);
 
+            request.setAttribute("listDTO", userList);
         }
         else if (actionType.equals("getFollowersNextPage"))
         {
             String username = request.getParameter("username");
-            int page2 = Integer.parseInt(request.getParameter("page"));
-            userList = ServiceProvider.getSocialService().getFollowers(username, page2);
+            int page = Integer.parseInt(request.getParameter("page"));
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getFollowers(username, page);
 
-            toSend = (new Gson()).toJson(userList);
-            response.getWriter().println(toSend);
+            response.getWriter().println((new Gson()).toJson(userList));
             response.getWriter().flush();
             return;
         }
@@ -95,11 +100,9 @@ public class Social extends HttpServlet
         else if (actionType.equals("getRecommendationByFollow"))
         {
             String username = request.getParameter("username");
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getRecommendationFriendOfFriend(username);
 
-            userList = ServiceProvider.getSocialService().getRecommendationFriendOfFriend(username);
-
-            toSend = (new Gson()).toJson(userList);
-            response.getWriter().println(toSend);
+            response.getWriter().println((new Gson()).toJson(userList));
             response.getWriter().flush();
             return;
         }
@@ -107,40 +110,27 @@ public class Social extends HttpServlet
         else if (actionType.equals("getRecommendationByRestaurant"))
         {
             String username = request.getParameter("username");
-            
-            userList = ServiceProvider.getSocialService().getRecommendationUserRestaurant(username);
-            toSend = (new Gson()).toJson(userList);
-            response.getWriter().println(toSend);
-            response.getWriter().flush();
-            return;
-        }
-        else if (actionType.equals("removeFollow"))
-        {
-            username = request.getParameter("username");
-            username2 = request.getParameter("username2");
-            ServiceProvider.getSocialService().removeFollow(username, username2);
-            toSend = (new Gson()).toJson(username);
-            response.getWriter().println(toSend);
+
+            ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getRecommendationUserRestaurant(username);
+            response.getWriter().println((new Gson()).toJson(userList));
             response.getWriter().flush();
             return;
         }
         else if (actionType.equals("getInfluencer"))
         {
-            username = request.getParameter("username");
-            userList = ServiceProvider.getUtilityService().getInfluencers();
-            toSend = (new Gson()).toJson(userList);
-            response.getWriter().println(toSend);
+            ListDTO<UserDTO> userList = ServiceProvider.getUtilityService().getInfluencers();
+
+            response.getWriter().println((new Gson()).toJson(userList));
             response.getWriter().flush();
             return;
         }
+//        Usato nel campo ricerca dell'header
         else if(actionType.equals("searchUser"))
         {
-
-            username = request.getParameter("username");
+            String username = request.getParameter("username");
             UserDTO userDTO = ServiceProvider.getUserService().getUser(username);
-            toSend = (new Gson()).toJson(userDTO);
 
-            response.getWriter().println(toSend);
+            response.getWriter().println((new Gson()).toJson(userDTO));
             response.getWriter().flush();
             return;
         }

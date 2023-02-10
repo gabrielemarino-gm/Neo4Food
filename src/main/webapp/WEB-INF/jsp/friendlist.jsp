@@ -2,9 +2,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.ListDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
-<%@ page import="it.unipi.lsmsd.neo4food.dto.*" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.unipi.lsmsd.neo4food.model.User" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +10,9 @@
     <title>Friend List</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurants List</title>
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
-    <%UserDTO userDTO = (UserDTO) request.getAttribute("userDTO");%>
+    <% UserDTO userDTO = (UserDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD); %>
+
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
 
@@ -35,7 +33,7 @@
 
         function getRecommendationByFollowRequest()
         {
-            toSend = {
+            let toSend = {
                 action: "getRecommendationByFollow",
                 username: "<%= userDTO.getUsername() %>"
             };
@@ -80,13 +78,13 @@
 
         function getRecommendationByRestaurantRequest()
         {
-            toSendRecc={
+            let toSend={
                 action: "getRecommendationByRestaurant",
                 username: "<%= userDTO.getUsername() %>"
             };
 
             $("#boxRec").show();
-            $.post("<c:url value='/social'/>", toSendRecc, function (result)
+            $.post("<c:url value='/social'/>", toSend, function (result)
             {
                 json = JSON.parse(result);
                 $("#boxRec").empty();
@@ -170,7 +168,7 @@
         {
             let toSend = {
                 "action": "removeFollow",
-                "actor": <%= userDTO.getUsername() %>,
+                "actor": "<%= userDTO.getUsername() %>",
                 "target": username
             };
 
@@ -196,6 +194,12 @@
             $.post("<c:url value='/social'/>", toSend, function (result)
             {
                 // TODO AGGIUNGERE IL DIV SENZA RICARICARE LA PAGINA
+                $("#boxFollow").append('' +
+                    '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
+                        '<div>Username:' + username + '</div>' +
+                        '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+username+'\')"> REMOVE FOLLOW </button>' +
+                    '</div>'
+                );
 
             }).fail(function (xhr, status, error)
             {
@@ -207,13 +211,13 @@
         {
             page = page + 1;
 
-            toSend={
+            let toSend = {
                 action: "getFollowersNextPage",
                 username:"<%= userDTO.getUsername() %>",
                 page: page,
             }
 
-            $.post("<c:url value='/social'/>", toSend6, function (result)
+            $.post("<c:url value='/social'/>", toSend, function (result)
             {
                 json = JSON.parse(result);
 
@@ -230,7 +234,12 @@
                     {
                         var follower = json.list[i];
 
-                        $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>Username:" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > REMOVE FOLLOW" + "</button>" + " </div>");
+                        $("#boxFollow").append('' +
+                            '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
+                            '<div>Username:' + follower.username + '</div>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+follower.username+'\')"> REMOVE FOLLOW </button>' +
+                            '</div>'
+                        );
                     }
                 }
             }).fail(function (xhr, status, error)
@@ -244,10 +253,16 @@
             if (page > 0)
             {
                 page = page - 1;
-                toSend6.page = page;
-                $.post("<c:url value='/social'/>", toSend6, function (result)
+
+                let  toSend={
+                    action: "getFollowersNextPage",
+                    username:"<%= userDTO.getUsername() %>",
+                    page: page,
+                }
+
+                $.post("<c:url value='/social'/>", toSend, function (result)
                 {
-                    console.log(result)
+
                     json = JSON.parse(result);
 
                     $("#boxFollow").empty();
@@ -279,26 +294,31 @@
 <body>
     <%@ include file="template/header.jsp"%>
 
-    <div id="box"></div>
+    <div id="box">
+
+    </div>
 <%      ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
         List<UserDTO> list = listDTO.getList();
 %>
 
 
-    <div class="my-10" id="boxFollow">
-<!--    STAMPO LA LISTA DEI FOLLOWER-->
-<%      if(!list.isEmpty())
-        {
-            for (UserDTO item: list)
+    <div class="my-10">
+        <div id="boxFollow>
+<!--        STAMPO LA LISTA DEI FOLLOWER-->
+<%          if(!list.isEmpty())
             {
+                for (UserDTO item: list)
+                {
 %>
-                <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md">
-                    <div><%=item.getUsername()%></div>
-                    <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
-                </div>
-<%          }
-        }
+                    <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md">
+                        <div><%=item.getUsername()%></div>
+                        <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+                    </div>
+<%              }
+            }
 %>
+        </div>
+
 <!--    BOTTONI PER ANDARE AVANTI NELLE PAGINE-->
         <div class="mt-3 flex justify-center">
             <button  onclick="getFollowersPrevious()"><img class="h-7" src="img/left_arrow.png" alt="prec"></button>
@@ -306,7 +326,6 @@
             <button  onclick="getFollowersNext()"><img class="h-7" src="img/right_arrow.png" alt="succ"></button>
         </div>
     </div>
-
 
     <div class="flex justify-center w-5/6 mx-auto mt-2">
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByFollowRequest()" >Get Recommendations By User</button>

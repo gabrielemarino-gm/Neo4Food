@@ -65,13 +65,13 @@
 
 
     function setFollow(username) {
-        let toSendH = {
+        let toSend = {
                 action: "setFollow",
-                username: "<%= username %>",
-                username2: username
+                actor: "<%= username %>",
+                target: username
         }
 
-        $.post("<c:url value='/social'/>", toSendH, function (result){
+        $.post("<c:url value='/social'/>", toSend, function (result){
             json = JSON.parse(result);
         })
             .fail(function (xhr, status, error){
@@ -85,12 +85,12 @@
             toggleSearch();
         }
 
-        toSendH = {
+        let toSend = {
             action: "searchUser",
             username: $('#userSearchText').val()
         }
 
-        $.post("<c:url value='/social'/>", toSendH, function (result) {
+        $.post("<c:url value='/social'/>", toSend, function (result) {
             json = JSON.parse(result);
             if(!(json.id == '0')) {
                 $("#boxSearch").append("<div><div>Username:" + json.username + "</div><div>First Name:" + json.firstName + "</div><div>Last Name:" + json.lastName + "</div></div>" +

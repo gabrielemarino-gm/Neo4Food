@@ -262,10 +262,10 @@ public class SocialNeoDAO extends BaseNeo4J
         try (Session session = getSession())
         {
             String searchQuery = "MATCH (u1:User)-[:FOLLOWS]->(u2:User) " +
-                    "WHERE u1.username = $username " +
-                    "RETURN u2.username as user " +
-                    "SKIP $skip " +
-                    "LIMIT $limit";
+                                "WHERE u1.username = $username " +
+                                "RETURN u2.username as user " +
+                                "SKIP $skip " +
+                                "LIMIT $limit";
 
             ListDTO<UserDTO> toReturn = new ListDTO<UserDTO>();
 
@@ -280,7 +280,6 @@ public class SocialNeoDAO extends BaseNeo4J
                     tempUser.setUsername(r.get("user") != null ? r.get("user").asString() : "Anonymous");
                     tempList.add(tempUser);
                 }
-
 
                 toReturn.setList(tempList);
                 toReturn.setItemCount(tempList.size());
