@@ -17,7 +17,8 @@
     <%UserDTO userDTO = (UserDTO) request.getAttribute("userDTO");%>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
-        page=0;
+
+        let page=0;
 
         function nextPage(){
             page += 1;
@@ -34,7 +35,7 @@
 
         function getRecommendationByFollowRequest()
         {
-            toSend={
+            toSend = {
                 action: "getRecommendationByFollow",
                 username: "<%= userDTO.getUsername() %>"
             };
@@ -167,15 +168,17 @@
 
         function removeFollow(username)
         {
-            toSendRem = {
-                "username": <%= userDTO.getUsername() %>, // Username Corrente (Chi ha fatto il login)
-                "username2": username, // Username da unfolloware
-                "action": "setFollow"
+            let toSend = {
+                "action": "removeFollow",
+                "actor": <%= userDTO.getUsername() %>,
+                "target": username
             };
 
-            $.post("<c:url value='/social'/>", toSendRem, function (result)
+            $.post("<c:url value='/social'/>", toSend, function (result)
             {
-                json = JSON.parse(result);
+                // TODO RIMUOVERE IL DIV SENZA RICARICARE LA PAGINA
+
+
             }).fail(function (xhr, status, error)
             {
                 alert(xhr+"\n"+status+"\n"+error);
@@ -184,34 +187,34 @@
 
         function setFollow(username)
         {
-            toSendAdd = {
-                "username": <%= userDTO.getUsername() %>,
-                "username2": username,
-                "action": "setFollow"
+            let toSend = {
+                "action": "setFollow",
+                "actor": <%= userDTO.getUsername() %>,
+                "target": username
             };
 
-            $.post("<c:url value='/social'/>", toSendAdd, function (result)
+            $.post("<c:url value='/social'/>", toSend, function (result)
             {
-                json = JSON.parse(result);
+                // TODO AGGIUNGERE IL DIV SENZA RICARICARE LA PAGINA
+
             }).fail(function (xhr, status, error)
             {
                 alert(xhr+"\n"+status+"\n"+error);
             });
         }
-        toSend6={
-            action: "getFollowersNextPage",
-            username:"<%= userDTO.getUsername() %>",
-            page,
-        }
+
         function getFollowersNext()
         {
             page = page + 1;
 
-            toSend6.page=page;
+            toSend={
+                action: "getFollowersNextPage",
+                username:"<%= userDTO.getUsername() %>",
+                page: page,
+            }
 
             $.post("<c:url value='/social'/>", toSend6, function (result)
             {
-                console.log(result)
                 json = JSON.parse(result);
 
                 $("#boxFollow").empty();

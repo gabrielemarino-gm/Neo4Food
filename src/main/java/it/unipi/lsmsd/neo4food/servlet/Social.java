@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-@WebServlet({"/social"})
+@WebServlet("/social")
 public class Social extends HttpServlet
 {
 
@@ -22,19 +22,16 @@ public class Social extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
         String actionType = request.getParameter("action");
-        String username;
-        String username2;
-        String text;
         String toSend;
-        ListDTO userList;
 
         if (actionType.equals("getComments"))
         {
-            username = request.getParameter("restaurantId");
+            String rest = request.getParameter("restaurantId");
             int page = Integer.parseInt(request.getParameter("page"));
-            ListDTO<CommentDTO> commentList = ServiceProvider.getSocialService().getComments(username, page);
-            text = (new Gson()).toJson(commentList);
+            ListDTO<CommentDTO> commentList = ServiceProvider.getSocialService().getComments(rest, page);
+            String text = (new Gson()).toJson(commentList);
 
+//            Gli mando i commenti come json solo se non sono nulli altrimenti non gli mando nulla
             if (commentList != null)
             {
                 response.getWriter().println(text);
@@ -47,51 +44,45 @@ public class Social extends HttpServlet
             }
 
         }
+//        Creo una nuova review
         else if (actionType.equals("addReview")) {
-            username = request.getParameter("who");
-            username2 = request.getParameter("to");
+
+            String actor = request.getParameter("who");
+            String target = request.getParameter("to");
             Double mark = Double.parseDouble(request.getParameter("rate"));
-            text = request.getParameter("text") != null ? request.getParameter("text") : "";
-            ServiceProvider.getSocialService().setRating(username, username2, mark, text);
-            response.getWriter().println();
-            response.getWriter().flush();
+            String text = request.getParameter("text") != null ? request.getParameter("text") : "";
+            ServiceProvider.getSocialService().setRating(actor, target, mark, text);
+
+            return;
         }
 
 //      Usato in friendlist.jsp
 //      Usato in header.jsp
         else if(actionType.equals("setFollow"))
         {
-            username = request.getParameter("username");
-            username2 = request.getParameter("username2");
-            System.out.println(username2);
-            System.out.println(username);
-            ServiceProvider.getSocialService().setFollow(username, username2);
+            String actor = request.getParameter("actor");
+            String target = request.getParameter("target");
 
-            toSend = (new Gson()).toJson(username);
-            response.getWriter().println(toSend);
-            response.getWriter().flush();
+            ServiceProvider.getSocialService().setFollow(actor, target);
+
+            return;
         }
-//      Questo if non fa nulla (?)
-        else if (actionType.equals("search"))
-        {
-            username = request.getParameter("target");
-            username2 = request.getParameter("page");
-            System.out.println(request.getParameter("userSearch"));
-        }
+
         else if (actionType.equals("getFollowers"))
         {
             targetJSP = "WEB-INF/jsp/friendlist.jsp";
-            username = request.getParameter("username");
+            String username = request.getParameter("username");
             int page2 = Integer.parseInt(request.getParameter("page"));
             userList = ServiceProvider.getSocialService().getFollowers(username, page2);
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(request.getParameter("username"));
             request.setAttribute("listDTO", userList);
             request.setAttribute("userDTO", userDTO);
+
         }
         else if (actionType.equals("getFollowersNextPage"))
         {
-            username = request.getParameter("username");
+            String username = request.getParameter("username");
             int page2 = Integer.parseInt(request.getParameter("page"));
             userList = ServiceProvider.getSocialService().getFollowers(username, page2);
 
@@ -103,8 +94,8 @@ public class Social extends HttpServlet
 //      Used in friendlist.jsp
         else if (actionType.equals("getRecommendationByFollow"))
         {
-            username = request.getParameter("username");
-            System.out.println(username);
+            String username = request.getParameter("username");
+
             userList = ServiceProvider.getSocialService().getRecommendationFriendOfFriend(username);
 
             toSend = (new Gson()).toJson(userList);
@@ -115,9 +106,9 @@ public class Social extends HttpServlet
 //        Used in friendlist.jsp
         else if (actionType.equals("getRecommendationByRestaurant"))
         {
-            username = request.getParameter("username");
-            ServiceProvider.getSocialService();
-            userList = SocialNeoDAO.getRecommendationUserRestaurant(username);
+            String username = request.getParameter("username");
+            
+            userList = ServiceProvider.getSocialService().getRecommendationUserRestaurant(username);
             toSend = (new Gson()).toJson(userList);
             response.getWriter().println(toSend);
             response.getWriter().flush();
