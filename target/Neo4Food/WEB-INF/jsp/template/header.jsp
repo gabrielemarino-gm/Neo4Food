@@ -23,75 +23,82 @@
     }
 
     %>
+<%--    --%>
+
+<%--    --%>
 <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
-    <script type="text/javascript">
-        function toggleButtonState(){
-            $('#userSearchButton').click(function() {
-                var currentState = $(this).attr('state');
-                if (currentState === 'offSearch') {
-                    $(this).attr('state', 'onSearch');
+<script type="text/javascript">
 
-                }
-            });
+    let searchVisible = false;
+    let textSearchVisible = false;
 
-
+    function toggleSearch(){
+        if(!searchVisible){
+            $('#search').show();
+            searchVisible = true;
+        } else {
+            $('#search').hide();
+            $("#boxSearch").empty();
+            searchVisible = false;
         }
-
-        function toggleSearch(){
-            const element = document.querySelector('#search');
-
-            if (element.style.display === 'block') {
-                element.style.display = 'none';
-            } else {
-                element.style.display = 'block';
-            }
-        }
-        function showSearch()
-        {
+    }
+    // Per far apparire la barra la prima volta
+    function showSearchText()
+    {
+        if(!textSearchVisible) {
             $("#userSearchText").show();
-            toggleButtonState()
+            textSearchVisible = true;
+        }
+    }
+    function hideSearchText()
+    {
+        if(textSearchVisible) {
+            $("#userSearchText").hide();
+            textSearchVisible = false;
+        }
+    }
+
+
+    function setFollow(username) {
+        let toSendH = {
+                action: "setFollow",
+                username: "<%= username %>",
+                username2: username
         }
 
-        toSend8={
-            action: "setFollow",
-            username: "<%= username %>",
-            username2: ""
-        }
-        function setFollow(username) {
-            toSend8.username2 = username
+        $.post("<c:url value='/social'/>", toSendH, function (result){
+            json = JSON.parse(result);
+        })
+            .fail(function (xhr, status, error){
+                alert(xhr+"\n"+status+"\n"+error);
+            });
+    }
 
-            $.post("<c:url value='/social'/>", toSend8, function (result){
-                json = JSON.parse(result);
-            })
-                .fail(function (xhr, status, error){
-                    alert(xhr+"\n"+status+"\n"+error);
-                });
+    function searchUser() {
+
+        if(!searchVisible) {
+            toggleSearch();
         }
 
-toSend7={action:"searchUser",
-username:"",}
-        function searchUser() {
+        toSendH = {
+            action: "searchUser",
+            username: $('#userSearchText').val()
+        }
 
-            if($('#userSearchButton').attr('state')=='onSearch') {
-                var userSearchText = document.querySelector('#userSearchText');
-                toSend.username = userSearchText.value
-
-                $.post("<c:url value='/social'/>", toSend7, function (result) {
-                    json = JSON.parse(result);
-
-                    toggleSearch();
-                    $("#boxSearch").empty();
-                    $("#boxSearch").append("<div><div>Username:" + json.username + "</div><div>First Name:" + json.firstName + "</div><div>Last Name:" + json.lastName + "</div></div>" +
-                    "<Button onclick='setFollow(\"" + json.username + "\")' > FOLLOW" + "</Button>" + " </div>");
-                })
-                    .fail(function (xhr, status, error) {
-                        alert(xhr + "\n" + status + "\n" + error);
-                    });
+        $.post("<c:url value='/social'/>", toSendH, function (result) {
+            json = JSON.parse(result);
+            if(!(json.id == '0')) {
+                $("#boxSearch").append("<div><div>Username:" + json.username + "</div><div>First Name:" + json.firstName + "</div><div>Last Name:" + json.lastName + "</div></div>" +
+                "<Button onclick='setFollow(\"" + json.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+            }else
+            {
+                $("#boxSearch").append("<div>No user found with this name</div>");
             }
-        }
-
-
-    </script>
+        }).fail(function (xhr, status, error) {
+            alert(xhr + "\n" + status + "\n" + error);
+        });
+    }
+</script>
 
 </head>
 <%-- GESTIONE BOTTONI HEADER --%>
@@ -144,35 +151,32 @@ username:"",}
                     <a>Following</a>
                 </button>
                 </form>
-                    <form method="post" action="<c:url value="/personal"/>">
-                        <input type="hidden" name="actor" value="user">
-                        <input type="hidden" name="action" value="personal">
-                        <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
-                            <a><%= username %></a>
-                        </button>
-                    </form>
-                    <%--    Il pulsante per fare una ricerca di utenti --%>
-                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearch()" state="offSearch">
-                        <img class="h-5 mr-3" src="img/lente.png" onclick="searchUser() " alt="lente">
-                        <form id="searchPeople" method="post">
-                            <input name="action" type="hidden" value="search">
-                            <input name="actor" type="hidden" value="<%= username %>">
-                            <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" name="userSearch" placeholder="Search by username">
-                            <button type="button" ></button>
-                        </form>
 
-
-
+                <form method="post" action="<c:url value="/personal"/>">
+                    <input type="hidden" name="actor" value="user">
+                    <input type="hidden" name="action" value="personal">
+                    <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+                        <a><%= username %></a>
                     </button>
+                </form>
 
-    <div id="search" style="display:none;"  class=" z-50 fixed h-full w-full bg-black bg-opacity-20 ">
-        <div  class=" mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
+                <%--    TODO RICRCA UTENTI --%>
 
-            <div id="boxSearch">
+                <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onmouseover="showSearchText()" onmouseleave="hideSearchText()">
+                    <img class="h-5 mr-3" src="img/lente.png" onclick="searchUser()" alt="lente">
+                    <div onsubmit="searchUser()">
+                        <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" placeholder="Search by username">
+                        <button type="button" onclick="searchUser()"></button>
+                    </div>
+                </button>
 
-            </div>
-            <button class=" top-3 right-3 px-1 rounded-xl" onclick="toggleSearch()"><img class="h-7" src="img/x.png" alt="X"/></button>        </div>
-    </div>
+                <div id="search" style="display:none;"  class=" z-50 fixed h-full w-full bg-black bg-opacity-20 ">
+                    <div  class=" mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
+                        <div id="boxSearch">
+
+                        </div>
+                        <button class=" top-3 right-3 px-1 rounded-xl" onclick="toggleSearch()"><img class="h-7" src="img/x.png" alt="X"/></button>        </div>
+                </div>
 
 <%              }
                 else

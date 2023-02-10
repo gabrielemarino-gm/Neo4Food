@@ -137,12 +137,11 @@ public class Social extends HttpServlet {
 
                                 UserDTO userDTO = ServiceProvider.getUserService().getUser(username);
 
-                                if(userDTO.getId()!="0"){
-                                    toSend = (new Gson()).toJson(userDTO);
-                                    response.getWriter().println(toSend);
-                                    response.getWriter().flush();
-                                    return;
-                                }
+                                toSend = (new Gson()).toJson(userDTO);
+
+                                response.getWriter().println(toSend);
+                                response.getWriter().flush();
+                                return;
                             }
                         }
                     }
