@@ -17,11 +17,6 @@
     <%UserDTO userDTO = (UserDTO) request.getAttribute("userDTO");%>
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
-        toSend={
-            action: "getRecommendationByFollow",
-            username: "<%= userDTO.getUsername() %>",
-        }
-
         page=0;
 
         function nextPage(){
@@ -37,15 +32,14 @@
             return page;
         }
 
-        toSend4 = {
-            action: "setFollow",
-            username: "<%= userDTO.getUsername() %>",
-            username2: ""
-        }
-
-
         function getRecommendationByFollowRequest()
         {
+            toSend={
+                action: "getRecommendationByFollow",
+                username: "<%= userDTO.getUsername() %>"
+            };
+
+            $("#boxRec").show();
             $.post("<c:url value='/social'/>", toSend, function (result)
             {
                 json = JSON.parse(result);
@@ -54,17 +48,27 @@
 
                 if(!json || !json.list.length)
                 {
-                    $("#boxRec").append("<div>There is nothing to display based on your followers.</div>");
+                    $("#boxRec").append('' +
+                        '<div class="mt-5 bg-principale rounded-md w-5/6 px-5 py-6 mx-auto shadow-md text-center">' +
+                            '<div>There is nothing to display here.</div>' +
+                        '</div>'
+                    );
                 }
                 else
                 {
                     for (i = 0; i < json.list.length; i++)
                     {
                         var consigliato = json.list[i];
-                        console.log(consigliato);
 
-                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div>" +
-                            "<Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                        $("#boxRec").append('' +
+                            '<div class="mt-5 bg-principale rounded-md w-5/6 px-5 py-6 mx-auto shadow-md flex">' +
+                                '<div>' +
+                                    '<div>' + consigliato.username + '</div>' +
+                                    '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
+                                '</div>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(' + consigliato.username + ')"> FOLLOW '+'</button>' +
+                            '</div>'
+                        );
                     }
                 }
             }).fail(function (xhr, status, error)
@@ -73,27 +77,43 @@
             });
         }
 
-
-        toSend3={
-            action: "getRecommendationByRestaurant",
-            username: "<%= userDTO.getUsername() %>",
-        }
-
         function getRecommendationByRestaurantRequest()
         {
-            $.post("<c:url value='/social'/>", toSend3, function (result)
+            toSendRecc={
+                action: "getRecommendationByRestaurant",
+                username: "<%= userDTO.getUsername() %>"
+            };
+
+            $("#boxRec").show();
+            $.post("<c:url value='/social'/>", toSendRecc, function (result)
             {
                 json = JSON.parse(result);
                 $("#boxRec").empty();
-                if(!json || !json.list.length){
-                    $("#boxRec").append("<div>There is nothing to display based on your rated restaurant.</div>");
-                }else {
-                for(i = 0; i<json.list.length; i++) {
-                    var consigliato = json.list[i];
+                if(!json || !json.list.length)
+                {
+                    $("#boxRec").append('' +
+                        '<div class="mt-5 bg-principale rounded-md w-5/6 px-5 py-6 mx-auto shadow-md text-center">' +
+                            '<div>There is nothing to display here.</div>' +
+                        '</div>'
+                    );
+                }
+                else
+                {
+                    for(i = 0; i<json.list.length; i++)
+                    {
+                        var consigliato = json.list[i];
 
-                        $("#boxRec").append("<div><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                        $("#boxRec").append('' +
+                            '<div class="mt-5 bg-principale rounded-md w-5/6 px-5 py-6 mx-auto shadow-md flex">' +
+                                '<div>' +
+                                    '<div>' + consigliato.username + '</div>' +
+                                    '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
+                                '</div>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(' + consigliato.username + ')"> FOLLOW '+'</button>' +
+                            '</div>'
+                        );
                     }
-                    }
+                }
 
             }).fail(function (xhr, status, error)
             {
@@ -101,45 +121,42 @@
             });
         }
 
-        toSend2={
-            action: "removeFollow",
-            username: "<%= userDTO.getUsername() %>",
-            username2: ""
-        }
-
-        function removeFollow(username)
-        {
-            toSend2.username2 = username;
-
-            $.post("<c:url value='/social'/>", toSend2, function (result){
-                json = JSON.parse(result);
-            }).fail(function (xhr, status, error)
-            {
-                alert(xhr+"\n"+status+"\n"+error);
-            });
-        }
-
-        toSend5={
-            action: "getInfluencer",
-        }
-
         function getInfluencer()
         {
-            $.post("<c:url value='/social'/>", toSend5, function (result)
+            toSend={
+                action: "getInfluencer"
+            };
+
+            $("#boxRec").show();
+            $.post("<c:url value='/social'/>", toSend, function (result)
             {
                 json = JSON.parse(result);
                 $("#boxRec").empty();
 
                 if(!json || !Object.keys(json).length)
                 {
-                    $("#boxRec").append("<div>There is nothing to display</div>");
+                    $("#boxRec").append('' +
+                        '<div class="mt-5 bg-principale rounded-md w-5/6 px-5 py-6 mx-auto shadow-md text-center">' +
+                            '<div>There is nothing to display here.</div>' +
+                        '</div>'
+                    );
                 }
                 else
                 {
                     for (i = 0; i < json.list.length; i++)
                     {
                         var consigliato = json.list[i];
-                        $("#boxRec").append("<div ><div>Username:" + consigliato.username + "</div><div>Followers:" + consigliato.nfollowers + "</div><div><Button onclick='setFollow(\"" + consigliato.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+
+                        $("#boxRec").append('' +
+                            '<div class="mt-5 bg-principale rounded-md w-5/6 px-5 py-6 mx-auto shadow-md flex">' +
+                                '<div>' +
+                                    '<div>' + consigliato.username + '</div>' +
+                                    '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
+                                '</div>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\''+ consigliato.username + '\')"> FOLLOW </button>' +
+                            '</div>'
+                        );
+
                     }
                 }
             }).fail(function (xhr, status, error)
@@ -148,15 +165,48 @@
             });
         }
 
+        function removeFollow(username)
+        {
+            toSendRem = {
+                "username": <%= userDTO.getUsername() %>, // Username Corrente (Chi ha fatto il login)
+                "username2": username, // Username da unfolloware
+                "action": "setFollow"
+            };
+
+            $.post("<c:url value='/social'/>", toSendRem, function (result)
+            {
+                json = JSON.parse(result);
+            }).fail(function (xhr, status, error)
+            {
+                alert(xhr+"\n"+status+"\n"+error);
+            });
+        }
+
+        function setFollow(username)
+        {
+            toSendAdd = {
+                "username": <%= userDTO.getUsername() %>,
+                "username2": username,
+                "action": "setFollow"
+            };
+
+            $.post("<c:url value='/social'/>", toSendAdd, function (result)
+            {
+                json = JSON.parse(result);
+            }).fail(function (xhr, status, error)
+            {
+                alert(xhr+"\n"+status+"\n"+error);
+            });
+        }
         toSend6={
             action: "getFollowersNextPage",
             username:"<%= userDTO.getUsername() %>",
             page,
         }
-
         function getFollowersNext()
         {
             page = page + 1;
+
             toSend6.page=page;
 
             $.post("<c:url value='/social'/>", toSend6, function (result)
@@ -176,6 +226,7 @@
                     for (i = 0; i < json.list.length; i++)
                     {
                         var follower = json.list[i];
+
                         $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>Username:" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > REMOVE FOLLOW" + "</button>" + " </div>");
                     }
                 }
@@ -212,7 +263,6 @@
                         }
                     }
 
-
                 }).fail(function (xhr, status, error)
                 {
                     alert(xhr + "\n" + status + "\n" + error);
@@ -239,7 +289,7 @@
             for (UserDTO item: list)
             {
 %>
-                <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6" >
+                <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md">
                     <div><%=item.getUsername()%></div>
                     <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
                 </div>
@@ -261,11 +311,8 @@
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getInfluencer()" >Get Influencer</button>
     </div>
 
+    <div class="mt-10"  id="boxRec">
 
-    <div style="display:none" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
-        <div id="boxRec">
-
-        </div>
     </div>
 
 

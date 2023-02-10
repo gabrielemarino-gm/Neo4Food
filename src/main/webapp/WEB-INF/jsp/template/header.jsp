@@ -54,6 +54,7 @@
             textSearchVisible = true;
         }
     }
+
     function hideSearchText()
     {
         if(textSearchVisible) {
@@ -104,7 +105,6 @@
     }
 </script>
 
-</head>
 <%-- GESTIONE BOTTONI HEADER --%>
     <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
 
@@ -158,7 +158,7 @@
                 <form method="post" action="<c:url value="/social"/>">
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
                     <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
-                    <input type="hidden" name="page" value= 0 >
+                    <input type="hidden" name="page" value=0>
                     <input type="hidden" name="action" value="getFollowers">
                     <a>Following</a>
                 </button>

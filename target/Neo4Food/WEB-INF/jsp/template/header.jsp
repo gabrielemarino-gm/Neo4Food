@@ -3,7 +3,6 @@
 <%@ page import="it.unipi.lsmsd.neo4food.dto.RestaurantDTO" %>
 <%@ page import="it.unipi.lsmsd.neo4food.constants.Constants" %>
 <%@ page import="it.unipi.lsmsd.neo4food.dto.UserDTO" %>
-<head>
 <%
     String username = null;
     String restaurantname = null;
@@ -11,14 +10,19 @@
     Boolean isRestaurant = false;
 
     if (session != null)
-        if(session.getAttribute(Constants.AUTHENTICATION_FIELD) != null){
-        isLogged = true;
-        if (session.getAttribute("username") != null){
-            username = (String) session.getAttribute("username");
-        }
-        else if (session.getAttribute("restaurantname") != null){
-            isRestaurant = true;
-            restaurantname = (String) session.getAttribute("restaurantname");
+    {
+        if (session.getAttribute(Constants.AUTHENTICATION_FIELD) != null)
+        {
+            isLogged = true;
+            if (session.getAttribute("username") != null)
+            {
+                username = (String) session.getAttribute("username");
+            }
+            else if (session.getAttribute("restaurantname") != null)
+            {
+                isRestaurant = true;
+                restaurantname = (String) session.getAttribute("restaurantname");
+            }
         }
     }
 
@@ -50,6 +54,7 @@
             textSearchVisible = true;
         }
     }
+
     function hideSearchText()
     {
         if(textSearchVisible) {
@@ -100,18 +105,22 @@
     }
 </script>
 
-</head>
 <%-- GESTIONE BOTTONI HEADER --%>
     <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
 
 <%--        Il pulsante del logo ti manda a ricerca se non si e' ristorante --%>
 <%--        Oppure alla pagina personale se si e' un ristorante             --%>
 
-            <% if(!isRestaurant){ %>
+<%      if(!isRestaurant)
+        {
+%>
 <%--            Utente registrato o non registrato--%>
             <a href="<c:url value="/ricerca"/>"><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
-            <%}else{%>
-<%--            Ristorante --%>
+<%      }
+        else
+        {
+%>
+<%--        Ristorante --%>
             <form method="post" action="<c:url value="/personal"/>" class="h-12 float-left">
                 <input type="hidden" name="actor" value="restaurant">
                 <input type="hidden" name="action" value="personal">
@@ -119,16 +128,18 @@
                     <a><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
                 </button>
             </form>
-            <%}%>
-        <%-- Se sono loggato mostro pulsante di logout--%>
+<%      }
+%>
+<%--        Se sono loggato mostro pulsante di logout--%>
 
 <%          if (isLogged)
-            {%>
-            <%--    Il pulsante di logout fa sloggare tutti--%>
+            {
+%>
+<%--            Il pulsante di logout fa sloggare tutti--%>
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </button>
-<%--                Il pulsante per andare agli ordini agisce in maniera diversa--%>
+<%--            Il pulsante per andare agli ordini agisce in maniera diversa--%>
 <%--                Se si e' ristorante o cliente--%>
                 <form method="post" action="<c:url value="/personal"/>">
                     <input type="hidden" name="aid" value="<%= isRestaurant ? ((RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD)).getId() : username%>">
@@ -141,12 +152,13 @@
 
 
 <%              if(!isRestaurant)
-                {%>
+                {
+%>
 <%--                Se non sono ristorante voglio andare alla pagina personale utente--%>
                 <form method="post" action="<c:url value="/social"/>">
                 <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
                     <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
-                    <input type="hidden" name="page" value= 0 >
+                    <input type="hidden" name="page" value=0>
                     <input type="hidden" name="action" value="getFollowers">
                     <a>Following</a>
                 </button>
@@ -180,7 +192,8 @@
 
 <%              }
                 else
-                {%>
+                {
+%>
 <%--                Se sono ristorante voglio andare alla pagina personale del ristorante--%>
                     <form method="post" action="<c:url value="/personal"/>">
                         <input type="hidden" name="actor" value="restaurant">
@@ -189,18 +202,16 @@
                             <a><%= restaurantname %></a>
                         </button>
                     </form>
-
-
-<%              }%>
+<%              }
+%>
         <%-- Altrimenti metto link alla pagina di login--%>
-        <%  }
+<%          }
             else
             {
-        %>      <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+%>              <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
                     <a href="<c:url value="/login"/>">Login</a>
                 </button>
-        <%  }
-        %>
+<%          }
+%>
 
-
-        </header>
+    </header>
