@@ -224,47 +224,49 @@
 
 </head>
 <body>
-<%@ include file="template/header.jsp"%>
+    <%@ include file="template/header.jsp"%>
 
-<div id="box"></div>
-<% ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
-
-    List<UserDTO> list = listDTO.getList();
-            ;%>
-
-<div id="boxFollow">
-<%
-for (UserDTO item: list)
-
-{  ;%>
-
-<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6" >
-<div>"<%=item.getUsername()%>" </div>
-<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
-</div>
-
-<%}%>
-</div>
-<%if(!list.isEmpty()){%>
-
-<%}%>
-</div>
-<button  onclick="getFollowersPrevious()" ><</button>
-<button  onclick="getFollowersNext()" >></button>
-<div>
-    <button onclick="getRecommendationByFollowRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations By User</button>
-    <button onclick="getRecommendationByRestaurantRequest()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Recommendations By Restaurant</button>
-    <button onclick="getInfluencer()" class="mx-auto flex px-96 mt-4 text-center rounded-lg border-2 hover:bg-button">Get Influencer</button>
-</div>
+    <div id="box"></div>
+<%      ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
+        List<UserDTO> list = listDTO.getList();
+%>
 
 
-
-<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
-    <div id="boxRec">
+    <div class="my-10" id="boxFollow">
+<!--    STAMPO LA LISTA DEI FOLLOWER-->
+<%      if(!list.isEmpty())
+        {
+            for (UserDTO item: list)
+            {
+%>
+                <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6" >
+                    <div><%=item.getUsername()%></div>
+                    <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+                </div>
+<%          }
+        }
+%>
+<!--    BOTTONI PER ANDARE AVANTI NELLE PAGINE-->
+        <div class="mt-3 flex justify-center">
+            <button  onclick="getFollowersPrevious()"><img class="h-7" src="img/left_arrow.png" alt="prec"></button>
+            <div class="w-9/12"></div>
+            <button  onclick="getFollowersNext()"><img class="h-7" src="img/right_arrow.png" alt="succ"></button>
+        </div>
     </div>
 
-</div>
 
+    <div class="flex justify-center w-5/6 mx-auto mt-2">
+        <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByFollowRequest()" >Get Recommendations By User</button>
+        <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByRestaurantRequest()" >Get Recommendations By Restaurant</button>
+        <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getInfluencer()" >Get Influencer</button>
+    </div>
+
+
+    <div style="display:none" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">
+        <div id="boxRec">
+
+        </div>
+    </div>
 
 
 <%@ include file="template/footer.jsp"%>

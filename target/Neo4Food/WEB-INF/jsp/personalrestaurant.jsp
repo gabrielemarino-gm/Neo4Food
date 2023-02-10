@@ -11,7 +11,7 @@
         List<OrderDTO> ordini = (List<OrderDTO>) request.getAttribute("orderList");
 
     %>
-    <title>Personal Page</title>
+    <title>Personal Page Restaurant</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
@@ -38,7 +38,8 @@
                 $("body").css({"overflow": "hidden"});
                 pageReviewActive = true;
 
-                $.post("<c:url value="/social"/>", toSend, function (result) {
+                $.post("<c:url value="/social"/>", toSend, function (result)
+                {
                     json = JSON.parse(result);
 
                     if (json.itemCount == 0)
@@ -86,7 +87,8 @@
 
                     toSend.page++;
 
-                }).fail(function (xhr, status, error){
+                }).fail(function (xhr, status, error)
+                {
                     alert(xhr+"\n"+status+"\n"+error);
                 });
 //          )
@@ -104,7 +106,8 @@
                     {
                         $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No more Reviews</div>');
                     }
-                    else{
+                    else
+                    {
                         for(i = 0; i<json.list.length; i++)
                         {
                             var commento = json.list[i];
@@ -138,13 +141,15 @@
 
                     toSend.page++;
 
-                }).fail(function (xhr, status, error){
+                }).fail(function (xhr, status, error)
+                {
                     alert(xhr+"\n"+status+"\n"+error);
                 });
             }
         }
 
-        function closeReviews() {
+        function closeReviews()
+        {
             $(bgReviewDivID).hide();
             $("body").css({"overflow": ""});
             pageReviewActive = false;
@@ -163,11 +168,14 @@
     <div class="relative mx-auto w-2/3 rounded-lg bg-principale text-center py-3 -my-11 shadow-md px-5">
         <%--        Restaurant detailed infos--%>
         <div class="text-3xl font-bold"><%= details.getName() %></div>
-            <% if(request.getAttribute("message") != null)
-            {%>
-            <div><%= request.getAttribute("message").toString() %></div>
-            <% }  %>
+<%          if(request.getAttribute("message") != null)
+            {
+%>
+                <div><%= request.getAttribute("message").toString() %></div>
+<%          }
+%>
         <div class="h-5"></div>
+
         <div class="flex flex-wrap">
 <%
             Float rate = details.getRating();

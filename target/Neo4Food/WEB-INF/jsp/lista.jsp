@@ -199,31 +199,31 @@
                     <div>
                         <div class="flex justify-end items-end">
 
-<%--                Previous page--%>
-<%                  if(pagenum > 0)
-                    {
+<%--                        Previous page--%>
+<%                          if(pagenum > 0)
+                            {
 %>
-                        <form class="my-4 bg-red-100" method="post" action="<c:url value="/ricerca"/>">
-                            <input type="hidden" name="zipcode" value="<%= zipcode %>">
-                            <input type="hidden" name="page" value= <%= pagenum - 1%>>
-                            <input type="hidden" name="action" value="search">
-                            <input type="hidden" name="filter" value="<%= filter %>" />
-                            <button class="w-20 mx-2 rounded-lg border-2 hover:bg-button" type="submit"> < <%= pagenum %></button>
-                        </form>
-<%                  }
+                                <form class="my-4 bg-red-100" method="post" action="<c:url value="/ricerca"/>">
+                                    <input type="hidden" name="zipcode" value="<%= zipcode %>">
+                                    <input type="hidden" name="page" value= <%= pagenum - 1%>>
+                                    <input type="hidden" name="action" value="search">
+                                    <input type="hidden" name="filter" value="<%= filter %>" />
+                                    <button class="mx-2 rounded-lg hover:bg-button" type="submit"><img class="h-7" src="img/left_arrow.png" alt="prec"></button>
+                                </form>
+<%                          }
 %>
-    <%--                Next page--%>
-<%                  if (count == Constants.PAGE_SIZE)
-                    {
+<%--                        Next page--%>
+<%                          if (count == Constants.PAGE_SIZE)
+                            {
 %>
-                        <form class="my-4 "  method="post" action="<c:url value="/ricerca"/>">
-                            <input type="hidden" name="zipcode" value="<%= zipcode %>">
-                            <input type="hidden" name="page" value= <%= pagenum + 1 %>>
-                            <input type="hidden" name="action" value="search">
-                            <input type="hidden" name="filter" value="<%= filter %>" />
-                            <button class="w-20 mx-2 rounded-lg border-2 hover:bg-button" type="submit"><%= pagenum + 2%> > </button>
-                        </form>
-<%                  }
+                                <form class="my-4 "  method="post" action="<c:url value="/ricerca"/>">
+                                    <input type="hidden" name="zipcode" value="<%= zipcode %>">
+                                    <input type="hidden" name="page" value= <%= pagenum + 1 %>>
+                                    <input type="hidden" name="action" value="search">
+                                    <input type="hidden" name="filter" value="<%= filter %>" />
+                                    <button class="mx-2 rounded-lg hover:bg-button" type="submit"><img class="h-7" src="img/right_arrow.png" alt="succ"></button>
+                                </form>
+<%                           }
 %>
                         </div>
                     </div>
