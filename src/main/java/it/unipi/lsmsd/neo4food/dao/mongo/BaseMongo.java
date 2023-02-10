@@ -48,7 +48,7 @@ public abstract class BaseMongo {
         ConnectionString uri = new ConnectionString(String.format(URL_FORMAT,NODE01,PORT01,NODE02,PORT02,NODE03,PORT03));
         MongoClientSettings mcs = MongoClientSettings.builder()
                 .applyConnectionString(uri)
-                .readPreference(ReadPreference.primaryPreferred())
+                .readPreference(ReadPreference.nearest())
                 .writeConcern(WriteConcern.W1)
                 .build();
 
