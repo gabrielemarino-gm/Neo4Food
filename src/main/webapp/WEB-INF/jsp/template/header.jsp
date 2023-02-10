@@ -64,7 +64,7 @@
     }
 
 
-    function setFollow(username) {
+    function setFollowHeader(username) {
         let toSend = {
                 action: "setFollow",
                 actor: "<%= username %>",
@@ -72,7 +72,8 @@
         }
 
         $.post("<c:url value='/social'/>", toSend, function (result){
-            json = JSON.parse(result);
+            toggleSearch();
+
         })
             .fail(function (xhr, status, error){
                 alert(xhr+"\n"+status+"\n"+error);
@@ -94,7 +95,7 @@
             json = JSON.parse(result);
             if(!(json.id == '0')) {
                 $("#boxSearch").append("<div><div>Username:" + json.username + "</div><div>First Name:" + json.firstName + "</div><div>Last Name:" + json.lastName + "</div></div>" +
-                "<Button onclick='setFollow(\"" + json.username + "\")' > FOLLOW" + "</Button>" + " </div>");
+                "<Button onclick='setFollowHeader(\"" + json.username + "\")' > FOLLOW" + "</Button>" + " </div>");
             }else
             {
                 $("#boxSearch").append("<div>No user found with this name</div>");

@@ -65,7 +65,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(' + consigliato.username + ')"> FOLLOW '+'</button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\'' + consigliato.username + '\')"> FOLLOW '+'</button>' +
                             '</div>'
                         );
                     }
@@ -108,7 +108,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(' + consigliato.username + ')"> FOLLOW '+'</button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\'' + consigliato.username + '\')"> FOLLOW '+'</button>' +
                             '</div>'
                         );
                     }
@@ -187,7 +187,7 @@
         {
             let toSend = {
                 "action": "setFollow",
-                "actor": <%= userDTO.getUsername() %>,
+                "actor": "<%= userDTO.getUsername() %>",
                 "target": username
             };
 
@@ -196,8 +196,8 @@
                 // TODO AGGIUNGERE IL DIV SENZA RICARICARE LA PAGINA
                 $("#boxFollow").append('' +
                     '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
-                        '<div>Username:' + username + '</div>' +
-                        '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+username+'\')"> REMOVE FOLLOW </button>' +
+                        '<div>' + username + '</div>' +
+                        '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+username+'\')"> Remove follow </button>' +
                     '</div>'
                 );
 
@@ -236,8 +236,8 @@
 
                         $("#boxFollow").append('' +
                             '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
-                            '<div>Username:' + follower.username + '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+follower.username+'\')"> REMOVE FOLLOW </button>' +
+                            '<div>' + follower.username + '</div>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+follower.username+'\')"> Remove follow </button>' +
                             '</div>'
                         );
                     }
@@ -277,7 +277,7 @@
                         for (i = 0; i < json.list.length; i++)
                         {
                             var follower = json.list[i];
-                            $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>Username:" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > REMOVE FOLLOW" + "</button>" + " </div>");
+                            $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > Remove follow" + "</button>" + " </div>");
                         }
                     }
 
@@ -303,7 +303,7 @@
 
 
     <div class="my-10">
-        <div id="boxFollow>
+        <div id="boxFollow">
 <!--        STAMPO LA LISTA DEI FOLLOWER-->
 <%          if(!list.isEmpty())
             {

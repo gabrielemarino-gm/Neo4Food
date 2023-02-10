@@ -10,7 +10,6 @@
     <title>Friend List</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurants List</title>
     <%@ include file="/WEB-INF/jsp/template/head_includes.jsp" %>
     <% UserDTO userDTO = (UserDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD); %>
 
@@ -34,7 +33,7 @@
 
         function getRecommendationByFollowRequest()
         {
-            toSend = {
+            let toSend = {
                 action: "getRecommendationByFollow",
                 username: "<%= userDTO.getUsername() %>"
             };
@@ -66,7 +65,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(' + consigliato.username + ')"> FOLLOW '+'</button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\'' + consigliato.username + '\')"> FOLLOW '+'</button>' +
                             '</div>'
                         );
                     }
@@ -109,7 +108,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(' + consigliato.username + ')"> FOLLOW '+'</button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\'' + consigliato.username + '\')"> FOLLOW '+'</button>' +
                             '</div>'
                         );
                     }
@@ -188,7 +187,7 @@
         {
             let toSend = {
                 "action": "setFollow",
-                "actor": <%= userDTO.getUsername() %>,
+                "actor": "<%= userDTO.getUsername() %>",
                 "target": username
             };
 
@@ -197,8 +196,8 @@
                 // TODO AGGIUNGERE IL DIV SENZA RICARICARE LA PAGINA
                 $("#boxFollow").append('' +
                     '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
-                        '<div>Username:' + username + '</div>' +
-                        '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+username+'\')"> REMOVE FOLLOW </button>' +
+                        '<div>' + username + '</div>' +
+                        '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+username+'\')"> Remove follow </button>' +
                     '</div>'
                 );
 
@@ -237,8 +236,8 @@
 
                         $("#boxFollow").append('' +
                             '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
-                            '<div>Username:' + follower.username + '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+follower.username+'\')"> REMOVE FOLLOW </button>' +
+                            '<div>' + follower.username + '</div>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+follower.username+'\')"> Remove follow </button>' +
                             '</div>'
                         );
                     }
@@ -295,14 +294,16 @@
 <body>
     <%@ include file="template/header.jsp"%>
 
-    <div id="box"></div>
+    <div id="box">
+
+    </div>
 <%      ListDTO<UserDTO> listDTO = (ListDTO<UserDTO>) request.getAttribute("listDTO");
         List<UserDTO> list = listDTO.getList();
 %>
 
 
     <div class="my-10">
-        <div id="boxFollow>
+        <div id="boxFollow">
 <!--        STAMPO LA LISTA DEI FOLLOWER-->
 <%          if(!list.isEmpty())
             {

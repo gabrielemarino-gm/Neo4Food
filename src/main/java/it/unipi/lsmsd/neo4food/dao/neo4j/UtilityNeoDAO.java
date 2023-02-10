@@ -27,7 +27,6 @@ public class UtilityNeoDAO extends BaseNeo4J{
 
             session.writeTransaction(tx -> {
                 Result result = tx.run(searchQuery);
-                System.out.println(result.list());
 
                 return 1;
             });
@@ -92,7 +91,7 @@ public class UtilityNeoDAO extends BaseNeo4J{
                 while (result.hasNext()) {
                     Record record = result.next();
                     UserDTO tempUser = new UserDTO();
-                    System.out.println(record);
+
                     tempUser.setUsername(record.get("username").asString());
                     tempUser.setNfollowers(record.get("nfollowers").asInt());
 
