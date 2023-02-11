@@ -26,9 +26,8 @@
 
         function previousPage()
         {
-            if (page>0)
+            if (page > 0)
                 page -= 1;
-
             return page;
         }
 
@@ -66,7 +65,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\'' + consigliato.username + '\')"> FOLLOW '+'</button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\''+ consigliato.username + '\')"> Follow </button>' +
                             '</div>'
                         );
                     }
@@ -109,7 +108,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\'' + consigliato.username + '\')"> FOLLOW '+'</button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\''+ consigliato.username + '\')"> Follow </button>' +
                             '</div>'
                         );
                     }
@@ -153,7 +152,7 @@
                                     '<div>' + consigliato.username + '</div>' +
                                     '<div class="px-5 text-xs">' + consigliato.nfollowers + ' follower</div>' +
                                 '</div>' +
-                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\''+ consigliato.username + '\')"> FOLLOW </button>' +
+                                '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="setFollow(\''+ consigliato.username + '\')"> Follow </button>' +
                             '</div>'
                         );
 
@@ -165,7 +164,7 @@
             });
         }
 
-        function removeFollow(username)
+        function removeFollow(username, idDiv)
         {
             let toSend = {
                 "action": "removeFollow",
@@ -321,7 +320,7 @@
 %>
                     <div id="div<%=item.getUsername()%>" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md mt-3">
                         <div><%=item.getUsername()%></div>
-                        <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
+                        <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>', '#div<%=item.getUsername()%>')">Remove follow</button>
                     </div>
 <%              }
             }
@@ -339,13 +338,12 @@
     <div class="flex justify-center w-5/6 mx-auto mt-2">
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByFollowRequest()" >Get Recommendations By User</button>
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByRestaurantRequest()" >Get Recommendations By Restaurant</button>
-        <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getInfluencer()" >Get Influencer</button>
+        <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getInfluencer()">Get Influencer</button>
     </div>
 
     <div class="mt-10"  id="boxRec">
 
     </div>
-
 
 <%@ include file="template/footer.jsp"%>
 </body>

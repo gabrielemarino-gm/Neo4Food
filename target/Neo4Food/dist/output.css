@@ -822,6 +822,10 @@ video {
   margin-right: 2rem;
 }
 
+.ml-1 {
+  margin-left: 0.25rem;
+}
+
 .block {
   display: block;
 }
@@ -972,6 +976,10 @@ video {
 
 .w-8\/12 {
   width: 66.666667%;
+}
+
+.w-1 {
+  width: 0.25rem;
 }
 
 .resize-none {

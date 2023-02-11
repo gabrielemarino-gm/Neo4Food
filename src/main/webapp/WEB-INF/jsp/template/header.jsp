@@ -36,29 +36,38 @@
     let searchVisible = false;
     let textSearchVisible = false;
 
-    function toggleSearch(){
-        if(!searchVisible){
+    function toggleSearch()
+    {
+//      Se non si vede, rendo visibile il box per la ricerca degli amici
+        if(!searchVisible)
+        {
             $('#search').show();
             searchVisible = true;
-        } else {
+        } 
+        else 
+        {
             $('#search').hide();
-            $("#boxSearch").empty();
             searchVisible = false;
         }
     }
+
     // Per far apparire la barra la prima volta
     function showSearchText()
     {
-        if(!textSearchVisible) {
-            $("#userSearchText").show();
+        if(!textSearchVisible)
+        {
+            $("#userSearchTextDiv").show();
+            $("#userSearchButton").hide();
             textSearchVisible = true;
         }
     }
 
     function hideSearchText()
     {
-        if(textSearchVisible) {
-            $("#userSearchText").hide();
+        if(textSearchVisible) 
+        {
+            $("#userSearchTextDiv").hide();
+            $("#userSearchButton").show();
             textSearchVisible = false;
         }
     }
@@ -74,34 +83,52 @@
 
         $.post("<c:url value='/social'/>", toSend, function (result){
             toggleSearch();
-
         })
         .fail(function (xhr, status, error){
             alert(xhr+"\n"+status+"\n"+error);
         });
     }
 
-    function searchUser() {
-
-        if(!searchVisible) {
+    function searchUser() 
+    {
+        if(!searchVisible)
             toggleSearch();
-        }
 
         let toSend = {
             action: "searchUser",
             username: $('#userSearchText').val()
         }
 
-        $.post("<c:url value='/social'/>", toSend, function (result) {
+        console.log("toSend: " + toSend);
+
+        $.post("<c:url value='/social'/>", toSend, function (result) 
+        {
             json = JSON.parse(result);
-            if(!(json.id == '0')) {
-                $("#boxSearch").append("<div><div>Username:" + json.username + "</div><div>First Name:" + json.firstName + "</div><div>Last Name:" + json.lastName + "</div></div>" +
-                "<Button onclick='setFollowHeader(\"" + json.username + "\")' > FOLLOW" + "</Button>" + " </div>");
-            }else
+            console.log("result: " + result);
+            if(!(json.id == '0'))
             {
-                $("#boxSearch").append("<div>No user found with this name</div>");
+                $("#boxSearch").empty();
+                $("#boxSearch").append('' +
+                    '<div class="flex border-t mt-3">' +
+                        '<div>' +
+                            '<div class="font-bold">' + json.username + '</div>' +
+                            '<div class="flex px-5 text-xs">' +
+                                '<div>' + json.firstName + '</div>' +
+                                '<div>&nbsp;' + json.lastName + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<button class="ml-auto h-7 mt-2 px-3 rounded-lg border-2 hover:bg-button" onclick="setFollowHeader(\''+json.username+'\')"> Follow </button>' +
+                    '</div>'
+                );
             }
-        }).fail(function (xhr, status, error) {
+            else
+            {
+                $("#boxSearch").empty();
+                $("#boxSearch").append('<div class="text-center">No user found with this name</div>');
+            }
+
+        }).fail(function (xhr, status, error)
+        {
             alert(xhr + "\n" + status + "\n" + error);
         });
     }
@@ -142,7 +169,7 @@
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </button>
 <%--            Il pulsante per andare agli ordini agisce in maniera diversa--%>
-<%--                Se si e' ristorante o cliente--%>
+<%--            Se si e' ristorante o cliente--%>
                 <form method="post" action="<c:url value="/personal"/>">
                     <input type="hidden" name="aid" value="<%= isRestaurant ? ((RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD)).getId() : username%>">
                     <input type="hidden" name="actor" value="<%= isRestaurant ? "restaurant" : "user" %>">
@@ -152,45 +179,51 @@
                     </button>
                 </form>
 
-
+<%--            SE E' LOGGATO UN UTENTE--%>
 <%              if(!isRestaurant)
                 {
 %>
 <%--                Se non sono ristorante voglio andare alla pagina personale utente--%>
-                <form method="post" action="<c:url value="/social"/>">
-                <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
-                    <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
-                    <input type="hidden" name="page" value=0>
-                    <input type="hidden" name="action" value="getFollowers">
-                    <a>Following</a>
-                </button>
-                </form>
-
-                <form method="post" action="<c:url value="/personal"/>">
-                    <input type="hidden" name="actor" value="user">
-                    <input type="hidden" name="action" value="personal">
-                    <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
-                        <a><%= username %></a>
+                    <form method="post" action="<c:url value="/social"/>">
+                    <button class="my-3 px-3 float-right rounded-lg hover:bg-button" >
+                        <input type="hidden" name="username" value= "<%=  (String) session.getAttribute("username")%>" >
+                        <input type="hidden" name="page" value=0>
+                        <input type="hidden" name="action" value="getFollowers">
+                        <a>Following</a>
                     </button>
-                </form>
+                    </form>
 
-                <%--    TODO RICRCA UTENTI --%>
+                    <form method="post" action="<c:url value="/personal"/>">
+                        <input type="hidden" name="actor" value="user">
+                        <input type="hidden" name="action" value="personal">
+                        <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+                            <a><%= username %></a>
+                        </button>
+                    </form>
 
-                <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onmouseover="showSearchText()" onmouseleave="hideSearchText()">
-                    <img class="h-5 mr-3" src="img/lente.png" onclick="searchUser()" alt="lente">
-                    <div onsubmit="searchUser()">
-                        <input style="display:none;" id="userSearchText" required class="rounded-xl px-3 shadow-md" type="text" placeholder="Search by username">
-                        <button type="button" onclick="searchUser()"></button>
+<%--                TODO RICRCA UTENTI --%>
+
+                    <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearchText()">
+                        <img class="h-5 mr-3" src="img/lente.png" alt="lente">
+                    </button>
+
+                    <div style="display:none;" id="userSearchTextDiv" onsubmit="searchUser()">
+                        <button class="flex my-3 px-3 float-right rounded-lg hover:bg-button" type="submit"><img class="h-5 mr-3" src="img/lente.png" onclick="searchUser()" alt="lente"></button>
+                        <input id="userSearchText" required class="float-right my-3 rounded-xl px-3 shadow-md" type="text" placeholder="Search by username">
                     </div>
-                </button>
 
-                <div id="search" style="display:none;"  class=" z-50 fixed h-full w-full bg-black bg-opacity-20 ">
-                    <div  class=" mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
-                        <div id="boxSearch">
+
+    </header>
+                    <div id="search" style="display:none;"  class="z-50 fixed h-full w-full bg-black bg-opacity-20">
+                        <div  class=" mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
+
+                            <button class="float-right px-1 rounded-xl" onclick="toggleSearch()"><img class="h-7" src="img/x.png" alt="X"/></button>
+                            <div class="mt-10" id="boxSearch">
+
+                            </div>
 
                         </div>
-                        <button class=" top-3 right-3 px-1 rounded-xl" onclick="toggleSearch()"><img class="h-7" src="img/x.png" alt="X"/></button>        </div>
-                </div>
+                    </div>
 
 <%              }
                 else
@@ -204,16 +237,17 @@
                             <a><%= restaurantname %></a>
                         </button>
                     </form>
+    </header>
 <%              }
 %>
-        <%-- Altrimenti metto link alla pagina di login--%>
 <%          }
+//          Altrimenti metto link alla pagina di login
             else
             {
 %>              <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
                     <a href="<c:url value="/login"/>">Login</a>
                 </button>
+    </header>
 <%          }
 %>
 
-    </header>
