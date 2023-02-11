@@ -20,7 +20,8 @@ public class Admin extends HttpServlet
     {
         String targetJSP = "/WEB-INF/jsp/admin.jsp";
 
-        if(request.getParameter("token") != null){
+        if(request.getParameter("token") != null)
+        {
             String token = request.getParameter("token");
     //        TODO
             if(ServiceProvider.getAdminService().isTokenValid(token))
@@ -45,7 +46,7 @@ public class Admin extends HttpServlet
             {
                 ServiceProvider.getAggregationService().setAvgRate();
 
-                response.getWriter().print("Ratings updated");
+                response.getWriter().print("Ratings Updated!");
                 response.getWriter().flush();
                 return;
             }
@@ -53,11 +54,12 @@ public class Admin extends HttpServlet
             {
                 ServiceProvider.getAggregationService().setAvgPrices();
 
-                response.getWriter().print("Prices updated");
+                response.getWriter().print("Prices Updated!");
                 response.getWriter().flush();
                 return;
             }
-            else if(actionType.equals("analytics")){
+            else if(actionType.equals("analytics"))
+            {
                 serveAnalytics(request, response);
                 return;
             }
@@ -83,7 +85,7 @@ public class Admin extends HttpServlet
 
         if(type.equals("zips"))
         {
-//            Zipcode - Numero Ordini
+//          Zipcode - Numero Ordini
             ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getOrdersPerZip();
 
             String toSend = (new Gson()).toJson(anaList);
@@ -92,8 +94,7 @@ public class Admin extends HttpServlet
         }
         else if (type.equals("mostActive"))
         {
-//            Nome utente - N recensioni - media
-
+//          Nome utente - N recensioni - media
             ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getUtilityService().getMostActiveUsers();
 
             String toSend = (new Gson()).toJson(anaList);
@@ -102,8 +103,7 @@ public class Admin extends HttpServlet
         }
         else if (type.equals("profits"))
         {
-//              Nome ristorante - Totale
-
+//          Nome ristorante - Totale - Valuta
             ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getLastMonthProfits();
 
             String toSend = (new Gson()).toJson(anaList);
