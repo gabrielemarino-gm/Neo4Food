@@ -18,7 +18,8 @@
 
         let page=0;
 
-        function nextPage(){
+        function nextPage()
+        {
             page += 1;
             return page;
         }
@@ -174,8 +175,7 @@
 
             $.post("<c:url value='/social'/>", toSend, function (result)
             {
-                // TODO RIMUOVERE IL DIV SENZA RICARICARE LA PAGINA
-
+                $("#div"+username).remove();
 
             }).fail(function (xhr, status, error)
             {
@@ -185,6 +185,10 @@
 
         function setFollow(username)
         {
+//          Se si sta aggiungendo un follower che è già fra la lista dei seguiti non lo aggiungo
+            if ($('#div'+username).length) // IF EXISTS (-cit Pistolesi)
+                return;
+
             let toSend = {
                 "action": "setFollow",
                 "actor": "<%= userDTO.getUsername() %>",
@@ -193,9 +197,8 @@
 
             $.post("<c:url value='/social'/>", toSend, function (result)
             {
-                // TODO AGGIUNGERE IL DIV SENZA RICARICARE LA PAGINA
                 $("#boxFollow").append('' +
-                    '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
+                    '<div id="div'+ username +'" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md mt-3">' +
                         '<div>' + username + '</div>' +
                         '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+username+'\')"> Remove follow </button>' +
                     '</div>'
@@ -235,7 +238,7 @@
                         var follower = json.list[i];
 
                         $("#boxFollow").append('' +
-                            '<div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6">' +
+                            '<div id="div'+ follower.username +'" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md mt-3">' +
                             '<div>' + follower.username + '</div>' +
                                 '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\''+follower.username+'\')"> Remove follow </button>' +
                             '</div>'
@@ -265,6 +268,7 @@
 
                     json = JSON.parse(result);
 
+//                  Elimino tutto il contenuto del div boxFollow per poi riempirlo con la pagina successiva
                     $("#boxFollow").empty();
                     if (!json || !Object.keys(json).length)
                     {
@@ -277,7 +281,12 @@
                         for (i = 0; i < json.list.length; i++)
                         {
                             var follower = json.list[i];
-                            $("#boxFollow").append("<div class='mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6' ><div>Username:" + follower.username + "</div><button class='ml-auto px-3 rounded-lg border-2 hover:bg-button' onclick='removeFollow(\"" + follower.username + "\")' > REMOVE FOLLOW" + "</button>" + " </div>");
+                            $("#boxFollow").append('' +
+                                '<div id="div'+follower.username+'" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md mt-3">' +
+                                    '<div>' + follower.username + '</div>' +
+                                    '<button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow(\'' + follower.username + '\')"> Remove follow </button>' +
+                                ' </div>'
+                            );
                         }
                     }
 
@@ -310,7 +319,7 @@
                 for (UserDTO item: list)
                 {
 %>
-                    <div class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md">
+                    <div id="div<%=item.getUsername()%>" class="mx-auto bg-principale rounded-md w-5/6 flex px-5 py-6 shadow-md mt-3">
                         <div><%=item.getUsername()%></div>
                         <button class="ml-auto px-3 rounded-lg border-2 hover:bg-button" onclick="removeFollow('<%=item.getUsername()%>')">Remove follow</button>
                     </div>

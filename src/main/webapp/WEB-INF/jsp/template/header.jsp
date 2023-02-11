@@ -64,7 +64,8 @@
     }
 
 
-    function setFollowHeader(username) {
+    function setFollowHeader(username)
+    {
         let toSend = {
                 action: "setFollow",
                 actor: "<%= username %>",
