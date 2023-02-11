@@ -336,9 +336,11 @@
     </div>
 
     <div class="flex justify-center w-5/6 mx-auto mt-2">
+        <div class="w-2/12"></div>
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByFollowRequest()" >Get Recommendations By User</button>
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getRecommendationByRestaurantRequest()" >Get Recommendations By Restaurant</button>
         <button class="mx-auto px-3 text-center rounded-lg border-2 hover:bg-button" onclick="getInfluencer()">Get Influencer</button>
+        <div class="w-2/12"></div>
     </div>
 
     <div class="mt-10"  id="boxRec">
