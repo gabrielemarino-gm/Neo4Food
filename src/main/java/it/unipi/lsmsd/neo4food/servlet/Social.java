@@ -29,7 +29,7 @@ public class Social extends HttpServlet
             ListDTO<CommentDTO> commentList = ServiceProvider.getSocialService().getComments(rest, page);
             String text = (new Gson()).toJson(commentList);
 
-//            Gli mando i commenti come json solo se non sono nulli altrimenti non gli mando nulla
+//           Gli mando i commenti come json solo se non sono nulli altrimenti non gli mando nulla
             if (commentList != null)
             {
                 response.getWriter().println(text);
@@ -42,9 +42,9 @@ public class Social extends HttpServlet
             }
             return;
         }
-//        Creo una nuova review
-        else if (actionType.equals("addReview")) {
-
+//      Creo una nuova review
+        else if (actionType.equals("addReview"))
+        {
             String actor = request.getParameter("who");
             String target = request.getParameter("to");
             Double mark = Double.parseDouble(request.getParameter("rate"));
@@ -62,7 +62,6 @@ public class Social extends HttpServlet
             String target = request.getParameter("target");
 
             ServiceProvider.getSocialService().setFollow(actor, target);
-
             return;
         }
         else if (actionType.equals("removeFollow"))
@@ -71,7 +70,6 @@ public class Social extends HttpServlet
             String target = request.getParameter("target");
 
             ServiceProvider.getSocialService().removeFollow(actor, target);
-
             return;
         }
 
@@ -85,6 +83,7 @@ public class Social extends HttpServlet
             ListDTO<UserDTO> userList = ServiceProvider.getSocialService().getFollowers(username, page);
 
             request.setAttribute("listDTO", userList);
+
         }
         else if (actionType.equals("getFollowersNextPage"))
         {
@@ -134,7 +133,7 @@ public class Social extends HttpServlet
             response.getWriter().flush();
             return;
         }
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
     }

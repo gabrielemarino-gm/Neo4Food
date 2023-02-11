@@ -76,9 +76,9 @@
             toggleSearch();
 
         })
-            .fail(function (xhr, status, error){
-                alert(xhr+"\n"+status+"\n"+error);
-            });
+        .fail(function (xhr, status, error){
+            alert(xhr+"\n"+status+"\n"+error);
+        });
     }
 
     function searchUser() {
