@@ -20,7 +20,8 @@ public class PersonalPage extends HttpServlet
         String actionType = request.getParameter("action");
         String actor = request.getParameter("actor");
 
-        if(actionType != null){
+        if(actionType != null)
+        {
             if(actor.equals("user"))
             {
                 String target = userRequest(request, response);
@@ -28,13 +29,14 @@ public class PersonalPage extends HttpServlet
             }
             else if(actor.equals("restaurant"))
             {
-                if(actionType.equals("addDish") || actionType.equals("modDish") || actionType.equals("remDish") ){
+                if(actionType.equals("addDish") || actionType.equals("modDish") || actionType.equals("remDish"))
+                {
                     editDish(request, response, actionType);
                     return;
                 }
+
                 String target = restaurantRequest(request, response);
                 targetJSP = target != null ? target : "WEB-INF/jsp/personalrestaurant.jsp";
-
             }
         }
 
@@ -50,7 +52,8 @@ public class PersonalPage extends HttpServlet
         doRequest(request, response);
     }
 
-    private String userRequest(HttpServletRequest request, HttpServletResponse response){
+    private String userRequest(HttpServletRequest request, HttpServletResponse response)
+    {
         String actionType = request.getParameter("action");
         if(actionType.equals("change")){
             //      Cambio i dati e ricarico la pagina personale
@@ -95,9 +98,11 @@ public class PersonalPage extends HttpServlet
                 request.setAttribute("message", "Updated successfully");
 
                 return "WEB-INF/jsp/personal.jsp";
-            }else{
+            }
+            else
+            {
 //              Update fallito
-//                Segnalo messaggio all utente
+//              Segnalo messaggio all utente
                 request.setAttribute("message", "Update failed");
             }
 
@@ -117,10 +122,12 @@ public class PersonalPage extends HttpServlet
         return null;
     }
 
-    private String restaurantRequest(HttpServletRequest request, HttpServletResponse response){
+    private String restaurantRequest(HttpServletRequest request, HttpServletResponse response)
+    {
         String actionType = request.getParameter("action");
 
-        if(actionType.equals("personal")){
+        if(actionType.equals("personal"))
+        {
             String rid = ((RestaurantDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
 
             List<OrderDTO> lista = ServiceProvider.getRestaurantService()
@@ -129,7 +136,9 @@ public class PersonalPage extends HttpServlet
             request.setAttribute("orderList", lista);
             return "WEB-INF/jsp/personalrestaurant.jsp";
 
-        }else if (actionType.equals("orders")){
+        }
+        else if (actionType.equals("orders"))
+        {
             String rid = request.getParameter("aid");
 
             ListDTO<OrderDTO> orders = ServiceProvider.getOrderService()
@@ -139,7 +148,9 @@ public class PersonalPage extends HttpServlet
 
             return "WEB-INF/jsp/orders.jsp";
 
-        }else if(actionType.equals("dishes")){
+        }
+        else if(actionType.equals("dishes"))
+        {
             String me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
 
             ListDTO<DishDTO> lista = new ListDTO<>();
@@ -150,9 +161,8 @@ public class PersonalPage extends HttpServlet
             request.setAttribute("dishes", lista);
 
             return "WEB-INF/jsp/dishes.jsp";
-        }else{
-
         }
+
         return null;
     }
 
@@ -210,6 +220,11 @@ public class PersonalPage extends HttpServlet
 
             response.getWriter().write(res + " affected");
             response.getWriter().flush();
+        }
+        else if(actionType.equals("stats"))
+        {
+//          Devo passare alla pagina delle statistiche
+
         }
 
     }

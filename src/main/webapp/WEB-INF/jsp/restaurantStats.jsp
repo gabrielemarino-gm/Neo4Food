@@ -25,7 +25,11 @@
 <body>
     <%@include file="template/header.jsp"%>
     <div>
+        <h1>Busiest Time</h1>
+    </div>
 
+    <div>
+        <h1>Busiest Time</h1>
     </div>
 </body>
 </html>

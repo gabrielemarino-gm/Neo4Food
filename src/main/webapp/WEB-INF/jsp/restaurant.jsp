@@ -458,7 +458,17 @@
 %>
             </div>
         </div>
+
     </div>
+
+<%  if(!isRestaurant && isLogged)
+    {
+%>
+        <div class="flex justify-center rounded-xl mt-16 w-full">
+            <button class="w-1/3 rounded-xl border-2 hover:bg-button" type="submit">Usual</button>
+        </div>
+<%  }
+%>
 
 <%--        LISTA DEI PIATTI    --%>
 <div class="flex flex-wrap justify-center">
