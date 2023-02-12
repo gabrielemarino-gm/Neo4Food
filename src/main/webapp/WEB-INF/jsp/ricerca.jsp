@@ -38,7 +38,17 @@
                     <button class="w-20 rounded-xl border-2 hover:bg-button" type="submit">Search</button>
                 </form>
             </div>
+
+<%          if(!isRestaurant && isLogged)
+            {
+%>
+                <div class="relative mx-auto rounded-xl mt-6">
+                    <button class="w-1/3 rounded-xl border-2 hover:bg-button" type="submit">Usual</button>
+                </div>
+<%          }
+%>
         </section>
+
 
         <%@include file="template/footer.jsp"%>
     </body>

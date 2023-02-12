@@ -19,7 +19,6 @@ import java.util.List;
 
 public class AggregationMongoDAO extends BaseMongo
 {
-
     public void setAvgPrices()
     {
 //        Aggregation avg price per restaurant

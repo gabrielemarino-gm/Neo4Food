@@ -25,7 +25,8 @@ import static com.mongodb.client.model.Sorts.ascending;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackDishes;
 import static it.unipi.lsmsd.neo4food.utility.Utilities.unpackOrders;
 
-public class RestaurantMongoDAO extends BaseMongo {
+public class RestaurantMongoDAO extends BaseMongo
+{
 //--------------------------------------------------------------
 //---USED BY USER TO SEARCH RESTAURANTS BY ZIPCODE AND FILTER---
 //--------------------------------------------------------------
@@ -71,54 +72,57 @@ public class RestaurantMongoDAO extends BaseMongo {
         toReturn.setItemCount(count);
         return toReturn;
     }
-//------------------------------------------------------------------
-//---USED BY RESTAURANT TO CHECK CORRECTNESS OF LOGIN CREDENTIALS---
-//------------------------------------------------------------------
-public RestaurantDTO getRestaurantLogin(String eml, String password){
-    MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
-    try(MongoCursor cursor = collection.find(
-            and(
-                    eq("email", eml),
-                    eq("password",password)
-            )
-        ).limit(1).iterator()
-    )
-//            INIZIO BLOCCO TRY
+
+    //------------------------------------------------------------------
+    //---USED BY RESTAURANT TO CHECK CORRECTNESS OF LOGIN CREDENTIALS---
+    //------------------------------------------------------------------
+    public RestaurantDTO getRestaurantLogin(String eml, String password)
     {
+        MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
+        try(MongoCursor cursor = collection.find(
+                and(
+                        eq("email", eml),
+                        eq("password",password)
+                )
+            ).limit(1).iterator()
+        )
+    //            INIZIO BLOCCO TRY
+        {
 
-        if (cursor.hasNext()) {
+            if (cursor.hasNext()) {
 
-        Document res = (Document) cursor.next();
+            Document res = (Document) cursor.next();
 
-        String id = res.get("_id").toString();
-        String name = res.get("name") != null ? res.get("name").toString() : "Name not available";
-        Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()): 0;
-        String address = res.get("full_address") != null ? res.get("full_address").toString() : "Address not available";
-        String zipcode = res.get("zip_code") != null ? res.get("zip_code").toString() : "Zipcode not available";
-        String email = res.get("email") != null? res.get("email").toString() : "Email not available";
+            String id = res.get("_id").toString();
+            String name = res.get("name") != null ? res.get("name").toString() : "Name not available";
+            Float rating = res.get("score") != null ? Float.parseFloat(res.get("score").toString()): 0;
+            String address = res.get("full_address") != null ? res.get("full_address").toString() : "Address not available";
+            String zipcode = res.get("zip_code") != null ? res.get("zip_code").toString() : "Zipcode not available";
+            String email = res.get("email") != null? res.get("email").toString() : "Email not available";
 
-        RestaurantDTO e = new RestaurantDTO();
-        e.setId(id);
-        e.setName(name);
-        e.setRating(rating);
-        e.setEmail(email);
-        e.setAddress(address);
-        e.setZipcode(zipcode);
+            RestaurantDTO e = new RestaurantDTO();
+            e.setId(id);
+            e.setName(name);
+            e.setRating(rating);
+            e.setEmail(email);
+            e.setAddress(address);
+            e.setZipcode(zipcode);
 
-        return e;
+            return e;
+            }
         }
+        RestaurantDTO e = new RestaurantDTO();
+        e.setId("0");
+        return e;
     }
-    RestaurantDTO e = new RestaurantDTO();
-    e.setId("0");
-    return e;
-}
-//-------------------------------------------------------------
-//---USED BY RESTAURANT AND USER TO GET ONLY SELECTED FIELDS---
-//-------------------------------------------------------------
-//CASE 1 - Un utente richiede alcune informazioni e la lista dei piatti senza ordini (RESTAURANT - DETAILS)
-//CASE 2 - Restaurant itself wants to get only list of dishes without orders (CHECKOUT - SEND)
-//CASE 3 - Il ristorante richiede solo la lista di ordini pendenti (PERSONAL - RESTAURANT - PERSONAL) (LOGIN - RESTURANT)
-public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean getOrders)
+
+//  -------------------------------------------------------------
+//  ---USED BY RESTAURANT AND USER TO GET ONLY SELECTED FIELDS---
+//  -------------------------------------------------------------
+//  CASE 1 - Un utente richiede alcune informazioni e la lista dei piatti senza ordini (RESTAURANT - DETAILS)
+//  CASE 2 - Restaurant itself wants to get only list of dishes without orders (CHECKOUT - SEND)
+//  CASE 3 - Il ristorante richiede solo la lista di ordini pendenti (PERSONAL - RESTAURANT - PERSONAL) (LOGIN - RESTURANT)
+    public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean getOrders)
     {
 //      Variabile che devo restituire
         RestaurantDTO toReturn = new RestaurantDTO();
@@ -173,7 +177,8 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean
         return toReturn;
     }
 
-    public String addDish(DishDTO target){
+    public String addDish(DishDTO target)
+    {
 //      rid - dname - dprice - dcurr - ddesc
 
         Document query = new Document("_id", new ObjectId(target.getRestaurantId()));
@@ -198,7 +203,8 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean
 
         return "";
     }
-    public int remDish(DishDTO target){
+    public int remDish(DishDTO target)
+    {
 //        rid - did
         Document query = new Document("_id", new ObjectId(target.getRestaurantId()));
         Bson update = new Document("$pull", new Document("dishes",
@@ -215,7 +221,9 @@ public RestaurantDTO getRestaurantDetails(String rid, boolean getDishes, boolean
         }
         return 0;
     }
-    public int modDish(DishDTO target){
+
+    public int modDish(DishDTO target)
+    {
 //      rid - did - dname - dprice - ddesc
         Document query = new Document("_id", new ObjectId(target.getRestaurantId()))
                 .append("dishes._id", new ObjectId(target.getId()));

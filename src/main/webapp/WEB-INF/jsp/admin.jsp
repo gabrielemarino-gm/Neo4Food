@@ -153,7 +153,7 @@
                             obj = json.list[i];
                             $(mostActiveBox).append('' +
                                 '<div class="mt-5 text-center">' +
-                                    '<div>' + obj.user + '</div>' +
+                                    '<div class="font-bold">' + obj.user + '</div>' +
                                     '<div>Done Reviews:&nbsp;' + obj.count + '</div>' +
                                     '<div>Avg Reviews:&nbsp;' + (parseFloat(obj.dub)).toFixed(2)+'</div>' +
                                 '</div>'
@@ -197,7 +197,7 @@
                             obj = json.list[i];
                             $(profitBox).append('' +
                                 '<div class="mt-5 text-center">' +
-                                    '<div>' + obj.restaurant + '</div>' +
+                                    '<div class="font-bold">' + obj.restaurant + '</div>' +
                                     '<div>Profit:&nbsp;' + obj.dub + '&nbsp;' + obj.currency + '</div>' +
                                 '</div>'
                             );
@@ -237,9 +237,9 @@
                             obj = json.list[i];
                             $(cavialeBox).append('' +
                                 '<div class="mt-5 text-center">' +
-                                    '<div>Dish:&nbsp;' + obj.dish + '</div>' +
-                                    '<div>Price:&nbsp;' + obj.dub + '&nbsp;' + obj.currency + '</div>' +
-                                    '<div>Restaurant:&nbsp;' + obj.restaurant+'</div>' +
+                                    '<div><p class="font-bold">Dish:&nbsp;</p>' + obj.dish + '</div>' +
+                                    '<div><p class="font-bold">Price:&nbsp;</p>' + obj.dub + '&nbsp;' + obj.currency + '</div>' +
+                                    '<div><p class="font-bold">Restaurant:&nbsp;</p>' + obj.restaurant+'</div>' +
                                 '</div>'
                             )
                         }
