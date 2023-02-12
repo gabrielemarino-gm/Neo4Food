@@ -473,7 +473,7 @@
 <%--        LISTA DEI PIATTI    --%>
 <div class="flex flex-wrap justify-center">
     <form id="ordini" method="post" action="<c:url value="/checkout"/>">
-        <div class="relative mx-auto w-p70 flex flex-wrap my-16 justify-center">
+        <div class="relative mx-auto w-p70 flex flex-wrap my-5 justify-center">
 <%--        List of available dishes--%>
 <%          for(DishDTO i: dishList)
             {
