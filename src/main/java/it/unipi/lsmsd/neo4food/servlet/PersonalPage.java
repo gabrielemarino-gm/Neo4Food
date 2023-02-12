@@ -107,7 +107,8 @@ public class PersonalPage extends HttpServlet
             }
 
         }
-        else if(actionType.equals("orders")){
+        else if(actionType.equals("orders"))
+        {
 //            Carico lista ordini per utente
             String uid = request.getParameter("aid");
 
@@ -161,6 +162,10 @@ public class PersonalPage extends HttpServlet
             request.setAttribute("dishes", lista);
 
             return "WEB-INF/jsp/dishes.jsp";
+        }
+        else if(actionType.equals("stats"))
+        {
+            return "WEB-INF/jsp/restaurantStats.jsp";
         }
 
         return null;
@@ -220,11 +225,6 @@ public class PersonalPage extends HttpServlet
 
             response.getWriter().write(res + " affected");
             response.getWriter().flush();
-        }
-        else if(actionType.equals("stats"))
-        {
-//          Devo passare alla pagina delle statistiche
-
         }
 
     }

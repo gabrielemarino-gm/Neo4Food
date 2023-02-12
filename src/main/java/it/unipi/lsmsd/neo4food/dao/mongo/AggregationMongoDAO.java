@@ -18,6 +18,7 @@ import javax.mail.Store;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class AggregationMongoDAO extends BaseMongo
@@ -236,7 +237,7 @@ public class AggregationMongoDAO extends BaseMongo
                         .append("currency", new Document("$toString", "$dishes.currency")));
         //... {$sort: {dishPrice: -1}},
         Bson sort = new Document("$sort", new Document("dishPrice", -1));
-        //... {$project: {dish: "$dishes.name", cost: "$dishPrice", res: "$name"}}
+        //... {$project: {dish: "$dishes.name", cost: "$dishPrice", res: "$name", "currency":"$dishes.currency"}}
         Bson project = new Document("$project", new Document("dish", "$dishes.name").append("cost","$dishPrice").append("res", "$name").append("currency", "$dishes.currency"));
         //... {$limit: 10}
         Bson limit = new Document("$limit", 10);
@@ -271,11 +272,12 @@ public class AggregationMongoDAO extends BaseMongo
         return toReturn;
     }
 
-    public List<DishDTO> getUsual(String username, String rid){
+    public List<DishDTO> getUsual(String username, String rid)
+    {
         List<DishDTO> toReturn = new ArrayList<>();
 
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-        //... { $match: {user: "PatataAliena", restaurantId: "63d92b3cc416ac8e49aec90e"} }
+        //... { $match: {user: "PatataAliena", restaurantId: "RID"} }
         Bson match = new Document("$match", new Document("user", username).append("restaurantId", rid));
         //... { $group: { _id: { user: "$user", restaurant: "$restaurantId", dishes: "$dishes"}, count: {$sum: 1}} }
         Bson group = new Document("$group", new Document("_id",
@@ -296,8 +298,8 @@ public class AggregationMongoDAO extends BaseMongo
             {
                 Document id = (Document) a.get("_id");
 
-                for(Document d : (List<Document>)id.get("dishes")) {
-
+                for(Document d : (List<Document>)id.get("dishes"))
+                {
                     DishDTO toAppend = new DishDTO();
 
                     toAppend.setName(d.getString("name"));
@@ -308,6 +310,243 @@ public class AggregationMongoDAO extends BaseMongo
                     toReturn.add(toAppend);
                 }
             }
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+
+        return toReturn;
+    }
+
+    public ListDTO<AnalyticsDTO> getBestHours(String rid)
+    {
+        ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+
+        AnalyticsDTO analytic = new AnalyticsDTO();
+// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
+
+//...   {$match: {creationDate: {$gtr: new Date(new Date() - 1000*60*60*24*30)}}}
+        Bson match = new Document(
+                "$match",
+                new Document("restaurantId", rid).append("creationDate", new Document("$gte", LocalDateTime.now().minusMonths(1)))
+            );
+
+//...   $project{orderHour:{$hour: "$creationDate"}}
+        Bson project = new Document(
+                "$project",
+                new Document("orderHour", new Document("$hour", "$creationDate"))
+        );
+
+//...   $group:{_id:{ _id: "$orderHour",count: {$sum: 1}}}
+        Bson group = new Document(
+                "$group",
+                new Document("_id", new Document("_id", "$orderHour")
+                        .append("count", new Document("$sum", 1)))
+        );
+
+//...   { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("count", -1));
+//...   { $limit: 3 }
+        Bson limit = new Document("$limit", 3);
+
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, project, group, sort, limit)).into(new ArrayList<>());
+            List<AnalyticsDTO> toSet = new ArrayList<>();
+
+            if(result.size() == 0)
+                return toReturn;
+
+            for(Document d : result)
+            {
+                AnalyticsDTO toAppend = new AnalyticsDTO();
+
+                toAppend.setOrario(d.get("hour").toString());
+                toAppend.setCount(d.getInteger("count"));
+
+                toSet.add(toAppend);
+            }
+
+            toReturn.setList(toSet);
+            toReturn.setItemCount(toSet.size());
+
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+
+
+        return toReturn;
+    }
+
+    // Vedo qual è stato il piatto più venduto del mese
+    public ListDTO<AnalyticsDTO> getBestDishMonth(String rid)
+    {
+        ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+
+        AnalyticsDTO analytic = new AnalyticsDTO();
+// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
+
+//...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e", creationDate: {$gte: new Date(new Date().setHours(0,0,0,0)), $lt: new Date(new Date().setHours(24,0,0,0))}}}
+        Bson match = new Document(
+                "$match",
+                new Document("restaurantId", rid).append("creationDate", new Document("$gte", LocalDateTime.now().minusDays(1)))
+        );
+
+//...   {$unwind: "$dishes"}
+        Bson unwind = new Document("$unwind","$dishes");
+
+//...   $group:{_id: "$dishes.name", total: { $sum: "$dishes.quantity" }}
+        Bson group = new Document(
+                "$group",
+                new Document("_id", "$dishes.name")
+                        .append("total", new Document("$sum", "$dishes.quantity"))
+        );
+
+//...   { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("total", -1));
+//...   { $limit: 1 }
+        Bson limit = new Document("$limit", 1);
+
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, unwind, group, sort, limit)).into(new ArrayList<>());
+            List<AnalyticsDTO> toSet = new ArrayList<>();
+
+            if(result.size() == 0)
+                return toReturn;
+
+            for(Document d : result)
+            {
+                AnalyticsDTO toAppend = new AnalyticsDTO();
+
+                toAppend.setDish(d.get("_id").toString());
+                toAppend.setCount(d.getInteger("total"));
+
+                toSet.add(toAppend);
+            }
+
+            toReturn.setList(toSet);
+            toReturn.setItemCount(toSet.size());
+
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+
+
+        return toReturn;
+    }
+
+    public AnalyticsDTO getDailyRevene(String rid)
+    {
+        AnalyticsDTO toReturn = new AnalyticsDTO();
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+
+        AnalyticsDTO analytic = new AnalyticsDTO();
+// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
+
+//...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e", creationDate: {$gte: new Date(new Date().setHours(0,0,0,0)), $lt: new Date(new Date().setHours(24,0,0,0))}}}
+        Bson match = new Document(
+                "$match",
+                new Document("restaurantId", rid).append("creationDate", new Document("$gte", LocalDateTime.now().minusDays(1)))
+        );
+
+//...   $group:{_id: "$restaurantId", total: { $sum: "$total" }}
+        Bson group = new Document(
+                "$group",
+                new Document("_id", "$restaurantId")
+                        .append("total", new Document("$sum", "$total"))
+        );
+
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, group)).into(new ArrayList<>());
+            AnalyticsDTO toSet = new AnalyticsDTO();
+
+            if(result.size() == 0)
+                return toReturn;
+
+            for(Document d : result)
+            {
+                toSet.setDish(d.get("_id").toString());
+                toSet.setCount(d.getInteger("total"));
+            }
+
+            toReturn = toSet;
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+
+
+        return toReturn;
+    }
+
+    public ListDTO<AnalyticsDTO> getModaOrders(String rid)
+    {
+        ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+
+        AnalyticsDTO analytic = new AnalyticsDTO();
+// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
+
+//...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e"}}
+        Bson match = new Document(
+                "$match",
+                new Document("restaurantId", rid)
+        );
+
+//...   {$unwind: "$dishes"}
+        Bson unwind = new Document("$unwind","$dishes");
+
+//...   $group:{_id: "$dishes.name", total: { $sum: "$dishes.quantity" }}
+        Bson group = new Document(
+                "$group",
+                new Document("_id", "$dishes.name")
+                        .append("total", new Document("$sum", "$dishes.quantity"))
+        );
+
+//...   { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("total", -1));
+//...   { $limit: 1 }
+        Bson limit = new Document("$limit", 1);
+
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, unwind, group, sort, limit)).into(new ArrayList<>());
+            List<AnalyticsDTO> toSet = new ArrayList<>();
+
+            if(result.size() == 0)
+                return toReturn;
+
+            for(Document d : result)
+            {
+                AnalyticsDTO toAppend = new AnalyticsDTO();
+
+                toAppend.setDish(d.get("_id").toString());
+                toAppend.setCount(d.getInteger("total"));
+
+                toSet.add(toAppend);
+            }
+
+            toReturn.setList(toSet);
+            toReturn.setItemCount(toSet.size());
+
         }
         catch (MongoException e)
         {

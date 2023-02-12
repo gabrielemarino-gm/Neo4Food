@@ -29,13 +29,18 @@ public class SearchRestaurants extends HttpServlet
             String zipcode = request.getParameter("zipcode");
             String filter = request.getParameter("filter");
             ListDTO<RestaurantDTO> list = new ListDTO<>();
-            if(filter.equals("recc")) {
+            if(filter.equals("recc"))
+            {
                 list = ServiceProvider.getSocialService().getRecommendationRestaurant(
                                 ((UserDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getUsername(),
                                 zipcode);
-            }else {
+            }
+            else
+            {
                 list = ServiceProvider.getRestaurantService().getRestaurantsForSearchPage(page, zipcode, filter);
-            }request.setAttribute("listDTO", list);
+            }
+
+            request.setAttribute("listDTO", list);
             request.setAttribute("zipcode", zipcode);
             request.setAttribute("filter", filter);
             request.setAttribute("page", page);

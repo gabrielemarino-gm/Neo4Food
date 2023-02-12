@@ -239,7 +239,7 @@
                     </form>
 
 <%--                Per andare alla pagine delle statistiche per il ristorante --%>
-                    <form method="post" action="<c:url value="/personal"/>">
+                    <form method="post" action="<c:url value="/restaurant"/>">
                         <input type="hidden" name="actor" value="restaurant">
                         <input type="hidden" name="action" value="stats">
                         <button class="my-3 px-3 float-right rounded-lg hover:bg-button">

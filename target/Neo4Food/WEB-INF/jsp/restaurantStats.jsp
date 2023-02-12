@@ -24,12 +24,31 @@
 
 <body>
     <%@include file="template/header.jsp"%>
-    <div>
-        <h1>Busiest Time</h1>
+
+    <div class="flex flex-wrap justify-center mt-4">
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
+            <h1 class="font-bold">Busiest Time</h1>
+        </div>
+
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
+            <h1 class="font-bold">Best Month's Dishes</h1>
+        </div>
+
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
+            <h1 class="font-bold">Daily Revenue</h1>
+        </div>
+
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
+            <h1 class="font-bold">Moda Orders</h1>
+        </div>
+
+        <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
+            <h1 class="font-bold">Avarege Customers Age</h1>
+        </div>
+
     </div>
 
-    <div>
-        <h1>Busiest Time</h1>
-    </div>
+
+    <%@include file="template/footer.jsp"%>
 </body>
 </html>
