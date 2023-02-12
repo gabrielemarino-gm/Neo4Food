@@ -6,12 +6,15 @@ import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.*;
 import it.unipi.lsmsd.neo4food.dto.AnalyticsDTO;
+import it.unipi.lsmsd.neo4food.dto.DishDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import javax.enterprise.deploy.spi.DConfigBean;
+import javax.mail.Store;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -259,6 +262,52 @@ public class AggregationMongoDAO extends BaseMongo
             toReturn.setList(toSet);
             toReturn.setItemCount(toSet.size());
 
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+
+        return toReturn;
+    }
+
+    public List<DishDTO> getUsual(String username, String rid){
+        List<DishDTO> toReturn = new ArrayList<>();
+
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+        //... { $match: {user: "PatataAliena", restaurantId: "63d92b3cc416ac8e49aec90e"} }
+        Bson match = new Document("$match", new Document("user", username).append("restaurantId", rid));
+        //... { $group: { _id: { user: "$user", restaurant: "$restaurantId", dishes: "$dishes"}, count: {$sum: 1}} }
+        Bson group = new Document("$group", new Document("_id",
+                                                new Document("user", "$user").append("restaurant", "$restaurantId").append("dishes", "$dishes")
+                                            ).append("count", new Document("$sum", 1)));
+        //... { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("count", -1));
+        //... { $limit: 1 }
+        Bson limit = new Document("$limit", 1);
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, group, sort, limit)).into(new ArrayList<>());
+            if(result.size() == 0){return toReturn;}
+
+            for(Document a : result)
+            {
+                Document id = (Document) a.get("_id");
+
+                for(Document d : (List<Document>)id.get("dishes")) {
+
+                    DishDTO toAppend = new DishDTO();
+
+                    toAppend.setName(d.getString("name"));
+                    toAppend.setPrice(d.getDouble("price"));
+                    toAppend.setCurrency(d.getString("currency"));
+                    toAppend.setQuantity(d.getInteger("quantity"));
+
+                    toReturn.add(toAppend);
+                }
+            }
         }
         catch (MongoException e)
         {

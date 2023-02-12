@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
+import it.unipi.lsmsd.neo4food.model.Dish;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.OrderDTO;
 import it.unipi.lsmsd.neo4food.dto.DishDTO;
@@ -67,6 +68,48 @@ public class Checkout extends HttpServlet
             order.setTotal(total);
 
             request.setAttribute("order", order);
+        }
+//        By clicking usual button in restaurant page
+        else if("usual".equals(actionType)){
+            OrderDTO order = new OrderDTO();
+            UserDTO user = (UserDTO) request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD);
+            String restId = request.getParameter("rid");
+
+            order.setUser(user.getUsername());
+            order.setAddress(user.getAddress());
+            order.setZipcode(user.getZipcode());
+            order.setRestaurant(request.getParameter("restaurant"));
+            order.setRestaurantId(restId);
+
+            List<DishDTO> dishes = ServiceProvider.getAggregationService().getUsual(user.getUsername(), restId);
+
+            if (dishes.size() > 0) {
+
+                String curr = "";
+                double total = 0;
+
+                for (DishDTO d : dishes){
+                    if(curr.equals("")){curr = d.getCurrency();}
+                    total += d.getPrice();
+                }
+
+                order.setDishes(dishes);
+                order.setTotal(total);
+
+                request.setAttribute("order", order);
+                response.getWriter().print(1);
+            }else{
+                response.getWriter().print(0);
+            }
+
+            response.getWriter().flush();
+            return;
+        }
+//        Redirect alla pagina checkout.jsp
+        else if("redirect".equals(actionType))
+        {
+
+
         }
 //        Completo l'ordine con gli ultimi dati e lo inserisco nel database
         else if ("confirm".equals(actionType))

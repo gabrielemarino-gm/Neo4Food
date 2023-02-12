@@ -368,7 +368,7 @@
     }
 
     function sendReview(){
-        var review = {
+        let review = {
             action: "addReview",
             who: '<%= username %>',
             to: "<%= details.getId()%>",
@@ -390,6 +390,33 @@
     {
         $(bgAddReviewDivID).hide();
         $("body").css({"overflow": ""});
+    }
+
+//     -------------------
+
+    function getUsual(){
+        let toSend = {
+            action: "usual",
+            restaurant: "<%= details.getName() %>",
+            rid: "<%= details.getId() %>"
+        }
+
+        $.post("<c:url value="/checkout"/>", toSend, function (result) {
+        // controllo risultato di checkout
+        //     OK
+            if(result == 1){
+        //      There is a most frequent order, place it somehow
+        //      On checkout.jsp
+        //      TODO
+
+        //      No orders made on that restaurant
+            }else{
+                alert("No orders for this restaurant");
+            }
+
+        }).fail(function (xhr, status, error){
+            alert(xhr+"\n"+status+"\n"+error);
+        });
     }
 </script>
 
@@ -465,7 +492,7 @@
     {
 %>
         <div class="flex justify-center rounded-xl mt-16 w-full">
-            <button class="w-1/3 rounded-xl border-2 hover:bg-button" type="submit">Usual</button>
+            <button class="w-1/3 rounded-xl border-2 hover:bg-button" type="button" onclick="getUsual()">Usual</button>
         </div>
 <%  }
 %>
