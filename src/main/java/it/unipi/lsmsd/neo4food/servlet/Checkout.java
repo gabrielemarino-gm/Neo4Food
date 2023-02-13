@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import it.unipi.lsmsd.neo4food.model.Dish;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.OrderDTO;
@@ -95,21 +96,17 @@ public class Checkout extends HttpServlet
 
                 order.setDishes(dishes);
                 order.setTotal(total);
+                order.setCurrency(curr);
 
                 request.setAttribute("order", order);
-                response.getWriter().print(1);
+
             }else{
-                response.getWriter().print(0);
+                targetJSP = "WEB-INF/jsp/restaurant.jsp";
+                request.setAttribute("notUsual", "");
+                RestaurantDTO ret = ServiceProvider.getRestaurantService()
+                        .getRestaurantDetails(restId,true,false);
+                request.setAttribute("restaurantDTO", ret);
             }
-
-            response.getWriter().flush();
-            return;
-        }
-//        Redirect alla pagina checkout.jsp
-        else if("redirect".equals(actionType))
-        {
-
-
         }
 //        Completo l'ordine con gli ultimi dati e lo inserisco nel database
         else if ("confirm".equals(actionType))
@@ -143,7 +140,6 @@ public class Checkout extends HttpServlet
                     .getRestaurantDetails(restarantid,false,true)
                     .getOrders();
             request.setAttribute("orderList", lista);
-
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);

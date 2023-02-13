@@ -13,7 +13,7 @@
 <head>
 <%
       RestaurantDTO details = (RestaurantDTO) session.getAttribute(Constants.AUTHENTICATION_FIELD);
-      List<OrderDTO> ordini = (List<OrderDTO>) request.getAttribute("orderList");
+      List<OrderDTO> ordini = (List<OrderDTO>) request.getAttribute("hellow mondo");
 %>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
