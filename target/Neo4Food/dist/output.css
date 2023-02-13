@@ -1010,6 +1010,10 @@ video {
   width: 5rem;
 }
 
+.w-1\/2 {
+  width: 50%;
+}
+
 .resize-none {
   resize: none;
 }

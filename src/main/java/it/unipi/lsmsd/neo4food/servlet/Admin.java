@@ -120,5 +120,14 @@ public class Admin extends HttpServlet
             response.getWriter().print(toSend);
             response.getWriter().flush();
         }
+        else if (type.equals("deliveryTime"))
+        {
+            String zipcode = request.getParameter("zip");
+            ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getDeliveryTime(zipcode);
+
+            String toSend = (new Gson()).toJson(anaList);
+            response.getWriter().print(toSend);
+            response.getWriter().flush();
+        }
     }
 }

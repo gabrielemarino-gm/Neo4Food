@@ -254,6 +254,11 @@
                 });
             }
 
+
+            function getDeliveryTime()
+            {
+                let zipcode = $
+            }
         </script>
     </head>
     <body>
@@ -296,7 +301,7 @@
         </div>
 
 
-        <div class="px-5 mt-5 flex">
+        <div class="px-5 mt-5 flex justify-center">
 <%--        Altre statistiche per admin --%>
             <div class="w-1/4 px-3 rounded-md shadow-md h-72 overflow-auto">
 <%--            Zipcode piu attivi (Con piu ordini piazzati) TOP 10 --%>
@@ -333,6 +338,19 @@
                 <div id="cavialeBox"></div>
             </div>
 
+
+        </div>
+        <div class="px-5 mt-5 flex justify-center">
+            <div class="w-1/4 px-3 rounded-md shadow-md h-72 overflow-auto">
+                <%--            Piatti piu cari (nome, prezzo, ristorante proprietario) --%>
+                <div class="flex justify-center w-full">
+                    <input id="deliveryInputText" class="rounded-ml px-3 w-1/2" type="text" placeholder="Zip Code">
+                </div>
+                <div class="flex justify-center w-full">
+                    <button class="mt-3 bg-principale rounded-md px-3 border-2 hover:bg-button" id="deliveryButton" onclick="getDeliveryTime()">Best Delivery Time</button>
+                </div>
+                <div id="cavialeBox"></div>
+            </div>
         </div>
     </body>
 </html>

@@ -25,7 +25,7 @@ public class RestaurantPage extends HttpServlet
         String actionType = request.getParameter("action");
         String me = null;
 
-        try
+        /*try
         {
             me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
         }
@@ -35,7 +35,7 @@ public class RestaurantPage extends HttpServlet
             RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
             dispatcher.forward(request, response);
             return;
-        }
+        }*/
 
         if("details".equals(actionType))
         {

@@ -559,17 +559,22 @@ public class AggregationMongoDAO extends BaseMongo
     }
 
     // Vedo qual è stato il piatto più venduto del mese
-    public ListDTO<AnalyticsDTO> getDeliveryTime(String rid)
+    public ListDTO<AnalyticsDTO> getDeliveryTime(String zipcode)
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
 
         AnalyticsDTO analytic = new AnalyticsDTO();
 
-//...   {$match: {deliveryDate: {$ne: null}}}
+//...   {$match:
+//      {
+//        zipcode: "00162",
+//        deliveryDate: {$ne: null}
+//      }}
         Bson match = new Document(
                 "$match",
-                new Document("deliveryDate", new Document("$ne", "null"))
+                new Document("zipcode", zipcode)
+                        .append("deliveryDate", new Document("$ne", "null"))
         );
 
 //...   {$project: {
