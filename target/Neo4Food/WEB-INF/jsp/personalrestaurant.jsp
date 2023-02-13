@@ -18,6 +18,11 @@
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
 
+
+        // Ricarico la pagina automaticamente ogni minuto cosi' da visualizzare nuovi ordini
+        setTimeout(function() {location.reload();}, 60000);
+
+
         let pageReviewActive = false;
         let bgReviewDivID = "#review";
         let bgAddReviewDivID = "#addreview";
