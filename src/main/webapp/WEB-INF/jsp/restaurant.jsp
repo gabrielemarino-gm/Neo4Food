@@ -392,37 +392,6 @@
         $("body").css({"overflow": ""});
     }
 
-//     -------------------
-
-    function getUsual()
-    {
-        let toSend = {
-            action: "usual",
-            restaurant: "<%= details.getName() %>",
-            rid: "<%= details.getId() %>"
-        }
-
-        $.post("<c:url value="/checkout"/>", toSend, function (result) {
-        // controllo risultato di checkout
-        //     OK
-            if(result == 1)
-            {
-        //      There is a most frequent order, place it somehow
-        //      On checkout.jsp
-        //      TODO
-
-        //      No orders made on that restaurant
-            }
-            else
-            {
-                alert("No orders for this restaurant");
-            }
-
-        }).fail(function (xhr, status, error)
-        {
-            alert(xhr+"\n"+status+"\n"+error);
-        });
-    }
 </script>
 
 <div class="-top-6 overflow-hidden h-48 z-50">
@@ -496,9 +465,16 @@
 <%  if(!isRestaurant && isLogged)
     {
 %>
-        <div class="flex justify-center rounded-xl mt-16 w-full">
-            <button class="w-1/3 rounded-xl border-2 hover:bg-button" type="button" onclick="getUsual()">Usual</button>
-        </div>
+<form class="flex justify-center rounded-xl mt-16 w-full" method="post" action="<c:url value="/checkout"/>">
+            <% if(request.getAttribute("notUsual")!= null){ %>
+                <button class="w-1/3 rounded-xl border-2 hover:bg-button" disabled type="submit">You can't use this feature now</button>
+            <%}else{%>
+                <button class="w-1/3 rounded-xl border-2 hover:bg-button" type="submit">Usual</button>
+            <%}%>
+            <input type="hidden" name="action" value="usual">
+            <input type="hidden" name="restaurant" value="<%= details.getName() %>">
+            <input type="hidden" name="rid" value="<%= details.getId() %>">
+        </form>
 <%  }
 %>
 
