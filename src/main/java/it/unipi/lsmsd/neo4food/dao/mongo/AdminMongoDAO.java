@@ -33,7 +33,6 @@ public class AdminMongoDAO extends BaseMongo
         finally {
             closePool();
         }
-
         return false;
     }
 
