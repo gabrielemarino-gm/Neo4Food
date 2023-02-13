@@ -20,6 +20,19 @@ public class PersonalPage extends HttpServlet
         String actionType = request.getParameter("action");
         String actor = request.getParameter("actor");
 
+        String me = null;
+        try
+        {
+            me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+        }
+        catch (Exception e)
+        {
+            targetJSP = "WEB-INF/jsp/login.jsp";
+            RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
+            dispatcher.forward(request, response);
+            return;
+        }
+
         if(actionType != null)
         {
             if(actor.equals("user"))
@@ -38,6 +51,10 @@ public class PersonalPage extends HttpServlet
                 String target = restaurantRequest(request, response);
                 targetJSP = target != null ? target : "WEB-INF/jsp/personalrestaurant.jsp";
             }
+        }
+        else
+        {
+            targetJSP = "WEB-INF/jsp/login.jsp";
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
