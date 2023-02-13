@@ -11,7 +11,6 @@ import static com.mongodb.client.model.Filters.*;
 
 public class AdminMongoDAO extends BaseMongo
 {
-
     public boolean isTokenValid(String token)
     {
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
@@ -45,7 +44,7 @@ public class AdminMongoDAO extends BaseMongo
         }
         catch (MongoException e)
         {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return 0;
@@ -61,7 +60,7 @@ public class AdminMongoDAO extends BaseMongo
         }
         catch (MongoException e)
         {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return 0;
@@ -76,7 +75,7 @@ public class AdminMongoDAO extends BaseMongo
         }
         catch (MongoException e)
         {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return 0;

@@ -320,11 +320,6 @@ public class AggregationMongoDAO extends BaseMongo
     }
 
 
-
-
-
-
-
     public ListDTO<AnalyticsDTO> getBestHours(String rid)
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
