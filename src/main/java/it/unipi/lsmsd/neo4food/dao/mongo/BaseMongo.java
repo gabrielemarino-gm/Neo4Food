@@ -73,5 +73,7 @@ public abstract class BaseMongo
     public static void closePool()
     {
         clientConnection.close();
+        clientConnection = null;
+        clientDatabase = null;
     }
 }

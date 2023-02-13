@@ -91,6 +91,9 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
+        finally {
+            closePool();
+        }
     }
 
     public void setAvgRate()
@@ -135,6 +138,9 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
+        finally {
+            closePool();
+        }
     }
 
     public ListDTO<AnalyticsDTO> getOrdersPerZip()
@@ -172,6 +178,9 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
         }
 
         return toReturn;
@@ -221,6 +230,9 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
+        finally {
+            closePool();
+        }
 
         return toReturn;
     }
@@ -268,6 +280,9 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
+        finally {
+            closePool();
+        }
 
         return toReturn;
     }
@@ -314,6 +329,9 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
         }
 
         return toReturn;
@@ -376,6 +394,9 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
         }
 
 
@@ -442,6 +463,9 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
         }
 
 
@@ -553,6 +577,9 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
         }
 
         return toReturn;

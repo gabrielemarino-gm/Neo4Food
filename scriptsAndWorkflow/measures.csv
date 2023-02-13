@@ -30,5 +30,5 @@ Orders,getDailyRevenue,restaurantId: 1,1,10,415,415
 Orders,getDailyRevenue,"restaurantId: 1, creationDate: 1",1,2,2,2
 Orders,getModaOrders,_id: 1,415,767,602694,602694
 Orders,getModaOrders,restaurantId: 1,415,11,415,415
-Orders,fasterRestaurants,_id: 1,37795,3435,602694,602694
-Orders,fasterRestaurants,creationDate: 1,37795,4591,602694,602694
+Orders,fasterRestaurantByZipcode,_id: 1,727,1104,602694,602694
+Orders,fasterRestaurantByZipcode,zipcode: 1,727,25,1729,1729

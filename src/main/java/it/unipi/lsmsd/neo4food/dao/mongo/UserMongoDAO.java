@@ -34,6 +34,9 @@ public class UserMongoDAO extends BaseMongo {
                 return true;
             }
         }
+        finally {
+            closePool();
+        }
         return false;
     }
 //>>>>>>>>>>>>>OK<<<<<<<<<<<<<
@@ -69,6 +72,9 @@ public class UserMongoDAO extends BaseMongo {
         catch (MongoException mongoException)
         {
             System.err.println("Mongo Exception: " + mongoException.getMessage());
+        }
+        finally {
+            closePool();
         }
 
 //      No match
@@ -127,6 +133,9 @@ public class UserMongoDAO extends BaseMongo {
         {
             System.err.println("Mongo Exception: " + mongoException.getMessage());
         }
+        finally {
+            closePool();
+        }
 
         return null;
     }
@@ -156,6 +165,9 @@ public class UserMongoDAO extends BaseMongo {
         }catch (MongoException e){
             System.err.println(e);
             return false;
+        }
+        finally {
+            closePool();
         }
         return false;
     }
@@ -190,6 +202,9 @@ public class UserMongoDAO extends BaseMongo {
 
             toReturn.setList(toSet);
             toReturn.setItemCount(toSet.size());
+        }
+        finally {
+            closePool();
         }
 
         return toReturn;
