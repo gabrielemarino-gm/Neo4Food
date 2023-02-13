@@ -277,7 +277,7 @@ public class AggregationMongoDAO extends BaseMongo
         List<DishDTO> toReturn = new ArrayList<>();
 
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-        //... { $match: {user: "PatataAliena", restaurantId: "RID"} }
+        //... { $match: {user: "PatataAliena", restaurantId: "<RID>"} }
         Bson match = new Document("$match", new Document("user", username).append("restaurantId", rid));
         //... { $group: { _id: { user: "$user", restaurant: "$restaurantId", dishes: "$dishes"}, count: {$sum: 1}} }
         Bson group = new Document("$group", new Document("_id",
@@ -318,12 +318,6 @@ public class AggregationMongoDAO extends BaseMongo
 
         return toReturn;
     }
-
-
-
-
-
-
 
     public ListDTO<AnalyticsDTO> getBestHours(String rid)
     {
@@ -454,12 +448,10 @@ public class AggregationMongoDAO extends BaseMongo
         return toReturn;
     }
 
-    public AnalyticsDTO getDailyRevene(String rid)
+    public AnalyticsDTO getDailyRevenue(String rid)
     {
         AnalyticsDTO toReturn = new AnalyticsDTO();
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-
-        AnalyticsDTO analytic = new AnalyticsDTO();
 
 // (    Sec Analityc: FATTURATO GIORNALIERO CON LA PIATTAFORMA
 //...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e", creationDate: {$gte: new Date(new Date().setHours(0,0,0,0)), $lt: new Date(new Date().setHours(24,0,0,0))}}}

@@ -37,7 +37,7 @@ public class RestaurantPage extends HttpServlet
 //          Devo passare alla pagina delle statistiche
             ListDTO<AnalyticsDTO> orari = ServiceProvider.getAggregationService().getBestHours(me);
             ListDTO<AnalyticsDTO> piatto = ServiceProvider.getAggregationService().getBestDishMonth(me);
-            AnalyticsDTO fatturato = ServiceProvider.getAggregationService().getDailyRevene(me);
+            AnalyticsDTO fatturato = ServiceProvider.getAggregationService().getDailyRevenue(me);
             ListDTO<AnalyticsDTO> moda = ServiceProvider.getAggregationService().getModaOrders(me);
 
 

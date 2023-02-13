@@ -1,14 +1,32 @@
 Collection, Function, Index, nReturned, Execution (ms), keysExamined, docsExamined
-Users, getUserLogin, _id_, 1, 100, 78795, 78795
-Users, getUserLogin, For login, 1, 0, 1, 1
-Users, getUser, _id_, 1, 108, 78795, 78795
-Users, getUser, For search, 2, 60, 78795, 2
--,-,-,-,-,-,-
-Restaurants, getRestaurantsForSearchPage, _id_, 7, 79, 38581, 38581
-Restaurants, getRestaurantsForSearchPage, search by zip_code, 7, 0, 7, 7
-Restaurants, getRestaurantLogin, _id_, 1, 74, 3851, 3851
-Restaurants, getRestaurantLogin, search by email, 1, 3, 1, 1
--,-,-,-,-,-,-
-Orders, getOrders, _id_, 19, 674, 602694, 602964
-Orders, getOrders, faster aggregation by user name, 19, 0, 19, 19
-Orders, getOrders, faster aggregation by restaurantId, 415, 2, 415, 415
+Users, getUserLogin,_id: 1, 1, 100, 78795, 78795
+Users, getUserLogin,email: 1, 1, 0, 1, 1
+Users, getUser,_id: 1, 1, 108, 78795, 78795
+Users, getUser,username: 1, 2, 60, 78795, 2
+Restaurants, getRestaurantsForSearchPage, _id: 1, 7, 79, 38581, 38581
+Restaurants, getRestaurantsForSearchPage,zip_code: 1, 7, 0, 7, 7
+Restaurants, getRestaurantLogin, _id: 1, 1, 74, 3851, 3851
+Restaurants, getRestaurantLogin,email: 1, 1, 3, 1, 1
+Orders, getOrders, _id: 1, 19, 674, 602694, 602964
+Orders, getOrders,user: 1, 19, 0, 19, 19
+Orders, getOrders,restaurantId: 1, 415, 2, 415, 415
+Restaurants,getAvgPrice,_id_,38581,4464,38581,38581
+Restaurants,getAvgPrice,_id: 1,38581,4569,38581,38581
+Restaurants,getAvgPrice,zip_code: 1,38581,4577,38581,38581
+Orders,getOrdersPerZip,_id: 1,951,1067,602694,602694
+Orders,getOrdersPerZip,zipcode: 1,951,480,602694,0
+Orders,getLastMonthProfits,_id: 1,10502,872,602694,602694
+Orders,getLastMonthProfits,creationDate: 1,10502,116,14131,14131
+Orders,getUsual,_id: 1,4,896,602694,602694
+Orders,getUsual,user: 1,4,3,19,19
+Orders,getUsual,restaurantId: 1,4,10,415,415
+Orders,getBestHours,_id: 1,19,896,602694,602964
+Orders,getBestHours,creationDate: 1,19,102,14130,14130
+Orders,getBestHours,"restaurantId: 1, creationDate: 1",19,4,19,19
+Orders,getBestDishMonth,_id: 1,2,879,602694,602694
+Orders,getBestDishMonth,restaurantId: 1,2,13,415,415
+Orders,getDailyRevenue,_id: 1,1,791,602964,602964
+Orders,getDailyRevenue,restaurantId: 1,1,10,415,415
+Orders,getDailyRevenue,"restaurantId: 1, creationDate: 1",1,2,2,2
+Orders,getModaOrders,_id: 1,415,767,602694,602694
+Orders,getModaOrders,restaurantId: 1,415,11,415,415
