@@ -23,7 +23,7 @@ public class Social extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
         String actionType = request.getParameter("action");
-        
+
         try
         {
             String me = ((UserDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
