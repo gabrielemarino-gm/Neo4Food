@@ -6,12 +6,16 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
+import it.unipi.lsmsd.neo4food.dto.ListDTO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.model.User;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -156,29 +160,39 @@ public class UserMongoDAO extends BaseMongo {
         return false;
     }
 
-    public UserDTO getUser(String usr){
-        UserDTO userDTO = new UserDTO();
+    public ListDTO<UserDTO> getUser(String usr){
+        ListDTO<UserDTO> toReturn = new ListDTO<>();
+
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
-        try(MongoCursor cursor = collection.find(eq("username", usr)).limit(1).iterator())
+        List<Document> qList = new ArrayList<>();
+
+        qList.add(new Document("username", new Document("$regex", usr)));
+        qList.add(new Document("firstname", usr));
+        qList.add(new Document("lastname", usr));
+
+        Document query = new Document("$or", qList);
+
+        try(MongoCursor cursor = collection.find(query).limit(20).iterator())
         {
+            List<UserDTO> toSet = new ArrayList<>();
 
-            if (cursor.hasNext()) {
+            while (cursor.hasNext()) {
                 Document res = (Document) cursor.next();
+                UserDTO toAppend = new UserDTO();
 
-                userDTO.setId(res.get("_id") != null ? res.get("_id").toString() : "ID not available");
-                userDTO.setUsername(res.get("username") != null ? res.get("username").toString() : "Username not available");
-                userDTO.setFirstName(res.get("firstname") != null ? res.get("firstname").toString() : "Firstname not available");
-                userDTO.setLastName(res.get("lastname") != null ? res.get("lastname").toString() : "Lastname not available");
+                toAppend.setId(res.get("_id") != null ? res.get("_id").toString() : "ID not available");
+                toAppend.setUsername(res.get("username") != null ? res.get("username").toString() : "Username not available");
+                toAppend.setFirstName(res.get("firstname") != null ? res.get("firstname").toString() : "Firstname not available");
+                toAppend.setLastName(res.get("lastname") != null ? res.get("lastname").toString() : "Lastname not available");
 
-                return userDTO;
-            } else {
-                userDTO.setId("0");
-                return userDTO;
+                toSet.add(toAppend);
             }
 
+            toReturn.setList(toSet);
+            toReturn.setItemCount(toSet.size());
         }
 
-
+        return toReturn;
     }
 
 }

@@ -127,9 +127,8 @@ public class Social extends HttpServlet
         else if(actionType.equals("searchUser"))
         {
             String username = request.getParameter("username");
-            UserDTO userDTO = ServiceProvider.getUserService().getUser(username);
 
-            response.getWriter().println((new Gson()).toJson(userDTO));
+            response.getWriter().println((new Gson()).toJson(ServiceProvider.getUserService().getUser(username)));
             response.getWriter().flush();
             return;
         }

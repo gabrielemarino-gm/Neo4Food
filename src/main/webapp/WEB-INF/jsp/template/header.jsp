@@ -89,7 +89,7 @@
         });
     }
 
-    function searchUser() 
+    function searchUser()
     {
         if(!searchVisible)
             toggleSearch();
@@ -101,25 +101,26 @@
 
         console.log("toSend: " + toSend);
 
-        $.post("<c:url value='/social'/>", toSend, function (result) 
+        $.post("<c:url value='/social'/>", toSend, function (result)
         {
             json = JSON.parse(result);
-            console.log("result: " + result);
-            if(!(json.id == '0'))
-            {
+
+            if(!(json.itemCount  == 0)) {
                 $("#boxSearch").empty();
-                $("#boxSearch").append('' +
-                    '<div class="flex border-t mt-3">' +
+                for (i = 0; i < json.itemCount; i++){
+                    $("#boxSearch").append('' +
+                        '<div class="flex border-t mt-3">' +
                         '<div>' +
-                            '<div class="font-bold">' + json.username + '</div>' +
-                            '<div class="flex px-5 text-xs">' +
-                                '<div>' + json.firstName + '</div>' +
-                                '<div>&nbsp;' + json.lastName + '</div>' +
-                            '</div>' +
+                        '<div class="font-bold">' + json.list[i].username + '</div>' +
+                        '<div class="flex px-5 text-xs">' +
+                        '<div>' + json.list[i].firstName + '</div>' +
+                        '<div>&nbsp;' + json.list[i].lastName + '</div>' +
                         '</div>' +
-                        '<button class="ml-auto h-7 mt-2 px-3 rounded-lg border-2 hover:bg-button" onclick="setFollowHeader(\''+json.username+'\')"> Follow </button>' +
-                    '</div>'
-                );
+                        '</div>' +
+                        '<button class="ml-auto h-7 mt-2 px-3 rounded-lg border-2 hover:bg-button" onclick="setFollowHeader(\'' + json.username + '\')"> Follow </button>' +
+                        '</div>'
+                    );
+            }
             }
             else
             {
@@ -201,8 +202,6 @@
                         </button>
                     </form>
 
-<%--                TODO RICRCA UTENTI --%>
-
                     <button id="userSearchButton" class="flex my-3 px-3 float-right rounded-lg hover:bg-button" onclick="showSearchText()">
                         <img class="h-5 mr-3" src="img/lente.png" alt="lente">
                     </button>
@@ -214,7 +213,7 @@
 
 
     </header>
-                    <div id="search" style="display:none;"  class="z-50 fixed h-full w-full bg-black bg-opacity-20">
+                    <div id="search" style="display:none;"  class="z-50 fixed h-full w-full bg-black bg-opacity-20 overflow-auto">
                         <div  class=" mx-auto w-5/6 h-1/2 mt-20 rounded-lg bg-principale py-3 shadow-md px-5 overflow-auto">
 
                             <button class="float-right px-1 rounded-xl" onclick="toggleSearch()"><img class="h-7" src="img/x.png" alt="X"/></button>
