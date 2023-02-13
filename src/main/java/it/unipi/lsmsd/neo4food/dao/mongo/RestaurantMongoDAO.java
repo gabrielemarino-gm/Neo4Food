@@ -66,6 +66,9 @@ public class RestaurantMongoDAO extends BaseMongo
                 count++;
             }
         }
+        finally {
+            closePool();
+        }
         toReturn.setList(tempList);
         toReturn.setItemCount(count);
         return toReturn;
@@ -108,6 +111,9 @@ public class RestaurantMongoDAO extends BaseMongo
 
             return e;
             }
+        }
+        finally {
+            closePool();
         }
         RestaurantDTO e = new RestaurantDTO();
         e.setId("0");
@@ -171,6 +177,9 @@ public class RestaurantMongoDAO extends BaseMongo
                 toReturn.setPendingOrders(tempOrdersList);
             }
         }
+        finally {
+            closePool();
+        }
 
         return toReturn;
     }
@@ -198,6 +207,9 @@ public class RestaurantMongoDAO extends BaseMongo
         catch (MongoException e){
             System.err.println(e);
         }
+        finally {
+            closePool();
+        }
 
         return "";
     }
@@ -217,6 +229,10 @@ public class RestaurantMongoDAO extends BaseMongo
         catch (MongoException e){
             System.err.println(e);
         }
+        finally {
+            closePool();
+        }
+
         return 0;
     }
 
@@ -241,6 +257,9 @@ public class RestaurantMongoDAO extends BaseMongo
         }
         catch (MongoException e){
             System.err.println(e);
+        }
+        finally {
+            closePool();
         }
 
         return 0;
