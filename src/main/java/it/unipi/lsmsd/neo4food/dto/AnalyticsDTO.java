@@ -29,4 +29,19 @@ public class AnalyticsDTO
     public String getDish(){return dish;}
     public String getCurrency(){return currency;}
     public String getOrario(){return orario;}
+
+
+    @Override
+    public String toString() {
+        return "AnalyticsDTO{" +
+                "zipcode='" + zipcode + '\'' +
+                ", user='" + user + '\'' +
+                ", restaurant='" + restaurant + '\'' +
+                ", count=" + count +
+                ", dub=" + dub +
+                ", dish='" + dish + '\'' +
+                ", currency='" + currency + '\'' +
+                ", orario='" + orario + '\'' +
+                '}';
+    }
 }

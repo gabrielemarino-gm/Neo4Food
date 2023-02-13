@@ -319,18 +319,25 @@ public class AggregationMongoDAO extends BaseMongo
         return toReturn;
     }
 
+
+
+
+
+
+
     public ListDTO<AnalyticsDTO> getBestHours(String rid)
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
 
-        AnalyticsDTO analytic = new AnalyticsDTO();
 // (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
 
-//...   {$match: {creationDate: {$gtr: new Date(new Date() - 1000*60*60*24*30)}}}
+//...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90f",
+//                      creationDate: {$gte: new Date(new Date() - 1000*60*60*24*30)}}}
         Bson match = new Document(
                 "$match",
-                new Document("restaurantId", rid).append("creationDate", new Document("$gte", LocalDateTime.now().minusMonths(1)))
+                new Document("restaurantId", rid)
+                        .append("creationDate", new Document("$gte", LocalDateTime.now().minusMonths(1)))
             );
 
 //...   $project{orderHour:{$hour: "$creationDate"}}
@@ -342,15 +349,15 @@ public class AggregationMongoDAO extends BaseMongo
 //...   $group:{_id:{ _id: "$orderHour",count: {$sum: 1}}}
         Bson group = new Document(
                 "$group",
-                new Document("_id", new Document("_id", "$orderHour")
-                        .append("count", new Document("$sum", 1)))
+                new Document("_id", "$orderHour")
+                        .append("count", new Document("$sum", 1))
         );
 
 //...   { $sort: { count: -1 }}
         Bson sort = new Document("$sort", new Document("count", -1));
-//...   { $limit: 3 }
-        Bson limit = new Document("$limit", 3);
 
+//...   { $limit: 3 }
+        Bson limit = new Document("$limit", 4);
 
         try
         {
@@ -358,14 +365,11 @@ public class AggregationMongoDAO extends BaseMongo
                     Arrays.asList(match, project, group, sort, limit)).into(new ArrayList<>());
             List<AnalyticsDTO> toSet = new ArrayList<>();
 
-            if(result.size() == 0)
-                return toReturn;
-
             for(Document d : result)
             {
                 AnalyticsDTO toAppend = new AnalyticsDTO();
 
-                toAppend.setOrario(d.get("hour").toString());
+                toAppend.setOrario(d.get("_id").toString());
                 toAppend.setCount(d.getInteger("count"));
 
                 toSet.add(toAppend);
@@ -384,6 +388,10 @@ public class AggregationMongoDAO extends BaseMongo
         return toReturn;
     }
 
+
+
+
+
     // Vedo qual è stato il piatto più venduto del mese
     public ListDTO<AnalyticsDTO> getBestDishMonth(String rid)
     {
@@ -391,7 +399,6 @@ public class AggregationMongoDAO extends BaseMongo
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
 
         AnalyticsDTO analytic = new AnalyticsDTO();
-// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
 
 //...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e", creationDate: {$gte: new Date(new Date().setHours(0,0,0,0)), $lt: new Date(new Date().setHours(24,0,0,0))}}}
         Bson match = new Document(
@@ -453,12 +460,13 @@ public class AggregationMongoDAO extends BaseMongo
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
 
         AnalyticsDTO analytic = new AnalyticsDTO();
-// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
 
+// (    Sec Analityc: FATTURATO GIORNALIERO CON LA PIATTAFORMA
 //...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e", creationDate: {$gte: new Date(new Date().setHours(0,0,0,0)), $lt: new Date(new Date().setHours(24,0,0,0))}}}
         Bson match = new Document(
                 "$match",
-                new Document("restaurantId", rid).append("creationDate", new Document("$gte", LocalDateTime.now().minusDays(1)))
+                new Document("restaurantId", rid)
+                        .append("creationDate", new Document("$gte", LocalDateTime.now().minusDays(1)))
         );
 
 //...   $group:{_id: "$restaurantId", total: { $sum: "$total" }}
@@ -466,22 +474,24 @@ public class AggregationMongoDAO extends BaseMongo
                 "$group",
                 new Document("_id", "$restaurantId")
                         .append("total", new Document("$sum", "$total"))
+                        .append("currency", new Document("$first", "$currency"))
         );
 
+//...   { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("count", -1));
 
         try
         {
             List<Document> result = collection.aggregate(
-                    Arrays.asList(match, group)).into(new ArrayList<>());
+                    Arrays.asList(match, group, sort)).into(new ArrayList<>());
             AnalyticsDTO toSet = new AnalyticsDTO();
 
-            if(result.size() == 0)
-                return toReturn;
 
             for(Document d : result)
             {
-                toSet.setDish(d.get("_id").toString());
-                toSet.setCount(d.getInteger("total"));
+                toSet.setRestaurant(d.get("_id").toString());
+                toSet.setCurrency(d.getString("currency"));
+                toSet.setDouble(Double.parseDouble(d.get("total").toString()));
             }
 
             toReturn = toSet;
@@ -501,7 +511,7 @@ public class AggregationMongoDAO extends BaseMongo
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
 
         AnalyticsDTO analytic = new AnalyticsDTO();
-// (    Prima Analitycs: ORARIO PIU' INCASINATO, CONSIDERANDO L'ULTIMO MESE DI ORDINI
+// (    Ter Analitycs: MODA PIATTI
 
 //...   {$match: {restaurantId: "63d92b3cc416ac8e49aec90e"}}
         Bson match = new Document(

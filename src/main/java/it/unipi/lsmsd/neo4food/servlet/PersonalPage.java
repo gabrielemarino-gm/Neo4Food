@@ -55,7 +55,8 @@ public class PersonalPage extends HttpServlet
     private String userRequest(HttpServletRequest request, HttpServletResponse response)
     {
         String actionType = request.getParameter("action");
-        if(actionType.equals("change")){
+        if(actionType.equals("change"))
+        {
             //      Cambio i dati e ricarico la pagina personale
             String uid = request.getParameter("uid");
 
