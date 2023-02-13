@@ -557,5 +557,88 @@ public class AggregationMongoDAO extends BaseMongo
 
         return toReturn;
     }
+
+    // Vedo qual è stato il piatto più venduto del mese
+    public ListDTO<AnalyticsDTO> getDeliveryTime(String rid)
+    {
+        ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+
+        AnalyticsDTO analytic = new AnalyticsDTO();
+
+//...   {$match: {deliveryDate: {$ne: null}}}
+        Bson match = new Document(
+                "$match",
+                new Document("deliveryDate", new Document("$ne", "null"))
+        );
+
+//...   {$project: {
+//        restaurantId: "$restaurantId",
+//        deliveryTime: {
+//          $dateDiff: {
+//            startDate: "$creationDate",
+//            endDate: "$deliveryDate",
+//            unit: "minute"
+//          }
+//        }
+//      }}
+        Bson project = new Document("restaurantId","$restaurantId")
+                .append("deliveriTime", new Document("$dateDiff",
+                        new Document("startDate", "$creationDate")
+                                .append("endDate", "$deliveryDate")
+                                .append("unit", "minute")
+                ));
+
+//...   $group:
+//      {
+//        _id: "$restaurantId",
+//        deliveryAvgTime: {
+//          $avg: "$deliveryTime"
+//        }
+//      }
+        Bson group = new Document(
+                "$group",
+                new Document("_id", "$restaurantId")
+                        .append("deliveryAvgTime", new Document("$avg", "$deliveryTime"))
+        );
+
+//...   { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("total", -1));
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, project, group, sort)).into(new ArrayList<>());
+            List<AnalyticsDTO> toSet = new ArrayList<>();
+
+            if(result.size() == 0)
+                return toReturn;
+
+            for(Document d : result)
+            {
+                AnalyticsDTO toAppend = new AnalyticsDTO();
+
+                toAppend.setRestaurant(d.get("_id").toString());
+                toAppend.setCount(d.getInteger("deliveryAvgTime"));
+
+                toSet.add(toAppend);
+            }
+
+            toReturn.setList(toSet);
+            toReturn.setItemCount(toSet.size());
+
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+
+
+        return toReturn;
+    }
 }
+
+
+
+
 
