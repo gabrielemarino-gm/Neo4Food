@@ -254,6 +254,8 @@
                 });
             }
 
+//  --------- Analytics Delivery Time ---------
+            var deliveryBox = '#deliberyBox';
 
 
 
@@ -267,11 +269,11 @@
                 toSend = {
                     action: "analytics",
                     type: "deliveryTime",
-                    zip:zipcode
+                    zip: zipcode
                 };
 
                 $('#deliveryButton').attr("disabled", true);
-                $('#cdeliveryButton').text("Wait please...");
+                $('#deliveryButton').text("Wait please...");
 
                 $.post("<c:url value="/admin"/>", toSend, function (result)
                 {
@@ -312,7 +314,7 @@
             </div>
         </header>
 
-        <div class="fixed text-center w-full mx-auto mt-2" id="message" style="display: ">
+        <div class="fixed text-center w-full mx-auto mt-2 bg-button shadow-md" id="message" style="display: ">
             <h1 id="messageField"></h1>
         </div>
 

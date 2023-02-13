@@ -48,9 +48,7 @@ public class AdminMongoDAO extends BaseMongo
         {
             System.out.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
         return 0;
     }
 
@@ -66,9 +64,7 @@ public class AdminMongoDAO extends BaseMongo
         {
             System.out.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
         return 0;
     }
 

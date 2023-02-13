@@ -143,6 +143,56 @@ public class AggregationMongoDAO extends BaseMongo
         }
     }
 
+    public List<DishDTO> getUsual(String username, String rid)
+    {
+        List<DishDTO> toReturn = new ArrayList<>();
+
+        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
+        //... { $match: {user: "PatataAliena", restaurantId: "<RID>"} }
+        Bson match = new Document("$match", new Document("user", username).append("restaurantId", rid));
+        //... { $group: { _id: { user: "$user", restaurant: "$restaurantId", dishes: "$dishes"}, count: {$sum: 1}} }
+        Bson group = new Document("$group", new Document("_id",
+                new Document("user", "$user").append("restaurant", "$restaurantId").append("dishes", "$dishes")
+        ).append("count", new Document("$sum", 1)));
+        //... { $sort: { count: -1 }}
+        Bson sort = new Document("$sort", new Document("count", -1));
+        //... { $limit: 1 }
+        Bson limit = new Document("$limit", 1);
+
+        try
+        {
+            List<Document> result = collection.aggregate(
+                    Arrays.asList(match, group, sort, limit)).into(new ArrayList<>());
+            if(result.size() == 0){return toReturn;}
+
+            for(Document a : result)
+            {
+                Document id = (Document) a.get("_id");
+
+                for(Document d : (List<Document>)id.get("dishes"))
+                {
+                    DishDTO toAppend = new DishDTO();
+
+                    toAppend.setName(d.getString("name"));
+                    toAppend.setPrice(d.getDouble("price"));
+                    toAppend.setCurrency(d.getString("currency"));
+                    toAppend.setQuantity(d.getInteger("quantity"));
+
+                    toReturn.add(toAppend);
+                }
+            }
+        }
+        catch (MongoException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
+        }
+
+        return toReturn;
+    }
+
     public ListDTO<AnalyticsDTO> getOrdersPerZip()
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
@@ -287,56 +337,6 @@ public class AggregationMongoDAO extends BaseMongo
         return toReturn;
     }
 
-    public List<DishDTO> getUsual(String username, String rid)
-    {
-        List<DishDTO> toReturn = new ArrayList<>();
-
-        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-        //... { $match: {user: "PatataAliena", restaurantId: "<RID>"} }
-        Bson match = new Document("$match", new Document("user", username).append("restaurantId", rid));
-        //... { $group: { _id: { user: "$user", restaurant: "$restaurantId", dishes: "$dishes"}, count: {$sum: 1}} }
-        Bson group = new Document("$group", new Document("_id",
-                                                new Document("user", "$user").append("restaurant", "$restaurantId").append("dishes", "$dishes")
-                                            ).append("count", new Document("$sum", 1)));
-        //... { $sort: { count: -1 }}
-        Bson sort = new Document("$sort", new Document("count", -1));
-        //... { $limit: 1 }
-        Bson limit = new Document("$limit", 1);
-
-        try
-        {
-            List<Document> result = collection.aggregate(
-                    Arrays.asList(match, group, sort, limit)).into(new ArrayList<>());
-            if(result.size() == 0){return toReturn;}
-
-            for(Document a : result)
-            {
-                Document id = (Document) a.get("_id");
-
-                for(Document d : (List<Document>)id.get("dishes"))
-                {
-                    DishDTO toAppend = new DishDTO();
-
-                    toAppend.setName(d.getString("name"));
-                    toAppend.setPrice(d.getDouble("price"));
-                    toAppend.setCurrency(d.getString("currency"));
-                    toAppend.setQuantity(d.getInteger("quantity"));
-
-                    toReturn.add(toAppend);
-                }
-            }
-        }
-        catch (MongoException e)
-        {
-            System.err.println(e.getMessage());
-        }
-        finally {
-            closePool();
-        }
-
-        return toReturn;
-    }
-
     public ListDTO<AnalyticsDTO> getBestHours(String rid)
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
@@ -399,12 +399,8 @@ public class AggregationMongoDAO extends BaseMongo
             closePool();
         }
 
-
         return toReturn;
     }
-
-
-
 
 
     // Vedo qual è stato il piatto più venduto del mese
@@ -468,7 +464,6 @@ public class AggregationMongoDAO extends BaseMongo
             closePool();
         }
 
-
         return toReturn;
     }
 
@@ -515,6 +510,9 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
+        }
+        finally {
+            closePool();
         }
 
 
@@ -590,8 +588,6 @@ public class AggregationMongoDAO extends BaseMongo
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-
-        AnalyticsDTO analytic = new AnalyticsDTO();
 
 //...   {$match:
 //      {
@@ -673,13 +669,11 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
+        finally {
+            closePool();
+        }
 
 
         return toReturn;
     }
 }
-
-
-
-
-

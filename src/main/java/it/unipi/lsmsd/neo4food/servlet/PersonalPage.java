@@ -127,6 +127,10 @@ public class PersonalPage extends HttpServlet
 
             return "WEB-INF/jsp/orders.jsp";
         }
+        else if(actionType.equals("personal"))
+        {
+            return "WEB-INF/jsp/personal.jsp";
+        }
         else
         {
             return "WEB-INF/jsp/login.jsp";
