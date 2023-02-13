@@ -166,7 +166,7 @@
             {
 %>
 <%--            Il pulsante di logout fa sloggare tutti--%>
-                <button class="my-3 px-3 float-right rounded-lg hover:bg-button">
+                <button class="my-3 px-3 float-right rounded-lg hover:bg-button" onclick="unlog()">
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </button>
 <%--            Il pulsante per andare agli ordini agisce in maniera diversa--%>
