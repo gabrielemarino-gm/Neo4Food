@@ -19,26 +19,17 @@ public class RestaurantPage extends HttpServlet
 {
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String targetJSP = "WEB-INF/jsp/restaurant.jsp";
+        String targetJSP = "WEB-INF/jsp/error/404.jsp";;
 
         String res = request.getParameter("rid");
         String actionType = request.getParameter("action");
         String me = null;
 
-        /*try
-        {
-            me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
-        }
-        catch (Exception e)
-        {
-            targetJSP = "WEB-INF/jsp/login.jsp";
-            RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
-            dispatcher.forward(request, response);
-            return;
-        }*/
 
+//      Un utente ha cercato il ristorante e di conseguenza cliccato per avere più info
         if("details".equals(actionType))
         {
+            targetJSP = "WEB-INF/jsp/restaurant.jsp";
             RestaurantDTO ret = ServiceProvider.getRestaurantService()
                                 .getRestaurantDetails(res,true,false);
             request.setAttribute("restaurantDTO", ret);
@@ -58,6 +49,7 @@ public class RestaurantPage extends HttpServlet
             request.setAttribute("Moda", moda);
             targetJSP =  "WEB-INF/jsp/restaurantStats.jsp";
         }
+
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
         dispatcher.forward(request, response);
