@@ -604,8 +604,10 @@ public class AggregationMongoDAO extends BaseMongo
                         .append("deliveryDate", new Document("$ne", "null"))
         );
 
-//...   {$project: {
+//...   {$project:
+//      {
 //        restaurantId: "$restaurantId",
+//        restaurant: "$restaurant",
 //        deliveryTime: {
 //          $dateDiff: {
 //            startDate: "$creationDate",
@@ -613,29 +615,36 @@ public class AggregationMongoDAO extends BaseMongo
 //            unit: "minute"
 //          }
 //        }
+//      }
 //      }}
-        Bson project = new Document("restaurantId","$restaurantId")
-                .append("deliveriTime", new Document("$dateDiff",
+        Bson project = new Document(
+                "$project",
+                new Document("restaurantId","$restaurantId")
+                .append("restaurant", "$restaurant")
+                .append("deliveryTime", new Document("$dateDiff",
                         new Document("startDate", "$creationDate")
                                 .append("endDate", "$deliveryDate")
                                 .append("unit", "minute")
-                ));
+                )));
 
 //...   $group:
 //      {
-//        _id: "$restaurantId",
-//        deliveryAvgTime: {
+//        _id:"$restaurantId",
+//        restaurant:{$first:"$restaurant"},
+//        deliveryAvgTime:
+//        {
 //          $avg: "$deliveryTime"
 //        }
 //      }
         Bson group = new Document(
                 "$group",
                 new Document("_id", "$restaurantId")
+                        .append("restaurant", new Document("$first", "$restaurant"))
                         .append("deliveryAvgTime", new Document("$avg", "$deliveryTime"))
         );
 
 //...   { $sort: { count: -1 }}
-        Bson sort = new Document("$sort", new Document("total", -1));
+        Bson sort = new Document("$sort", new Document("deliveryAvgTime", -1));
 
         try
         {
@@ -650,8 +659,8 @@ public class AggregationMongoDAO extends BaseMongo
             {
                 AnalyticsDTO toAppend = new AnalyticsDTO();
 
-                toAppend.setRestaurant(d.get("_id").toString());
-                toAppend.setCount(d.getInteger("deliveryAvgTime"));
+                toAppend.setRestaurant(d.get("restaurant").toString());
+                toAppend.setDouble(d.getDouble("deliveryAvgTime"));
 
                 toSet.add(toAppend);
             }

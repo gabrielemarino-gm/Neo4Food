@@ -255,9 +255,51 @@
             }
 
 
+
+
+
+            //  --------- Analytics Delivery Time ---------
+            let deliveryBox = '#deliveryBox';
             function getDeliveryTime()
             {
-                let zipcode = $
+                let zipcode = $("#deliveryInputText").val();
+
+                toSend = {
+                    action: "analytics",
+                    type: "deliveryTime",
+                    zip:zipcode
+                };
+
+                $('#deliveryButton').attr("disabled", true);
+                $('#cdeliveryButton').text("Wait please...");
+
+                $.post("<c:url value="/admin"/>", toSend, function (result)
+                {
+//                  Do stuff on success
+                    json = JSON.parse(result);
+
+                    $(deliveryBox).empty();
+                    if(json.itemCount > 0)
+                    {
+                        for (i = 0; i < json.itemCount; i++)
+                        {
+                            obj = json.list[i];
+                            $(deliveryBox).append('' +
+                                '<div class="mt-5 text-center">' +
+                                    '<div><p class="font-bold">' + obj.restaurant + '</p></div>' +
+                                    '<div>' + (parseFloat(obj.dub)).toFixed(2) + '&nbsp;Min</div>' +
+                                '</div>'
+                            )
+                        }
+                    }
+
+                    $('#deliveryButton').attr("disabled", false);
+                    $('#deliveryButton').text("Best Delivery Time");
+
+                }).fail(function(xhr, status, error)
+                {
+                    setMessage("Something wrong occurred");
+                });
             }
         </script>
     </head>
@@ -340,17 +382,20 @@
 
 
         </div>
+
+
         <div class="px-5 mt-5 flex justify-center">
             <div class="w-1/4 px-3 rounded-md shadow-md h-72 overflow-auto">
-                <%--            Piatti piu cari (nome, prezzo, ristorante proprietario) --%>
                 <div class="flex justify-center w-full">
-                    <input id="deliveryInputText" class="rounded-ml px-3 w-1/2" type="text" placeholder="Zip Code">
+                    <input id="deliveryInputText" class="rounded-md px-3 w-1/2 text-center" type="text" placeholder="Zip Code">
                 </div>
                 <div class="flex justify-center w-full">
                     <button class="mt-3 bg-principale rounded-md px-3 border-2 hover:bg-button" id="deliveryButton" onclick="getDeliveryTime()">Best Delivery Time</button>
                 </div>
-                <div id="cavialeBox"></div>
+                <div id="deliveryBox"></div>
             </div>
         </div>
+
+
     </body>
 </html>
