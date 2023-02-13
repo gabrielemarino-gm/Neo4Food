@@ -23,6 +23,20 @@ public class RestaurantPage extends HttpServlet
 
         String res = request.getParameter("rid");
         String actionType = request.getParameter("action");
+        String me = null;
+
+        try
+        {
+            me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+        }
+        catch (Exception e)
+        {
+            targetJSP = "WEB-INF/jsp/login.jsp";
+            RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
+            dispatcher.forward(request, response);
+            return;
+        }
+
         if("details".equals(actionType))
         {
             RestaurantDTO ret = ServiceProvider.getRestaurantService()
@@ -31,9 +45,6 @@ public class RestaurantPage extends HttpServlet
         }
         else if(actionType.equals("stats"))
         {
-
-            String me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
-
 //          Devo passare alla pagina delle statistiche
             ListDTO<AnalyticsDTO> orari = ServiceProvider.getAggregationService().getBestHours(me);
             ListDTO<AnalyticsDTO> piatto = ServiceProvider.getAggregationService().getBestDishMonth(me);

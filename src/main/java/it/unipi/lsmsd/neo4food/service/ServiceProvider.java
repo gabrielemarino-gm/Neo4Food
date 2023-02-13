@@ -3,7 +3,8 @@ package it.unipi.lsmsd.neo4food.service;
 import it.unipi.lsmsd.neo4food.dao.mongo.*;
 import it.unipi.lsmsd.neo4food.dao.neo4j.*;
 
-public class ServiceProvider {
+public class ServiceProvider
+{
 //    -----------------------MONGODB-----------------------
     private static final UserMongoDAO userService = new UserMongoDAO();
     private static final RestaurantMongoDAO restaurantService = new RestaurantMongoDAO();
@@ -14,6 +15,8 @@ public class ServiceProvider {
     private static final SocialNeoDAO socialService = new SocialNeoDAO();
     private static final SupportNeoDAO supportService = new SupportNeoDAO();
     private static final UtilityNeoDAO utilityService = new UtilityNeoDAO();
+
+//    ----------------------- METODI ----------------------
 //    -----------------------MONGODB-----------------------
     public static UserMongoDAO getUserService(){return userService;}
     public static RestaurantMongoDAO getRestaurantService(){return restaurantService;}

@@ -1,9 +1,11 @@
 package it.unipi.lsmsd.neo4food.servlet;
 
 import com.google.gson.Gson;
+import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dao.neo4j.SocialNeoDAO;
 import it.unipi.lsmsd.neo4food.dto.CommentDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 
@@ -21,6 +23,18 @@ public class Social extends HttpServlet
     {
         String targetJSP = "WEB-INF/jsp/restaurant.jsp";
         String actionType = request.getParameter("action");
+
+        try
+        {
+            String me = ((UserDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+        }
+        catch (Exception e)
+        {
+            targetJSP = "WEB-INF/jsp/login.jsp";
+            RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
+            dispatcher.forward(request, response);
+            return;
+        }
 
         if (actionType.equals("getComments"))
         {

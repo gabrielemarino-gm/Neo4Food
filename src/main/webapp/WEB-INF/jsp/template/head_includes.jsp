@@ -8,4 +8,6 @@
                 font-family: gill sans, sans-serif;
             }
         </style>
+        <link rel="icon" type="image/png" href="img/icona.png">
+
 

@@ -6,9 +6,9 @@ import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.*;
 
-public abstract class BaseMongo {
+public abstract class BaseMongo
+{
 //    OLD SERVER
-
 //    private static final String USERNAME = "extern";
 //    private static final String PASSWORD = "12345678";
 //    private static final String ADDRESS = "172.16.4.203";
@@ -30,21 +30,28 @@ public abstract class BaseMongo {
     private static MongoClient clientConnection = null;
     private static MongoDatabase clientDatabase = null;
 
-    public static MongoDatabase getDatabase(){
-        if(clientDatabase != null){
+    public static MongoDatabase getDatabase()
+    {
+        if(clientDatabase != null)
+        {
             return clientDatabase;
         }
+
         return initDatabase();
     }
 
-    public static ClientSession getSession(){
-        if(clientConnection != null){
+    public static ClientSession getSession()
+    {
+        if(clientConnection != null )
+        {
             return clientConnection.startSession();
         }
+
         return initClient().startSession();
     }
 
-    private static MongoClient initClient(){
+    private static MongoClient initClient()
+    {
         ConnectionString uri = new ConnectionString(String.format(URL_FORMAT,NODE01,PORT01,NODE02,PORT02,NODE03,PORT03));
         MongoClientSettings mcs = MongoClientSettings.builder()
                 .applyConnectionString(uri)
@@ -56,13 +63,15 @@ public abstract class BaseMongo {
         return clientConnection;
     }
 
-    private static MongoDatabase initDatabase(){
+    private static MongoDatabase initDatabase()
+    {
         clientDatabase = initClient().getDatabase(DATABASE);
 
         return clientDatabase;
     }
 
-    public static void closePool() {
+    public static void closePool()
+    {
         clientConnection.close();
     }
 }
