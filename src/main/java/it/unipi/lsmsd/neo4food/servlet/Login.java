@@ -81,11 +81,20 @@ public class Login extends HttpServlet
 
                 UserDTO registered = ServiceProvider.getUserService().registerUser(newUser);
 
+//                Se la registrazione ha successo, aggiungo il nodo su neo4j
                 if(registered != null){
-                    ServiceProvider.getSupportService().addUser(registered.getUsername());
-                    HttpSession session = request.getSession();
-                    session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
-                    session.setAttribute("username", registered.getUsername());
+                    try
+                    {
+                        ServiceProvider.getSupportService().addUser(registered.getUsername());
+                        HttpSession session = request.getSession();
+                        session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
+                        session.setAttribute("username", registered.getUsername());
+
+                    }catch (Exception e){
+//                      Cancellare utente da mongodb se l'inserimento del nodo in neo4j non e' stato possibile
+
+//                        ServiceProvider.getUserService().removeUser(newUser);
+                    }
                 }
                 else{
 //                      Something strange happened

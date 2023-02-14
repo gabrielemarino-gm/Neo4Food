@@ -167,7 +167,6 @@
                 }).fail(function(xhr, status, error)
                 {
                     setMessage("Something wrong occurred");
-
                 });
 
             }
