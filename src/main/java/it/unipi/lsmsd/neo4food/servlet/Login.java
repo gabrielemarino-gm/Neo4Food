@@ -85,6 +85,7 @@ public class Login extends HttpServlet
                 if(registered != null){
                     try
                     {
+//                        Creo nodo su neo4j
                         ServiceProvider.getSupportService().addUser(registered.getUsername());
                         HttpSession session = request.getSession();
                         session.setAttribute(Constants.AUTHENTICATION_FIELD, registered);
@@ -94,6 +95,7 @@ public class Login extends HttpServlet
 //                      Cancellare utente da mongodb se l'inserimento del nodo in neo4j non e' stato possibile
 
 //                        ServiceProvider.getUserService().removeUser(newUser);
+
                         targetJSP = "WEB-INF/jsp/login.jsp";
                         request.setAttribute("message", "Some error occurred");
                     }

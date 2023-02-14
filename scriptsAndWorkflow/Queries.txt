@@ -1,0 +1,109 @@
+Index -> (execution time, keysExamined, docsExamined)
+
+------------------------------------------------
+
+            MOST USED QUERIES
+
+------------------------------------------------
+
+===Users - getUserLogin===
+
+db.Users.find({
+    email: "matteo.passqualetti@libero.it",
+    password: "1111"
+})
+
+Index analysis:
+_id -> (100, 78795, 78795)
+email -> (0, 1, 1)
+
+------------------------------------------------
+
+===Restaurants - getRestaurantsByZipcode===
+
+db.Restaurants.find({
+    zip_code: "00162",
+})
+
+Index analysis:
+_id -> (79, 38581, 38581)
+zip_code -> (0, 7, 7)
+
+------------------------------------------------
+
+===Orders - getUserOrders===
+
+db.Orders.find({
+    user: "PatataAliena"
+})
+
+Index analysis:
+_id -> (739, 602701, 602701)
+user -> (2, 19, 19)
+
+------------------------------------------------
+
+===Orders - getRestaurantOrders===
+
+db.Orders.find({
+    restaurantId: "63d92b3cc416ac8e49aec90e"
+})
+
+Index analysis:
+_id -> (851, 602701, 602701)
+restaurantId -> (4, 416, 416)
+
+------------------------------------------------
+
+                  AGGREGATIONS
+
+------------------------------------------------
+
+===Restaurants - getAvgPrice===
+
+db.Restaurants.aggregate([
+    {}
+])
+
+------------------------------------------------
+
+===Orders - getUsual===
+
+
+------------------------------------------------
+
+===Orders - getOrdersPerZipcode===
+
+
+------------------------------------------------
+
+===Orders - getLastMonthProfits===
+
+
+
+------------------------------------------------
+
+===Orders - getMostBusyHours===
+
+
+
+------------------------------------------------
+
+===Orders - getBestDishMonth===
+
+
+
+------------------------------------------------
+
+===Orders - getDailyRevenue===
+
+
+
+------------------------------------------------
+
+===Orders - getRestauragetModaOrders===
+
+
+------------------------------------------------
+
+===Orders - getFasterRestaurantByZipcode===
