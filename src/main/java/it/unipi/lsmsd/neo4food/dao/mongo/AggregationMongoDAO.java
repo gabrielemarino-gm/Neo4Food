@@ -183,7 +183,7 @@ public class AggregationMongoDAO extends BaseMongo
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
 
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-        //... {$group: {_id: "$zipcode", sum: {$count:{}}}}])
+        //... {$group: {_id: "$zipcode", sum: {$count:{}}}}
         Bson group = new Document("$group", new Document("_id", "$zipcode").append("sum", new Document("$sum", 1)));
         //... {$sort: {sum: -1}},
         Bson sort = new Document("$sort", new Document("sum", -1));
@@ -280,7 +280,7 @@ public class AggregationMongoDAO extends BaseMongo
                         .append("currency", new Document("$toString", "$dishes.currency")));
         //... {$sort: {dishPrice: -1}},
         Bson sort = new Document("$sort", new Document("dishPrice", -1));
-        //... {$project: {dish: "$dishes.name", cost: "$dishPrice", res: "$name", "currency":"$dishes.currency"}}
+        //... {$project: {dish: "$dishes.name", cost: "$dishPrice", res: "$name", "currency": "$dishes.currency"}}
         Bson project = new Document("$project", new Document("dish", "$dishes.name").append("cost","$dishPrice").append("res", "$name").append("currency", "$dishes.currency"));
         //... {$limit: 10}
         Bson limit = new Document("$limit", 10);
@@ -346,7 +346,7 @@ public class AggregationMongoDAO extends BaseMongo
 //...   { $sort: { count: -1 }}
         Bson sort = new Document("$sort", new Document("count", -1));
 
-//...   { $limit: 3 }
+//...   { $limit: 4 }
         Bson limit = new Document("$limit", 4);
 
         try
@@ -380,7 +380,7 @@ public class AggregationMongoDAO extends BaseMongo
 
 
     // Vedo qual è stato il piatto più venduto del mese
-    public ListDTO<AnalyticsDTO> getBestDishMonth(String rid)
+    public ListDTO<AnalyticsDTO> getBestDishDay(String rid)
     {
         ListDTO<AnalyticsDTO> toReturn = new ListDTO<>();
         MongoCollection<Document> collection = getDatabase().getCollection("Orders");
@@ -606,7 +606,7 @@ public class AggregationMongoDAO extends BaseMongo
                         .append("deliveryAvgTime", new Document("$avg", "$deliveryTime"))
         );
 
-//...   { $sort: { count: -1 }}
+//...   { $sort: { deliveryAvgTime: 1 }}
         Bson sort = new Document("$sort", new Document("deliveryAvgTime", 1));
 
         try

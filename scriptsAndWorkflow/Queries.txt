@@ -62,48 +62,305 @@ restaurantId -> (4, 416, 416)
 ===Restaurants - getAvgPrice===
 
 db.Restaurants.aggregate([
-    {}
+    {
+        $unwind: "$dishes"
+    },
+    {
+        $addFields: {
+        dishPrice: {$toDouble: "$dishes.price"}}
+    },
+    {
+        $match: {dishPrice: {$gt: 0}}
+    },
+    {
+        $group: {_id: "$_id", avg: {$avg:"$dishPrice"}}
+    }
 ])
+
+*No index to improve performance found*
+
+------------------------------------------------
+
+===Restaurants - getCaviale===
+
+db.Restaurants.aggregate([
+    {
+        $unwind: "$dishes"
+    },
+    {
+        $addFields: {
+            cost: {$toDouble: "$dishes.price"}, 
+            currency: {$toString: "$dishes.currency"}
+        }
+    },
+    {
+        $sort: {cost: -1}
+    },
+    {
+        $limit: 10
+    }
+])
+
+*No index to improve performance found*
 
 ------------------------------------------------
 
 ===Orders - getUsual===
 
+db.Orders.aggregate([
+    {
+        $match: {
+            user: "PatataAliena", 
+            restaurantId: "63d92b3cc416ac8e49aec90e"
+        }
+    },
+    {
+        $group: {
+            _id: {
+                user: "$user", 
+                restaurant: "$restaurantId", 
+                dishes: "$dishes"
+            }, 
+            count: {$sum: 1}
+        }
+    },
+    {
+        $sort: { count: -1 }
+    },
+    {
+        $limit: 1
+    }
+])
+
+_id -> (896, 602701, 602701)
+user -> (10, 19, 19) <- better for new users
+restaurantId -> (12, 415, 415)
+user, restaurantId -> (6, 5, 5) <- Better if user has a lot of orders with different restaurants
+
+*Vedere quanto pes l'ultimo indice e scrivere cosa abbiamo deciso di fare*
 
 ------------------------------------------------
 
-===Orders - getOrdersPerZipcode===
+===Orders - getOrdersPerZipcode(top 10)===
 
+db.Orders.aggregate([
+    {
+        $group: {
+            _id: "$zipcode", 
+            sum: {$sum: 1}
+        }
+    },
+    {
+        $sort: {sum: -1}
+    },
+    {
+        $limit: 10
+    }
+])
+
+_id -> (1067, 602701, 602701)
+zipcode -> (436, 602701, 0)
 
 ------------------------------------------------
 
-===Orders - getLastMonthProfits===
+===Orders - getLastMonthProfits(top 10)===
 
+db.Orders.aggregate([
+    {
+        $match: {
+            creationDate: {
+                $gte: new Date(new Date() - 1000*60*60*24*30)
+            }
+        }
+    },
+    {
+        $group: {
+            _id: "$restaurantId", 
+            name: {$first: "$restaurant"}, 
+            gain: {$sum: "$total"}, 
+            currency: {$first: "$currency"}
+        }
+    },
+    {
+        $sort: {gain: -1}
+    },
+    {
+        $limit: 10
+    }
+])
 
+_id -> (987, 602701, 602701)
+creationDate -> (139, 13853, 13853)
 
 ------------------------------------------------
 
 ===Orders - getMostBusyHours===
 
+db.Orders.aggregate([
+    {
+        $match: {
+            restaurantId: "63d92b3cc416ac8e49aec90e",
+            creationDate: {
+                $gte: new Date(new Date() - 1000*60*60*24*30)
+            }
+        }
+    },
+    {
+        $project: {
+            orderHour: {$hour: "$creationDate"}
+        }
+    },
+    {
+        $group: {
+            _id: "$orderHour",
+            count: {$sum: 1}
+        }
+    },
+    {
+        $sort: {count: -1}
+    },
+    {
+        $limit: 4
+    }
+])
 
+_id -> (946, 602701, 602701)
+restaurantId -> (8, 416, 416)
+restaurantId, creationDate -> (5, 20, 20)
 
 ------------------------------------------------
 
-===Orders - getBestDishMonth===
+===Orders - getBestDishDay===
 
+db.Orders.aggregate([
+    {
+        $match: {
+            restaurantId: "63d92b3cc416ac8e49aec90e",
+            creationDate: {
+                $gte: new Date(new Date().setHours(0,0,0,0)),
+                $lt: new Date(new Date().setHours(24,0,0,0))
+            }
+        }
+    },
+    {
+        $unwind: "$dishes"
+    },
+    {
+        $group:{
+            _id: "$dishes.name", 
+            total: {$sum: "$dishes.quantity"}
+        }
+    },
+    {
+        $sort: {count: -1}
+    },
+    {
+        $limit: 1
+    }
+])
 
+_id -> (879, 602701, 602701)
+restaurantid, creationDate -> (1, 5, 5)
 
 ------------------------------------------------
 
 ===Orders - getDailyRevenue===
 
+db.Orders.aggregate([
+    {
+        $match: {
+            restaurantId: "63d92b3cc416ac8e49aec90e",
+            creationDate: {
+                $gte: new Date(new Date().setHours(0,0,0,0)),
+                $lt: new Date(new Date().setHours(24,0,0,0))
+            }
+        }
+    },
+    {
+        $unwind: "$dishes"
+    },
+    {
+        $group:{
+            _id: "$dishes.name", 
+            total: {$sum: "$dishes.quantity"}
+        }
+    },
+    {
+        $sort: {count: -1}
+    },
+    {
+        $limit: 1
+    }
+])
 
+_id -> (879, 602701, 602701)
+restaurantid, creationDate -> (5, 1, 1)
 
 ------------------------------------------------
 
-===Orders - getRestauragetModaOrders===
+===Orders - getRestaurantModaOrders===
 
+db.Orders.aggregate([
+    {
+        $match: {
+            restaurantId: "63d92b3cc416ac8e49aec90e"
+        }
+    },
+    {
+        $unwind: "$dishes"
+    },
+    {
+        $group: {
+            _id: "$dishes.name", 
+            total: {$sum: "$dishes.quantity"}
+        }
+    },
+    {
+        $sort: {count: -1}
+    },
+    {
+        $limit: 1
+    }
+])
+
+_id -> (861, 602701, 602701)
+restaurantid -> (9, 416, 416)
 
 ------------------------------------------------
 
 ===Orders - getFasterRestaurantByZipcode===
+
+db.Orders.aggregate([
+    {
+        $match: {
+            zipcode: "00162",
+            deliveryDate: {$ne: null}
+        }
+    },
+    {
+        $project: {
+            restaurantId: "$restaurantId",
+            restaurant: "$restaurant",
+            deliveryTime: {
+                $dateDiff: {
+                    startDate: "$creationDate",
+                    endDate: "$deliveryDate",
+                    unit: "minute"
+                }
+            }
+        }
+    },
+    {
+        $group: {
+            _id: "$restaurantId",
+            restaurant: {$first: "$restaurant"},
+            deliveryAvgTime: {$avg: "$deliveryTime"}
+        }
+    },
+    {
+        $sort: {deliveryAvgTime: 1}
+    }
+])
+
+_id -> (1158, 602701, 602701)
+zipcode -> (27, 1729, 1729)

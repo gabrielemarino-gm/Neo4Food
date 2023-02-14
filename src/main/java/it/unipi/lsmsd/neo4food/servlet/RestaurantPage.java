@@ -6,13 +6,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import it.unipi.lsmsd.neo4food.constants.Constants;
-import it.unipi.lsmsd.neo4food.dao.mongo.AggregationMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.AnalyticsDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
-import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
-import java.util.List;
 
 
 @WebServlet("/restaurant")
@@ -40,7 +37,7 @@ public class RestaurantPage extends HttpServlet
 
 //          Devo passare alla pagina delle statistiche
             ListDTO<AnalyticsDTO> orari = ServiceProvider.getAggregationService().getBestHours(me);
-            ListDTO<AnalyticsDTO> piatto = ServiceProvider.getAggregationService().getBestDishMonth(me);
+            ListDTO<AnalyticsDTO> piatto = ServiceProvider.getAggregationService().getBestDishDay(me);
             AnalyticsDTO fatturato = ServiceProvider.getAggregationService().getDailyRevenue(me);
             ListDTO<AnalyticsDTO> moda = ServiceProvider.getAggregationService().getModaOrders(me);
 
