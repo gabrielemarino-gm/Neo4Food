@@ -3,9 +3,8 @@ package it.unipi.lsmsd.neo4food.dao.mongo;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-
-import javax.print.Doc;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -17,71 +16,34 @@ public class AdminMongoDAO extends BaseMongo
 
         try (MongoCursor cursor = collection.find(and(eq("isAdmin", true), eq("token", token))).cursor())
         {
-            if (cursor.hasNext())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return cursor.hasNext();
         }
         catch (MongoException e)
         {
             System.err.println(e);
+            return false;
         }
-        finally {
-            closePool();
-        }
-        return false;
+
+
     }
 
-    public long userCount()
+    public Document getPopulation()
     {
-        MongoCollection<Document> collection = getDatabase().getCollection("Users");
-
         try
         {
-            return collection.countDocuments();
+            MongoDatabase collection = getDatabase();
+
+            return new Document("uCount", collection.getCollection("Users").countDocuments())
+                   .append("rCount", collection.getCollection("Restaurants").countDocuments())
+                   .append("oCount", collection.getCollection("Orders").countDocuments());
         }
         catch (MongoException e)
         {
             System.out.println(e.getMessage());
+            return new Document("uCount", 0)
+                    .append("rCount", 0)
+                    .append("oCount", 0);
         }
 
-        return 0;
-    }
-
-
-    public long restCount()
-    {
-        MongoCollection<Document> collection = getDatabase().getCollection("Restaurants");
-        try
-        {
-            return collection.countDocuments();
-        }
-        catch (MongoException e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-        return 0;
-    }
-
-    public long orderCount()
-    {
-        MongoCollection<Document> collection = getDatabase().getCollection("Orders");
-        try
-        {
-            return collection.countDocuments();
-        }
-        catch (MongoException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        finally {
-            closePool();
-        }
-        return 0;
     }
 }

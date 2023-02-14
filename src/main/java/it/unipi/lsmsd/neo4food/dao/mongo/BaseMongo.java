@@ -8,15 +8,6 @@ import com.mongodb.client.*;
 
 public abstract class BaseMongo
 {
-//    OLD SERVER
-//    private static final String USERNAME = "extern";
-//    private static final String PASSWORD = "12345678";
-//    private static final String ADDRESS = "172.16.4.203";
-//    private static final Integer PORT = 27017;
-//    private static final String URL_FORMAT = "mongodb://%s:%s@%s:%d";
-//    private static final String DATABASE = "neo4food";
-
-//    NEW SERVER
     private static final String NODE01 = "10.1.1.9";
     private static final String NODE02 = "10.1.1.10";
     private static final String NODE03 = "10.1.1.11";
@@ -28,26 +19,26 @@ public abstract class BaseMongo
     private static final String URL_FORMAT = "mongodb://%s:%s,%s:%s,%s:%s";
 
     private static MongoClient clientConnection = null;
-    private static MongoDatabase clientDatabase = null;
 
     public static MongoDatabase getDatabase()
     {
-        if(clientDatabase != null)
+        if(clientConnection != null)
         {
-            return clientDatabase;
+            return clientConnection.getDatabase(DATABASE);
         }
 
-        return initDatabase();
+        return initClient().getDatabase(DATABASE);
+
     }
 
     public static ClientSession getSession()
     {
-        if(clientConnection != null )
-        {
+        if (clientConnection != null) {
             return clientConnection.startSession();
         }
 
         return initClient().startSession();
+
     }
 
     private static MongoClient initClient()
@@ -63,17 +54,9 @@ public abstract class BaseMongo
         return clientConnection;
     }
 
-    private static MongoDatabase initDatabase()
-    {
-        clientDatabase = initClient().getDatabase(DATABASE);
-
-        return clientDatabase;
-    }
-
-    public static void closePool()
+    public static void close()
     {
         clientConnection.close();
         clientConnection = null;
-        clientDatabase = null;
     }
 }

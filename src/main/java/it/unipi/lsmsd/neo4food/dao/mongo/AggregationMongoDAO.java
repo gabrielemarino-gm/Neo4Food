@@ -13,12 +13,9 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import javax.enterprise.deploy.spi.DConfigBean;
-import javax.mail.Store;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class AggregationMongoDAO extends BaseMongo
@@ -81,19 +78,14 @@ public class AggregationMongoDAO extends BaseMongo
                 session.abortTransaction();
                 e.printStackTrace();
             }
-            finally
-            {
-                session.close();
-            }
+
 
         }
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
     }
 
     public void setAvgRate()
@@ -129,18 +121,13 @@ public class AggregationMongoDAO extends BaseMongo
                 session.abortTransaction();
                 e.printStackTrace();
             }
-            finally
-            {
-                session.close();
-            }
+
         }
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
     }
 
     public List<DishDTO> getUsual(String username, String rid)
@@ -186,9 +173,7 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
 
         return toReturn;
     }
@@ -229,9 +214,7 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
 
         return toReturn;
     }
@@ -280,9 +263,7 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
 
         return toReturn;
     }
@@ -329,9 +310,6 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
-        }
-        finally {
-            closePool();
         }
 
         return toReturn;
@@ -395,9 +373,7 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
 
         return toReturn;
     }
@@ -460,9 +436,7 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
+
 
         return toReturn;
     }
@@ -511,10 +485,6 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
-
 
         return toReturn;
     }
@@ -575,9 +545,6 @@ public class AggregationMongoDAO extends BaseMongo
         catch (MongoException e)
         {
             System.err.println(e.getMessage());
-        }
-        finally {
-            closePool();
         }
 
         return toReturn;
@@ -640,7 +607,7 @@ public class AggregationMongoDAO extends BaseMongo
         );
 
 //...   { $sort: { count: -1 }}
-        Bson sort = new Document("$sort", new Document("deliveryAvgTime", -1));
+        Bson sort = new Document("$sort", new Document("deliveryAvgTime", 1));
 
         try
         {
@@ -669,10 +636,6 @@ public class AggregationMongoDAO extends BaseMongo
         {
             System.err.println(e.getMessage());
         }
-        finally {
-            closePool();
-        }
-
 
         return toReturn;
     }

@@ -5,6 +5,7 @@ import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dto.*;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.model.User;
+import org.bson.Document;
 
 import java.io.*;
 import java.util.List;
@@ -27,9 +28,11 @@ public class Admin extends HttpServlet
             if(ServiceProvider.getAdminService().isTokenValid(token))
             {
     //            Login OK
-                request.setAttribute("uCount", ServiceProvider.getAdminService().userCount());
-                request.setAttribute("rCount", ServiceProvider.getAdminService().restCount());
-                request.setAttribute("oCount", ServiceProvider.getAdminService().orderCount());
+                Document toServe = ServiceProvider.getAdminService().getPopulation();
+
+                request.setAttribute("uCount", toServe.getLong("uCount"));
+                request.setAttribute("rCount", toServe.getLong("rCount"));
+                request.setAttribute("oCount", toServe.getLong("oCount"));
             }
             else
             {

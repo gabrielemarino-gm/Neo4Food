@@ -101,7 +101,6 @@ public class OrderMongoDAO extends BaseMongo
             e.printStackTrace();
         } finally {
             session.close();
-            closePool();
         }
 
     }
@@ -142,7 +141,6 @@ public class OrderMongoDAO extends BaseMongo
                 result = false;
             } finally {
                 session.close();
-                closePool();
             }
 
         return result;
@@ -189,9 +187,6 @@ public class OrderMongoDAO extends BaseMongo
         catch(MongoException e)
         {
             System.err.println(e);
-        }
-        finally {
-            closePool();
         }
 
         return toReturn;

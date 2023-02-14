@@ -254,12 +254,6 @@
                 });
             }
 
-//  --------- Analytics Delivery Time ---------
-            var deliveryBox = '#deliberyBox';
-
-
-
-
             //  --------- Analytics Delivery Time ---------
             let deliveryBox = '#deliveryBox';
             function getDeliveryTime()
@@ -314,7 +308,7 @@
             </div>
         </header>
 
-        <div class="fixed text-center w-full mx-auto mt-2 bg-button shadow-md" id="message" style="display: ">
+        <div class="fixed text-center w-full mx-auto mt-2 bg-button shadow-md" id="message" style="display: none">
             <h1 id="messageField"></h1>
         </div>
 
@@ -335,7 +329,7 @@
             </div>
         </div>
 
-        <h1 class="px-5 mt-8 text-xl font-bold text-center">WARNING: Those actions may take several minutes, be careful!</h1>
+        <h1 class="px-5 mt-8 text-xl font-bold text-center">WARNING: Updates may take several minutes, be careful!</h1>
         <div class="px-5 mt-5 flex justify-center" id="boxUpdate">
             <div class="w-2"></div>
             <button class="bg-principale rounded-md px-3 border-2 hover:bg-button" id="updateRatings" onclick="updateRatings()">Update ratings</button>
