@@ -49,7 +49,7 @@ module.exports = {
             56: '14rem',
             60: '15rem',
             64: '16rem',
-            'bgReview': '16rem',
+            'bgReview': '21.8rem',
             72: '18rem',
             80: '20rem',
             88: '23rem',
