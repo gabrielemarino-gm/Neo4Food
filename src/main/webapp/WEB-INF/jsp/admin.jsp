@@ -308,7 +308,7 @@
             </div>
         </header>
 
-        <div class="fixed text-center w-full mx-auto mt-2 bg-button shadow-md" id="message" style="display: none">
+        <div class="fixed text-center w-full mx-auto mt-2 bg-button shadow-md bg-button" id="message" style="display: none;">
             <h1 id="messageField"></h1>
         </div>
 

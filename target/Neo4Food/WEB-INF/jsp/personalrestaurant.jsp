@@ -214,20 +214,26 @@
 
     <div class="flex flex-wrap justify-center my-24">
 <%
+            // ORDINI DEL RISTORANTE
             if (ordini != null)
             {
                 for(OrderDTO order: ordini)
                 {
 %>
                     <div class="bg-principale rounded-md px-4 py-4 w-5/6 mt-5 shadow-md">
-                        <div>Customer Username:&nbsp&nbsp<%= order.getUser() %> </div>
-                        <div>Customer Address:&nbsp&nbsp<%= order.getAddress() %>, <%= order.getZipcode() %> </div>
-                        <div>Total:&nbsp&nbsp<%= order.getTotal()%>&nbspUSD</div>
+                        <div>Customer Username:&nbsp;&nbsp;<%= order.getUser() %> </div>
+                        <div>Customer Address:&nbsp;&nbsp;<%= order.getAddress() %>, <%= order.getZipcode() %> </div>
+                        <div>Total:&nbsp;&nbsp;<%= order.getTotal()%>&nbsp;USD</div>
                         <div class="relative mx-auto w-5/6 mt-4 rounded-xl px-4 py-2 bg-white">
 <%                          for(DishDTO dish: order.getDishes())
                             {
 %>
-                                <div class="font-bold"><%= dish.getQuantity() %>&nbsp &nbsp &nbsp &nbsp<%= dish.getName() %></div>
+                                <div class="font-bold flex">
+                                    <input type="text" class="w-5/6 bg-white" disabled value="<%= dish.getQuantity() %>&nbsp; &nbsp; &nbsp; &nbsp;<%= dish.getName() %>">
+                                    <div class="absolute right-10">
+                                        <%=dish.getPrice()%>&nbsp;<%=dish.getCurrency()%>
+                                    </div>
+                                </div>
 <%                          }
 %>
                         </div>

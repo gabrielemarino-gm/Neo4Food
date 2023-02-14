@@ -34,7 +34,7 @@
             <h1 class="font-bold">Busiest Time</h1>
             <p>Top 4 busy hours of the day:</p>
 <%
-            if(bestOrari != null)
+            if(bestOrari.getList() != null)
             {
                 int i = 1;
                 for (AnalyticsDTO ora: bestOrari.getList())
@@ -52,7 +52,7 @@
         <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
             <h1 class="font-bold">Best Month's Dishes</h1>
 <%
-                if(bestPiatto != null)
+                if(bestPiatto.getList() != null)
                 {
                     for (AnalyticsDTO piatto: bestPiatto.getList())
                     {
@@ -73,10 +73,9 @@
             <h1 class="font-bold">Daily Revenue</h1>
 
 <%
-                DecimalFormat df = new DecimalFormat("#.##");
-                if(fatturatoGiornaliero != null)
+                if(fatturatoGiornaliero.getDouble() != 0.00)
                 {
-
+                    DecimalFormat df = new DecimalFormat("#.##");
 %>
                     <div>
                         <%=df.format(fatturatoGiornaliero.getDouble())%>
@@ -90,7 +89,7 @@
         <div class="bg-principale rounded-xl w-80 text-center px-5 py-3 mr-5 mt-8 relative shadow-md">
             <h1 class="font-bold">Mode Orders</h1>
 <%
-                if(modaPiatti != null)
+                if(modaPiatti.getList() != null)
                 {
                     for (AnalyticsDTO moda: modaPiatti.getList())
                     {

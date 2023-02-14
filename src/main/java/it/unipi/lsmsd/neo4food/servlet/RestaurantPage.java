@@ -9,6 +9,7 @@ import it.unipi.lsmsd.neo4food.constants.Constants;
 import it.unipi.lsmsd.neo4food.dao.mongo.AggregationMongoDAO;
 import it.unipi.lsmsd.neo4food.dto.AnalyticsDTO;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
+import it.unipi.lsmsd.neo4food.dto.UserDTO;
 import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import it.unipi.lsmsd.neo4food.dto.RestaurantDTO;
 import java.util.List;
@@ -23,7 +24,6 @@ public class RestaurantPage extends HttpServlet
 
         String res = request.getParameter("rid");
         String actionType = request.getParameter("action");
-        String me = null;
 
 
 //      Un utente ha cercato il ristorante e di conseguenza cliccato per avere più info
@@ -36,6 +36,8 @@ public class RestaurantPage extends HttpServlet
         }
         else if(actionType.equals("stats"))
         {
+            String me = ((RestaurantDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+
 //          Devo passare alla pagina delle statistiche
             ListDTO<AnalyticsDTO> orari = ServiceProvider.getAggregationService().getBestHours(me);
             ListDTO<AnalyticsDTO> piatto = ServiceProvider.getAggregationService().getBestDishMonth(me);

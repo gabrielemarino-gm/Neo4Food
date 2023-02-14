@@ -45,7 +45,12 @@
                                 for(DishDTO dish: order.getDishes())
                                 {
 %>
-                                    <div class="font-bold"><%= dish.getQuantity() %>&nbsp &nbsp &nbsp &nbsp<%= dish.getName() %></div>
+                                    <div class="font-bold flex">
+                                        <input type="text" class="w-5/6 bg-white" disabled value="<%= dish.getQuantity() %>&nbsp; &nbsp; &nbsp; &nbsp;<%= dish.getName() %>">
+                                        <div class="absolute right-10">
+                                            <%=dish.getPrice()%>&nbsp;<%=dish.getCurrency()%>
+                                        </div>
+                                    </div>
 <%                              }
 %>
                             </div>
@@ -65,12 +70,11 @@
                                     for(DishDTO dish: order.getDishes())
                                     {
 %>
+
                                         <div class="font-bold flex">
-                                            <%= dish.getQuantity() %>
-                                            &nbsp &nbsp &nbsp &nbsp
-                                            <%= dish.getName() %>
+                                            <input type="text" class="w-5/6 bg-white" disabled value="<%= dish.getQuantity() %>&nbsp; &nbsp; &nbsp; &nbsp;<%= dish.getName() %>">
                                             <div class="absolute right-10">
-                                                <%= dish.getPrice() %>&nbsp<%= dish.getCurrency() %>
+                                                <%=dish.getPrice()%>&nbsp;<%=dish.getCurrency()%>
                                             </div>
                                         </div>
 <%                                 }
