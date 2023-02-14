@@ -94,6 +94,8 @@ public class Login extends HttpServlet
 //                      Cancellare utente da mongodb se l'inserimento del nodo in neo4j non e' stato possibile
 
 //                        ServiceProvider.getUserService().removeUser(newUser);
+                        targetJSP = "WEB-INF/jsp/login.jsp";
+                        request.setAttribute("message", "Some error occurred");
                     }
                 }
                 else{
