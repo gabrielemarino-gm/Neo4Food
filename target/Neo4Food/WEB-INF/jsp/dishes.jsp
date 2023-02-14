@@ -81,7 +81,7 @@
                     revert(id, false);
 
                 }).fail(function (xhr, status, error){
-                    alert("Why do stoobid things?");
+                    alert("Emotional damage!");
 
                     revert(id, true);
                 });
@@ -133,7 +133,7 @@
             $("#"+id).remove();
 
             }).fail(function (xhr, status, error){
-                alert("Prob");
+                alert("Dish removed");
             });
         }
 
@@ -163,7 +163,7 @@
 
                 closeAddDish();
             }).fail(function (xhr, status, error){
-                alert("You are doing wrong ma boy...");
+                alert("Don't be lazy");
             });
 
         }

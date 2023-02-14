@@ -162,7 +162,7 @@ public class UserMongoDAO extends BaseMongo {
         return false;
     }
 
-    public ListDTO<UserDTO> getUser(String usr){
+    public ListDTO<UserDTO> getUsers(String usr){
         ListDTO<UserDTO> toReturn = new ListDTO<>();
 
         MongoCollection<Document> collection = getDatabase().getCollection("Users");
@@ -189,7 +189,7 @@ public class UserMongoDAO extends BaseMongo {
 
                 toSet.add(toAppend);
             }
-
+            
             toReturn.setList(toSet);
             toReturn.setItemCount(toSet.size());
         }

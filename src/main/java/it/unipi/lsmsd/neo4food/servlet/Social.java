@@ -144,7 +144,7 @@ public class Social extends HttpServlet
         {
             String username = request.getParameter("username");
 
-            response.getWriter().println((new Gson()).toJson(ServiceProvider.getUserService().getUser(username)));
+            response.getWriter().println((new Gson()).toJson(ServiceProvider.getUserService().getUsers(username)));
             response.getWriter().flush();
             return;
         }

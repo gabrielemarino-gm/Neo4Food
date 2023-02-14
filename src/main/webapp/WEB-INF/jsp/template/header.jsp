@@ -115,7 +115,7 @@
                         '<div>&nbsp;' + json.list[i].lastName + '</div>' +
                         '</div>' +
                         '</div>' +
-                        '<button class="ml-auto h-7 mt-2 px-3 rounded-lg border-2 hover:bg-button" onclick="setFollowHeader(\'' + json.username + '\')"> Follow </button>' +
+                        '<button class="ml-auto h-7 mt-2 px-3 rounded-lg border-2 hover:bg-button" onclick="setFollowHeader(\'' + json.list[i].username + '\')"> Follow </button>' +
                         '</div>'
                     );
             }
