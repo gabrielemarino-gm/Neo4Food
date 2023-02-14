@@ -252,14 +252,10 @@
                         {
                             var commento = json.list[i];
 
-                            console.log(commento.rate)
-
                             // Aggiungo le stelle anziche' il numero
                             var stelle = "";
                             var nStar = 0;
                             var rateInt = parseInt(commento.rate);
-
-                            console.log(parseInt(commento.rate));
 
                             for(; nStar<rateInt; nStar++)
                                 stelle += '<img class="h-5" src="img/star.png" alt="star">';

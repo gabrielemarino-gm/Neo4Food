@@ -81,7 +81,7 @@
                     revert(id, false);
 
                 }).fail(function (xhr, status, error){
-                    alert("Why do stoobid things?");
+                    alert("Emotional damage!");
 
                     revert(id, true);
                 });
@@ -133,7 +133,7 @@
             $("#"+id).remove();
 
             }).fail(function (xhr, status, error){
-                alert("Prob");
+                alert("Dish removed");
             });
         }
 
@@ -149,7 +149,7 @@
                 if(result != "") {
                     text = '' +
                         '<div id="' + result + '" class="relative mr-5 mt-8 ml-3 w-80 rounded-xl bg-principale px-5 py-3 text-center shadow-md">' +
-                            '<textarea class="w-5/6 text-center font-bold resize-none bg-principale" id="name' + result + '" type="text" required disabled name="dname">' + toSend.dname + '"</textarea>' +
+                            '<textarea class="w-5/6 text-center font-bold resize-none bg-principale" id="name' + result + '" type="text" required disabled name="dname">' + toSend.dname + '</textarea>' +
                             '<input class="w-9/12 mt-2 bg-principale" id="price' + result + '" type="number" required disabled name="dprice" value="' + toSend.dprice + '"><a>' + toSend.dcurr + '</a>' +
                             '<textarea class="w-5/6 h-24 mt-4 resize-none bg-principale" id="desc' + result + '" type="text" disabled name="ddesc">' + toSend.ddesc + '</textarea>' +
                             '<div class="mt-3 float-right">' +
@@ -163,7 +163,7 @@
 
                 closeAddDish();
             }).fail(function (xhr, status, error){
-                alert("You are doing wrong ma boy...");
+                alert("Don't be lazy");
             });
 
         }

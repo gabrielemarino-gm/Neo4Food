@@ -39,7 +39,7 @@ public class AdminMongoDAO extends BaseMongo
         }
         catch (MongoException e)
         {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return new Document("uCount", 0)
                     .append("rCount", 0)
                     .append("oCount", 0);

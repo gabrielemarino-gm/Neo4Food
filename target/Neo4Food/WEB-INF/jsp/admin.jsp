@@ -301,8 +301,7 @@
     </head>
     <body>
         <header class="bg-principale px-5 h-12 font-bold text-1xs shadow-md">
-            <img class="h-12 float-left" src="img/logo_2.png" alt="logo">
-
+            <a href="<c:url value="/ricerca"/>"><img class="h-12 float-left" src="img/logo_2.png" alt="logo"></a>
             <div class="my-3 px-3 float-right rounded-lg hover:bg-button">
                 Admin
             </div>

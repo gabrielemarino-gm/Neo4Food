@@ -99,8 +99,6 @@
             username: $('#userSearchText').val()
         }
 
-        console.log("toSend: " + toSend);
-
         $.post("<c:url value='/social'/>", toSend, function (result)
         {
             json = JSON.parse(result);

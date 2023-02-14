@@ -129,7 +129,7 @@ public class Admin extends HttpServlet
             ListDTO<AnalyticsDTO> anaList =  ServiceProvider.getAggregationService().getDeliveryTime(zipcode);
 
             String toSend = (new Gson()).toJson(anaList);
-            System.out.println("SERLET: " + toSend);
+
             response.getWriter().print(toSend);
             response.getWriter().flush();
         }
