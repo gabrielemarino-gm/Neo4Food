@@ -17,19 +17,17 @@
     <script type="text/javascript" src="<c:url value="/js/jquery-3.6.3.min.js"/>"></script>
     <script type="text/javascript">
 
-
         // Ricarico la pagina automaticamente ogni minuto cosi' da visualizzare nuovi ordini
         setTimeout(function() {location.reload();}, 60000);
-
 
         let pageReviewActive = false;
         let bgReviewDivID = "#review";
         let bgAddReviewDivID = "#addreview";
 
-        toSend = {
+        let toSend = {
             action: "getComments",
             page: 0,
-            restaurantId: "<%= details.getId() %>",
+            restaurantId: "<%= details.getId() %>"
         };
 
         function openReviews()
@@ -42,19 +40,19 @@
                 $("body").css({"overflow": "hidden"});
                 pageReviewActive = true;
 
-                $.post("<c:url value="/social"/>", toSend, function (result)
+                $.post("<c:url value="/social"/>", toSend, function(result)
                 {
-                    json = JSON.parse(result);
+                    received = JSON.parse(result);
 
-                    if (json.itemCount == 0)
+                    if (received.itemCount == 0)
                     {
                         $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No Reviews</div>');
                     }
                     else
                     {
-                        for(i=0; i<json.list.length; i++)
+                        for(i=0; i<received.list.length; i++)
                         {
-                            var commento = json.list[i];
+                            var commento = received.list[i];
 
                             // Aggiungo le stelle anziche' il numero
                             var stelle = "";
@@ -91,7 +89,7 @@
                 {
                     alert(xhr+"\n"+status+"\n"+error);
                 });
-//          )
+
             }
             else
             {

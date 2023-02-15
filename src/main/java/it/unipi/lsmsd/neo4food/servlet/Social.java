@@ -26,36 +26,28 @@ public class Social extends HttpServlet
 
 //      Provo a vedere se sono loggato nel try, se ritorna un NullPointer allora vuol dire che non c'è nessun utente loggato
 //      Di conseguenza riporto l'utente non loggato nella pagina di login
-        try
-        {
-            String me = ((UserDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
-        }
-        catch (Exception e)
-        {
-            targetJSP = "WEB-INF/jsp/login.jsp";
-            RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
-            dispatcher.forward(request, response);
-            return;
-        }
+//        try
+//        {
+//            String me = ((UserDTO)request.getSession().getAttribute(Constants.AUTHENTICATION_FIELD)).getId();
+//        }
+//        catch (Exception e)
+//        {
+//            targetJSP = "WEB-INF/jsp/login.jsp";
+//            RequestDispatcher dispatcher = request.getRequestDispatcher(targetJSP);
+//            dispatcher.forward(request, response);
+//            return;
+//        }
 
         if (actionType.equals("getComments"))
         {
             String rest = request.getParameter("restaurantId");
             int page = Integer.parseInt(request.getParameter("page"));
-            ListDTO<CommentDTO> commentList = ServiceProvider.getSocialService().getComments(rest, page);
-            String text = (new Gson()).toJson(commentList);
 
-//           Gli mando i commenti come json solo se non sono nulli altrimenti non gli mando nulla
-            if (commentList != null)
-            {
-                response.getWriter().println(text);
-                response.getWriter().flush();
-            }
-            else
-            {
-                response.getWriter().println("{'itemCount'= 0}");
-                response.getWriter().flush();
-            }
+            ListDTO<CommentDTO> commentList = ServiceProvider.getSocialService().getComments(rest, page);
+
+            response.getWriter().println(new Gson().toJson(commentList));
+            response.getWriter().flush();
+
             return;
         }
 //      Creo una nuova review

@@ -150,10 +150,10 @@ public class SocialNeoDAO extends BaseNeo4J
         try (Session session = getSession())
         {
             String searchQuery = "MATCH (r:Restaurant)<-[rate:RATED]-(u:User) " +
-                    "WHERE r.rid = $rid " +
-                    "RETURN u.username as user, rate.rating as rate, rate.review as comment " +
-                    "SKIP $skip " +
-                    "LIMIT $limit";
+                            "WHERE r.rid = $rid " +
+                            "RETURN u.username as user, rate.rating as rate, rate.review as comment " +
+                            "SKIP $skip " +
+                            "LIMIT $limit";
 
             ListDTO<CommentDTO> toReturn = new ListDTO<CommentDTO>();
 
