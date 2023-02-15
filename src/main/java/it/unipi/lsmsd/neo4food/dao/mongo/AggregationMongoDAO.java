@@ -451,7 +451,10 @@ public class AggregationMongoDAO extends BaseMongo
         Bson match = new Document(
                 "$match",
                 new Document("restaurantId", rid)
-                        .append("creationDate", new Document("$gte", LocalDateTime.now().minusDays(1)))
+                        .append("creationDate",
+                                new Document("$gte", LocalDateTime.now().minusDays(1))
+                                .append("$lte", LocalDateTime.now().plusDays(1))
+                        )
         );
 
 //...   $group:{_id: "$restaurantId", total: { $sum: "$total" }}
@@ -468,7 +471,7 @@ public class AggregationMongoDAO extends BaseMongo
         try
         {
             List<Document> result = collection.aggregate(
-                    Arrays.asList(match, group, sort)).into(new ArrayList<>());
+                    Arrays.asList(match, group)).into(new ArrayList<>());
             AnalyticsDTO toSet = new AnalyticsDTO();
 
 

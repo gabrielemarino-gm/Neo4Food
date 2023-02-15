@@ -1,0 +1,39 @@
+Introduzione
+    - Cos'e Neo4Food? A cosa serve? Quali sono i punti principali? E le features?
+
+Ch. 1
+    - Spiegazione del dataset utilizzato
+    - Come e' stato creato/Dove e' stato trovato
+    - Variability ?
+
+Ch. 2
+   2.1 - Design
+   2.2.1 - "Main actors"
+   2.2.2 - Functional requirements
+            ( Cosa si puo fare con l'applicazione dal punto di vista di ogni attore )
+   2.2.3 - Non-functional requirements
+   2.3.1 - Use cases diagram (Con qualche spiegazione testuale se serve)
+   2.3.2 - UML Class Diagram (Analisi nel dettaglio delle classi se ritenuto necessario)
+   2.4  - Data Model
+   2.4.1 - Come e' stato usato MongoDB (DocumentDB) (Eventualmente un esempio pratico di un documento)
+   2.4.2 - Come e' stato usato Neo4J (GraphDB) (Eventualmente esempio pratico dei nodi)
+   2.5 - Database Design ()
+   2.5.1 - Repliche, Configurazione (Priority, write concern, ...), Consistenza
+   2.5.2 - Sharding: Su cosa farlo se si volesse applicare
+   2.6 - Architecture (Client-Server)
+
+Ch. 3
+   3.1 - Implementazione
+   3.1.1 - Classi principali utilizzate (DAO,DTO,SERVLET,...)
+   3.2 - Query rilevanti
+   3.2.1 - MongoDB
+   3.2.2 - Neo4J
+   3.3 - Aggregazioni
+   3.3.1 - Analisi aggregazioni
+   3.4 - Indici ( Mostrare i risultati utilizzando ".explain()" e statistiche varie)
+
+Ch. 4
+    4.1 - Utilizzo dell app con screen
+    4.1.1 - Come utente (Screen e spiegazioni)
+    4.1.2 - Come ristorante (Screen e spiegazioni)
+    4.1.3 - Come admin (Screen e spiegazioni)

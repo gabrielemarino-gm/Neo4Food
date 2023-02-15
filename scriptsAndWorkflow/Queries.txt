@@ -266,32 +266,27 @@ restaurantid, creationDate -> (1, 5, 5)
 
 ===Orders - getDailyRevenue===
 
-db.Orders.aggregate([
-    {
-        $match: {
-            restaurantId: "63d92b3cc416ac8e49aec90e",
-            creationDate: {
-                $gte: new Date(new Date().setHours(0,0,0,0)),
-                $lt: new Date(new Date().setHours(24,0,0,0))
+db.Orders.aggregate(
+    [
+        {
+            $match: {
+                restaurantId: rid,
+                creationDate: { $gte: LocalDateTime.now().minusDays(1) }
             }
+        },
+        {
+            $group: {
+                _id: "$restaurantId",
+                total: { $sum: "$total" },
+                currency: { $first: "$currency" }
+            }
+        },
+        {
+            $sort: { count: -1 }
         }
-    },
-    {
-        $unwind: "$dishes"
-    },
-    {
-        $group:{
-            _id: "$dishes.name", 
-            total: {$sum: "$dishes.quantity"}
-        }
-    },
-    {
-        $sort: {count: -1}
-    },
-    {
-        $limit: 1
-    }
-])
+    ]
+)
+
 
 _id -> (879, 602701, 602701)
 restaurantid, creationDate -> (5, 1, 1)
