@@ -40,10 +40,9 @@
                 $("body").css({"overflow": "hidden"});
                 pageReviewActive = true;
 
-                $.post("<c:url value="/social"/>", toSend, function(res)
+                $.post("<c:url value="/social"/>", toSend, function(result)
                 {
-                    console.log(res);
-                    received = JSON.parse(res);
+                    received = JSON.parse(result);
 
                     if (received.itemCount == 0)
                     {
