@@ -190,7 +190,7 @@
     <%@ include file="/WEB-INF/jsp/template/header.jsp" %>
     <div>
         <div class="text-center mt-10">
-            <button class="border rounded-lg w-5/6 h-7 bg-principale hover:bg-button" onclick="openAddDish()">Add new dish</button>
+            <button class="border-2 rounded-lg w-5/6 h-7 bg-principale hover:bg-button" onclick="openAddDish()">Add new dish</button>
         </div>
 
     </div>
@@ -217,13 +217,13 @@
 <%--               Hidden things --%>
 
                     <div class="mt-3 float-right">
-                        <button class="modifyButtons border rounded-lg px-3 hover:bg-button" id="modifyConfirm<%=d.getId()%>" type="button" onclick="modifyConfirm('<%=d.getId()%>')">
+                        <button class="modifyButtons border-2 rounded-lg px-3 hover:bg-button" id="modifyConfirm<%=d.getId()%>" type="button" onclick="modifyConfirm('<%=d.getId()%>')">
                             Modify
                         </button>
-                        <button class="border rounded-lg px-3 hover:bg-button" style="display:none;" id="revert<%= d.getId() %>" type="button" onclick="revert('<%=d.getId()%>', true)">
+                        <button class="border-2 rounded-lg px-3 hover:bg-button" style="display:none;" id="revert<%= d.getId() %>" type="button" onclick="revert('<%=d.getId()%>', true)">
                             Revert
                         </button>
-                        <button class="border rounded-lg px-3 hover:bg-button" id="remove<%= d.getId() %>" type="button" onclick="remDish('<%=d.getId()%>')">
+                        <button class="border-2 rounded-lg px-3 hover:bg-button" id="remove<%= d.getId() %>" type="button" onclick="remDish('<%=d.getId()%>')">
                             Remove
                         </button>
                     </div>

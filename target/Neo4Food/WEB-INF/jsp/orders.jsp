@@ -88,7 +88,7 @@
             {
 //              No orders
 %>
-                <div class="font-bold text-3xl">No orders to view</div>
+                <div class="font-bold">No orders to view</div>
 <%
             }
 %>
