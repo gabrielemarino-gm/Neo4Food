@@ -270,8 +270,11 @@ db.Orders.aggregate(
     [
         {
             $match: {
-                restaurantId: rid,
-                creationDate: { $gte: LocalDateTime.now().minusDays(1) }
+                restaurantId: "63d92b3cc416ac8e49aec90e",
+                creationDate: {
+                    $gte: new Date(new Date().setHours(0,0,0,0)), 
+                    $lt: new Date(new Date().setHours(24,0,0,0))
+                }
             }
         },
         {
@@ -280,12 +283,27 @@ db.Orders.aggregate(
                 total: { $sum: "$total" },
                 currency: { $first: "$currency" }
             }
-        },
-        {
-            $sort: { count: -1 }
         }
     ]
 )
+
+
+db.Orders.aggregate([
+  {
+    $match: {
+      "restaurantId": "63d92b3cc416ac8e49aec90e",
+      "creationDate": { $gte: ISODate("2023-02-15T00:00:00.000Z") }
+    }
+  },
+  {
+    $group: {
+      _id: "$restaurantId",
+      total: { $sum: "$total" },
+      currency: { $first: "$currency" }
+    }
+  }
+])
+
 
 
 _id -> (879, 602701, 602701)

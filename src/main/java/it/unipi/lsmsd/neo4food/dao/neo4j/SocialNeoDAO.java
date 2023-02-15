@@ -157,12 +157,13 @@ public class SocialNeoDAO extends BaseNeo4J
 
             ListDTO<CommentDTO> toReturn = new ListDTO<CommentDTO>();
 
-            session.writeTransaction(tx -> {
+            session.writeTransaction(tx ->
+            {
                 Result result = tx.run(searchQuery, parameters( "rid", restaurantid, "skip", (page * Constants.MAX_COMMENTS), "limit", Constants.MAX_COMMENTS));
                 List<CommentDTO> tempList = new ArrayList<CommentDTO>();
-
-                while(result.hasNext()){
-
+                System.out.println("NEO4J: " + result);
+                while(result.hasNext())
+                {
                     Record r = result.next();
                     CommentDTO tempComment = new CommentDTO();
 

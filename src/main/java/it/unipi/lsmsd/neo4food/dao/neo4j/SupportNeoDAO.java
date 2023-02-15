@@ -1,5 +1,7 @@
 package it.unipi.lsmsd.neo4food.dao.neo4j;
 
+import it.unipi.lsmsd.neo4food.dto.UserDTO;
+import it.unipi.lsmsd.neo4food.service.ServiceProvider;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
@@ -15,8 +17,10 @@ public class SupportNeoDAO extends BaseNeo4J{
      *
      * INPUT - Nome utente */
 
-    public void addUser(String username) {
-        try (Session session = driver.session()) {
+    public void addUser(String username)
+    {
+        try (Session session = driver.session())
+        {
             String addUser = "MERGE (u:User {username: $username})";
 
             session.writeTransaction(tx -> {
@@ -25,13 +29,19 @@ public class SupportNeoDAO extends BaseNeo4J{
                 return 1;
             });
         }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
     }
 
     /** Aggiunge un nodo ristorante al database
      *
      * INPUT - Id ristorante, nome, zipcode */
-    public void addRestaurant(String rid, String name, String zipcode) {
-        try (Session session = driver.session()) {
+    public void addRestaurant(String rid, String name, String zipcode)
+    {
+        try (Session session = driver.session())
+        {
             String addRestaurant = "MERGE (r:Restaurant {rid: $rid, name: $name, zipcode: $zipcode})";
 
             session.writeTransaction(tx -> {
@@ -40,12 +50,18 @@ public class SupportNeoDAO extends BaseNeo4J{
                 return 1;
             });
         }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
     }
 
-    public List<Document> getAvgRating(){
+    public List<Document> getAvgRating()
+    {
         List<Document> toReturn = new ArrayList<Document>();
 
-        try(Session session = getSession()){
+        try(Session session = getSession())
+        {
             String aggQuery = "MATCH (r:Restaurant)<-[a:RATED]-(:User) " +
                               "WITH r, avg(a.rating) as score " +
                               "RETURN r.rid as rid, score as avgScore";
@@ -60,6 +76,10 @@ public class SupportNeoDAO extends BaseNeo4J{
                 }
                 return 1;
             });
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
         }
 
         return toReturn;

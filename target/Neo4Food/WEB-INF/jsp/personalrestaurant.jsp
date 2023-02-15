@@ -74,7 +74,12 @@
                             for (; nStar<5; nStar++)
                                 stelle += '<img class="h-5" src="img/empty_star.png" alt="star">';
 
-                            $("#boxRev").append('<div class="my-8 border-b py-3"><div class="font-bold">'+commento.username+'</div><div class="px-5">'+commento.review+'</div><div class="flex flex-wrap float-right -m-6 mr-1">'+stelle+'</div></div>');
+                            $("#boxRev").append('' +
+                                '<div class="my-8 border-b py-3">' +
+                                    '<div class="font-bold">'+commento.username+'</div>' +
+                                    '<div class="px-5">'+commento.review+'</div>' +
+                                    '<div class="flex flex-wrap float-right -m-6 mr-1">'+stelle+'</div>' +
+                                '</div>');
 
                             if(i == <%= Constants.MAX_COMMENTS - 1 %>)
                             {
@@ -97,16 +102,17 @@
                 $("body").css({"overflow": "hidden"});
 
                 $("#moreReviews").remove();
-                $.post("<c:url value="/social"/>", toSend, function (result) {
+                $.post("<c:url value="/social"/>", toSend, function (result)
+                {
                     json = JSON.parse(result);
-
+                    
                     if (json.itemCount == 0)
                     {
                         $("#boxRev").append('<div  class="relative mx-auto w-2/3 text-center">No more Reviews</div>');
                     }
                     else
                     {
-                        for(i = 0; i<json.list.length; i++)
+                        for(i=0; i<json.list.length; i++)
                         {
                             var commento = json.list[i];
 
@@ -129,10 +135,18 @@
                             for (; nStar<5; nStar++)
                                 stelle += '<img class="h-5" src="img/empty_star.png" alt="star">';
 
-                            $("#boxRev").append('<div class="my-8 border-b py-3"><div class="font-bold">'+commento.username+'</div><div class="px-5">'+commento.review+'</div><div class="flex flex-wrap float-right -m-6 mr-1">'+stelle+'</div></div>');
+                            $("#boxRev").append('' +
+                                '<div class="my-8 border-b py-3">' +
+                                    '<div class="font-bold">'+commento.username+'</div>' +
+                                    '<div class="px-5">'+commento.review+'</div>' +
+                                    '<div class="flex flex-wrap float-right -m-6 mr-1">'+stelle+'</div>' +
+                                '</div>');
 
                             if(i == <%= Constants.MAX_COMMENTS %>){
-                                $("#boxRev").append('<button class="ml-4 px-3 rounded-xl border-2 hover:bg-button" id="moreReviews" onclick="openReviews()">Load more</button>');
+                                $("#boxRev").append('' +
+                                    '<button class="ml-4 px-3 rounded-xl border-2 hover:bg-button" id="moreReviews" onclick="openReviews()">' +
+                                        'Load more' +
+                                    '</button>');
                             }
                         }
                     }

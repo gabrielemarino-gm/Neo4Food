@@ -4,6 +4,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.*;
 
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import it.unipi.lsmsd.neo4food.dto.ListDTO;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
+import com.mongodb.client.model.Filters;
 
 public class UserMongoDAO extends BaseMongo {
 
@@ -130,6 +132,20 @@ public class UserMongoDAO extends BaseMongo {
         }
 
         return null;
+    }
+
+    public void removeUser(UserDTO user)
+    {
+        try
+        {
+            MongoCollection<Document> collection = getDatabase().getCollection("Users");
+            DeleteResult result = collection.deleteOne(Filters.eq("username", user.getUsername()));
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+
     }
 
     public boolean updateUser(UserDTO user){
