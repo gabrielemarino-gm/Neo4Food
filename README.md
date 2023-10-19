@@ -12,3 +12,6 @@ Our web application is designed to offer a comprehensive food delivery service. 
 
 ## Dataset
 We have utilized the Kaggle database, available <a href="https://www.kaggle.com/datasets/ahmedshahriarsakib/uber-eats-usa-restaurants-menus">here</a>, as our primary dataset. Additionally, we have incorporated data obtained through web scraping to manage multiple data sources effectively.
+
+## More Info
+Consult the <a href="">documentation</a>
